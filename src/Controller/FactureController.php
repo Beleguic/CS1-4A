@@ -30,6 +30,13 @@ class FactureController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $devis = $facture->getDevis();
+            $devis->addFacture($facture);
+
+            // Persistez l'entité Devis avant la facture
+            $entityManager->persist($devis);
+
+            // Persistez l'entité Facture
             $entityManager->persist($facture);
             $entityManager->flush();
 
@@ -38,8 +45,8 @@ class FactureController extends AbstractController
 
         return $this->render('facture/new.html.twig', [
             'facture' => $facture,
-            'form' => $form,
-        ]);
+            'form' => $form->createView(),
+    ]);
     }
 
     #[Route('/{id}', name: 'app_facture_show', methods: ['GET'])]

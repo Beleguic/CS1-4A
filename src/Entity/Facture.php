@@ -15,7 +15,7 @@ class Facture
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'factures')]
-    private ?devis $devis = null;
+    private ?Devis $devis = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -60,7 +60,7 @@ class Facture
         return $this->amount;
     }
 
-    public function setAmount(string $amount): static
+    public function setAmount(?string $amount): static
     {
         $this->amount = $amount;
 
