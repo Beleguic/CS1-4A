@@ -1,33 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Devis index{% endblock %}
+{% block title %}Devis Index{% endblock %}
 
 {% block body %}
-    <h1>Devis index</h1>
+    <div class="container mt-4">
+        <h1>Devis Index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for devi in devis %}
-            <tr>
-                <td>{{ devi.id }}</td>
-                <td>
-                    <a href="{{ path('app_devis_show', {'id': devi.id}) }}">show</a>
-                    <a href="{{ path('app_devis_edit', {'id': devi.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Client</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for devis in devis %}
+                <tr>
+                    <td>{{ devis.id }}</td>
+                    <td>{{ devis.clientName }}</td>
+                    <td>{{ devis.totalPrice() is not null ? devis.totalPrice() : 'N/A' }}</td>
+                    <td>
+                        <a href="{{ path('app_devis_show', {'id': devis.id}) }}" class="btn btn-info">Show</a>
+                        <a href="{{ path('app_devis_edit', {'id': devis.id}) }}" class="btn btn-warning">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_devis_new') }}">Create new</a>
+        <a href="{{ path('app_devis_new') }}" class="btn btn-success">Create New</a>
+    </div>
 {% endblock %}
