@@ -10,12 +10,26 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-
-        {% for type, flashMessages in app.flashes %}
-            {% for message in flashMessages %}
-                {{ type }} - {{ message }}
+        <header>
+            {% block header %}
+                header du site
+            {% endblock %}
+        </header>
+        <main class="flex flex-col gap-8">
+            {% block body %}{% endblock %}
+        </main>
+        <footer>
+            {% block footer %}
+                footer du site
+            {% endblock %}
+            {% for type, flashMessages in app.flashes %}
+                {% for message in flashMessages %}
+                    {{ type }} - {{ message }}
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
+        </footer>
+        {% block javascripts %}
+            <script src="{{ asset('build/script.js') }}"></script>
+        {% endblock %}
     </body>
 </html>
