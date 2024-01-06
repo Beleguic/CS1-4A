@@ -52,3 +52,4 @@ ehthumbs_vista.db
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+node_modules
