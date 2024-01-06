@@ -12,9 +12,11 @@ A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony
 6. Run `docker compose logs -f` to display current logs, `docker compose logs -f [CONTAINER_NAME]` to display specific container's current logs
 
 ## Commandes utiles
+
 Lister l'ensemble des commandes existances `docker compose exec php bin/console`
 
 #### Création de fichier vierge
+
 Controller `docker compose exec php bin/console make:controller`
 
 FormType `docker compose exec php bin/console make:form`
@@ -22,6 +24,7 @@ FormType `docker compose exec php bin/console make:form`
 CRUD `docker compose exec php bin/console make:crud`
 
 #### Debug
+
 Supprimer le cache du navigateur
 
 `docker compose exec php bin/console cache:clear`
@@ -33,9 +36,11 @@ Voir les routes actives
 `docker compose exec php bin/console debug:router`
 
 ## Gestion des routes
+
 [https://symfony.com/doc/current/routing.html](https://symfony.com/doc/current/routing.html)
 
 ## Autowiring & ParamConverter
+
 Autowiring [https://symfony.com/doc/current/service_container/autowiring.html](https://symfony.com/doc/current/service_container/autowiring.html)
 
 ParamConverter [https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/converters.html](https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/converters.html)
@@ -43,7 +48,8 @@ ParamConverter [https://symfony.com/bundles/SensioFrameworkExtraBundle/current/a
 ## Gestion de base de données
 
 #### Fix error duplicate table (en rapport avec le cours uniquement; quand vous faites un pull du git du cours)
-Supprimer l'ensemble de vos migrations et faire les commandes suivantes : 
+
+Supprimer l'ensemble de vos migrations et faire les commandes suivantes :
 
 `docker compose exec php bin/console d:d:d --force`
 `docker compose exec php bin/console d:d:c`
@@ -51,11 +57,13 @@ Supprimer l'ensemble de vos migrations et faire les commandes suivantes :
 `docker compose exec php bin/console d:m:m`
 
 #### Commandes de création des fichiers entity/repository et d'ajout de champs
+
 `docker compose exec php bin/console make:entity`
 
 Documentation sur les relations entre les entités [https://symfony.com/doc/current/doctrine/associations.html](https://symfony.com/doc/current/doctrine/associations.html)
 
 #### Mise à jour de la base de données via migration
+
 Generation d'une migration
 
 `docker compose exec php bin/console make:migration`
@@ -67,6 +75,7 @@ Jouer les migrations
 `docker compose exec php bin/console d:m:m`
 
 #### Mise à jour de la base de données via update de schema sans migration
+
 Voir les requètes interprétées (sans mise à jour de la DB)
 
 `docker compose exec php bin/console doctrine:schema:update --dump-sql`
@@ -78,3 +87,11 @@ Executer les requètes en DB
 `docker compose exec php bin/console doctrine:schema:update --force`
 
 `docker compose exec php bin/console d:s:u --force`
+
+### Install and run Tailwindcss
+
+1. Install [https://tailwindcss.com/docs/guides/symfony](https://tailwindcss.com/docs/guides/symfony)
+
+2. Run `npm run watch` in a terminal
+
+3. Finish the build `ctrl + c` or `cmd + c`
