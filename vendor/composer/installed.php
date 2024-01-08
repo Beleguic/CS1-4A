@@ -1137,9 +1137,9 @@
             'dev_requirement' => false,
         ),
         'symfony/runtime' => array(
-            'pretty_version' => 'v6.3.2',
-            'version' => '6.3.2.0',
-            'reference' => 'd5c09493647a0c1a16e6c8da308098e840d1164f',
+            'pretty_version' => 'v6.4.0',
+            'version' => '6.4.0.0',
+            'reference' => '86539231fadfdc7f7e9911d6fa7ed84a606e7d34',
             'type' => 'composer-plugin',
             'install_path' => __DIR__ . '/../symfony/runtime',
             'aliases' => array(),
