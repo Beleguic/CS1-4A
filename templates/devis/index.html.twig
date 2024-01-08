@@ -3,11 +3,10 @@
 {% block title %}Devis Index{% endblock %}
 
 {% block body %}
-    <div>
+    <div class="container mt-4">
         <h1>Devis Index</h1>
 
-    <div class="table-container">
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -34,7 +33,6 @@
             {% endfor %}
             </tbody>
         </table>
-    </div>
 
         <a href="{{ path('app_devis_new') }}" class="btn btn-success">Create New</a>
     </div>

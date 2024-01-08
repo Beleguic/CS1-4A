@@ -27,10 +27,17 @@ use Symfony\Component\Runtime\SymfonyRuntime;
  */
 class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 {
-    private Composer $composer;
-    private IOInterface $io;
+    /**
+     * @var Composer
+     */
+    private $composer;
 
-    private static bool $activated = false;
+    /**
+     * @var IOInterface
+     */
+    private $io;
+
+    private static $activated = false;
 
     public function activate(Composer $composer, IOInterface $io): void
     {

@@ -22,12 +22,17 @@ use Symfony\Component\Runtime\RunnerInterface;
  */
 class ConsoleApplicationRunner implements RunnerInterface
 {
-    public function __construct(
-        private readonly Application $application,
-        private readonly ?string $defaultEnv,
-        private readonly InputInterface $input,
-        private readonly ?OutputInterface $output = null,
-    ) {
+    private $application;
+    private $defaultEnv;
+    private $input;
+    private $output;
+
+    public function __construct(Application $application, ?string $defaultEnv, InputInterface $input, OutputInterface $output = null)
+    {
+        $this->application = $application;
+        $this->defaultEnv = $defaultEnv;
+        $this->input = $input;
+        $this->output = $output;
     }
 
     public function run(): int

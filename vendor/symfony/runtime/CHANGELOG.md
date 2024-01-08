@@ -1,11 +1,6 @@
 CHANGELOG
 =========
 
-6.4
----
-
- * Add argument `bool $debug = false` to `HttpKernelRunner::__construct()`
-
 5.4
 ---
 

@@ -18,9 +18,11 @@ use Symfony\Component\Runtime\RunnerInterface;
  */
 class ClosureRunner implements RunnerInterface
 {
-    public function __construct(
-        private readonly \Closure $closure,
-    ) {
+    private $closure;
+
+    public function __construct(\Closure $closure)
+    {
+        $this->closure = $closure;
     }
 
     public function run(): int

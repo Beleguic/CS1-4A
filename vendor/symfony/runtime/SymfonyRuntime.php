@@ -66,10 +66,10 @@ class_exists(MissingDotenv::class, false) || class_exists(Dotenv::class) || clas
  */
 class SymfonyRuntime extends GenericRuntime
 {
-    private readonly ArgvInput $input;
-    private readonly ConsoleOutput $output;
-    private readonly Application $console;
-    private readonly Command $command;
+    private $input;
+    private $output;
+    private $console;
+    private $command;
 
     /**
      * @param array {
@@ -106,7 +106,7 @@ class SymfonyRuntime extends GenericRuntime
                 ->usePutenv($options['use_putenv'] ?? false)
                 ->bootEnv($options['project_dir'].'/'.($options['dotenv_path'] ?? '.env'), 'dev', (array) ($options['test_envs'] ?? ['test']), $options['dotenv_overload'] ?? false);
 
-            if (isset($this->input) && ($options['dotenv_overload'] ?? false)) {
+            if ($this->input && ($options['dotenv_overload'] ?? false)) {
                 if ($this->input->getParameterOption(['--env', '-e'], $_SERVER[$envKey], true) !== $_SERVER[$envKey]) {
                     throw new \LogicException(sprintf('Cannot use "--env" or "-e" when the "%s" file defines "%s" and the "dotenv_overload" runtime option is true.', $options['dotenv_path'] ?? '.env', $envKey));
                 }
@@ -131,7 +131,7 @@ class SymfonyRuntime extends GenericRuntime
     public function getRunner(?object $application): RunnerInterface
     {
         if ($application instanceof HttpKernelInterface) {
-            return new HttpKernelRunner($application, Request::createFromGlobals(), $this->options['debug'] ?? false);
+            return new HttpKernelRunner($application, Request::createFromGlobals());
         }
 
         if ($application instanceof Response) {
@@ -165,7 +165,7 @@ class SymfonyRuntime extends GenericRuntime
             return new ConsoleApplicationRunner($application, $defaultEnv, $this->getInput(), $output);
         }
 
-        if (isset($this->command)) {
+        if ($this->command) {
             $this->getInput()->bind($this->command->getDefinition());
         }
 
@@ -203,7 +203,7 @@ class SymfonyRuntime extends GenericRuntime
 
     private function getInput(): ArgvInput
     {
-        if (isset($this->input)) {
+        if (null !== $this->input) {
             return $this->input;
         }
 
