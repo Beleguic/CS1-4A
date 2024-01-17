@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Devis;
+use App\Entity\Client;
+use App\Entity\Facture;
 use App\Form\DevisType;
 use App\Repository\DevisRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,19 +27,43 @@ class DevisController extends AbstractController
     #[Route('/new', name: 'app_devis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $devi = new Devis();
-        $form = $this->createForm(DevisType::class, $devi);
+        
+        $clientId = 1; // ID du client
+        $client = $entityManager->getRepository(Client::class)->find($clientId);
+
+        $devis = new Devis();
+        $devis->setClient($client);
+
+        $form = $this->createForm(DevisType::class, $devis);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($devi);
+            // Persistez le devis
+            $entityManager->persist($devis);
+            $entityManager->flush();
+
+            // Créez une nouvelle facture associée au devis
+            $facture = new Facture();
+            $facture->setDevis($devis);
+
+            // Ajoutez une date à la facture
+            $facture->setDate(new \DateTime());
+
+            // Ajoutez un montant à la facture 
+            $facture->setAmount('100.00');
+
+            // Définissez le statut "paid" de la facture
+            $facture->setPaid(true);
+
+            // Persistez la facture
+            $entityManager->persist($facture);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('devis/new.html.twig', [
-            'devi' => $devi,
+            'devi' => $devis,
             'form' => $form,
         ]);
     }

@@ -16,9 +16,12 @@ class Devis
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $clientName = null;
+    #[ORM\ManyToOne(targetEntity: Client::class)]
+    private ?Client $client = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $clientName = null;
+    
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $totalPrice = null;
 
@@ -38,9 +41,21 @@ class Devis
         return $this->id;
     }
 
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
     public function getClientName(): ?string
     {
-        return $this->clientName;
+        return $this->client ? $this->client->getNom() : null;
     }
 
     public function setClientName(string $clientName): static

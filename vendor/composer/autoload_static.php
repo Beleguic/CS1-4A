@@ -172,8 +172,8 @@ class ComposerStaticInit8dd6ab5ef29743f310949be6781714f2
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
         ),
         'Webmozart\\Assert\\' => 
         array (
@@ -581,8 +581,8 @@ class ComposerStaticInit8dd6ab5ef29743f310949be6781714f2
         ),
         'Doctrine\\Common\\' => 
         array (
-            0 => __DIR__ . '/..' . '/doctrine/event-manager/src',
-            1 => __DIR__ . '/..' . '/doctrine/common/src',
+            0 => __DIR__ . '/..' . '/doctrine/common/src',
+            1 => __DIR__ . '/..' . '/doctrine/event-manager/src',
         ),
         'Doctrine\\Bundle\\MigrationsBundle\\' => 
         array (
@@ -611,17 +611,29 @@ class ComposerStaticInit8dd6ab5ef29743f310949be6781714f2
     );
 
     public static $classMap = array (
+        'App\\Controller\\CategoryController' => __DIR__ . '/../..' . '/src/Controller/CategoryController.php',
+        'App\\Controller\\ClientController' => __DIR__ . '/../..' . '/src/Controller/ClientController.php',
         'App\\Controller\\DefaultController' => __DIR__ . '/../..' . '/src/Controller/DefaultController.php',
         'App\\Controller\\DevisController' => __DIR__ . '/../..' . '/src/Controller/DevisController.php',
         'App\\Controller\\FactureController' => __DIR__ . '/../..' . '/src/Controller/FactureController.php',
+        'App\\Controller\\ProductController' => __DIR__ . '/../..' . '/src/Controller/ProductController.php',
         'App\\DataFixtures\\UserFixtures' => __DIR__ . '/../..' . '/src/DataFixtures/UserFixtures.php',
+        'App\\Entity\\Category' => __DIR__ . '/../..' . '/src/Entity/Category.php',
+        'App\\Entity\\Client' => __DIR__ . '/../..' . '/src/Entity/Client.php',
         'App\\Entity\\Devis' => __DIR__ . '/../..' . '/src/Entity/Devis.php',
         'App\\Entity\\Facture' => __DIR__ . '/../..' . '/src/Entity/Facture.php',
+        'App\\Entity\\Product' => __DIR__ . '/../..' . '/src/Entity/Product.php',
+        'App\\Form\\CategoryType' => __DIR__ . '/../..' . '/src/Form/CategoryType.php',
+        'App\\Form\\ClientType' => __DIR__ . '/../..' . '/src/Form/ClientType.php',
         'App\\Form\\DevisType' => __DIR__ . '/../..' . '/src/Form/DevisType.php',
         'App\\Form\\FactureType' => __DIR__ . '/../..' . '/src/Form/FactureType.php',
+        'App\\Form\\ProductType' => __DIR__ . '/../..' . '/src/Form/ProductType.php',
         'App\\Kernel' => __DIR__ . '/../..' . '/src/Kernel.php',
+        'App\\Repository\\CategoryRepository' => __DIR__ . '/../..' . '/src/Repository/CategoryRepository.php',
+        'App\\Repository\\ClientRepository' => __DIR__ . '/../..' . '/src/Repository/ClientRepository.php',
         'App\\Repository\\DevisRepository' => __DIR__ . '/../..' . '/src/Repository/DevisRepository.php',
         'App\\Repository\\FactureRepository' => __DIR__ . '/../..' . '/src/Repository/FactureRepository.php',
+        'App\\Repository\\ProductRepository' => __DIR__ . '/../..' . '/src/Repository/ProductRepository.php',
         'Collator' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/Resources/stubs/Collator.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',

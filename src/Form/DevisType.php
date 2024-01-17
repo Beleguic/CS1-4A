@@ -8,14 +8,17 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class DevisType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('clientName', TextType::class, [
-            'label' => 'Nom du client',
+        ->add('client', EntityType::class, [ // Modifier ici
+            'class' => \App\Entity\Client::class,
+            'choice_label' => 'Nom',
+            'label' => 'Client',
         ])
         ->add('totalPrice', TextType::class, [
             'label' => 'Prix total',
