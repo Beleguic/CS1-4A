@@ -3,8 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Facture;
-use App\Entity\Devis;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,21 +15,19 @@ class FactureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('devis', EntityType::class, [
-                'class' => Devis::class,
-                'label' => 'Devis associé',
-                'choice_label' => 'id', // Par rapport a Devis
-            ])
-            ->add('date', DateTimeType::class, [
-                'label' => 'Date',
-            ])
-            ->add('amount', TextType::class, [
-                'label' => 'Montant',
-            ])
-            ->add('paid', CheckboxType::class, [
-                'label' => 'Payée',
-                'required' => false,
-            ]);
+        ->add('devis', DevisType::class, [
+            'label' => 'Devis associé',
+        ])
+        ->add('date', DateTimeType::class, [
+            'label' => 'Date',
+        ])
+        ->add('amount', TextType::class, [
+            'label' => 'Montant',
+        ])
+        ->add('paid', CheckboxType::class, [
+            'label' => 'Payée',
+            'required' => false,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

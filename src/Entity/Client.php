@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
@@ -26,20 +24,6 @@ class Client
 
     #[ORM\Column(length: 255)]
     private ?string $NumeroTelephone = null;
-
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Devis::class)]
-    private Collection $devisList;
-
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Facture::class)]
-    private Collection $factures;
-
-
-
-    public function __construct()
-    {
-        $this->devisList = new ArrayCollection();
-        $this->factures = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -92,15 +76,5 @@ class Client
         $this->NumeroTelephone = $NumeroTelephone;
 
         return $this;
-    }
-
-    public function getDevisList(): Collection
-    {
-        return $this->devisList;
-    }
-
-    public function getFactures(): Collection
-    {
-        return $this->factures;
     }
 }
