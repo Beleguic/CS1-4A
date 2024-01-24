@@ -23,6 +23,9 @@ class Facture
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $amount = null;
 
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'factures')]
+    private ?Client $client = null;
+
     #[ORM\Column]
     private ?bool $paid = null;
 
@@ -78,4 +81,17 @@ class Facture
 
         return $this;
     }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
 }

@@ -26,26 +26,36 @@ class FactureController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $facture = new Facture();
-        $form = $this->createForm(FactureType::class, $facture);
-        $form->handleRequest($request);
+    $form = $this->createForm(FactureType::class, $facture);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $devis = $facture->getDevis();
-            $devis->addFacture($facture);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $devis = $facture->getDevis();
+        $client = $devis->getClient(); // Supposons que vous ayez une méthode getClient() dans votre entité Devis
 
-            // Persistez l'entité Devis avant la facture
-            $entityManager->persist($devis);
+        // Assurez-vous que le client est associé au devis
+        $devis->setClient($client);
 
-            // Persistez l'entité Facture
-            $entityManager->persist($facture);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_facture_index', [], Response::HTTP_SEE_OTHER);
+        // Persistez l'entité Client si elle n'existe pas déjà
+        if ($client !== null) {
+            if (!$entityManager->contains($client)) {
+                $entityManager->persist($client);
+            }
         }
 
-        return $this->render('facture/new.html.twig', [
-            'facture' => $facture,
-            'form' => $form->createView(),
+        // Persistez l'entité Devis avant la facture
+        $entityManager->persist($devis);
+
+        // Persistez l'entité Facture
+        $entityManager->persist($facture);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_facture_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->render('facture/new.html.twig', [
+        'facture' => $facture,
+        'form' => $form->createView(),
     ]);
     }
 

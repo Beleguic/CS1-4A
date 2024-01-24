@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
@@ -24,6 +25,23 @@ class Client
 
     #[ORM\Column(length: 255)]
     private ?string $NumeroTelephone = null;
+
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Devis::class)]
+    private Collection $devis;
+
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Facture::class)]
+    private Collection $factures;
+
+    public function __construct()
+    {
+        $this->devis = new ArrayCollection();
+        $this->factures = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNom();
+    }
 
     public function getId(): ?int
     {
@@ -76,5 +94,37 @@ class Client
         $this->NumeroTelephone = $NumeroTelephone;
 
         return $this;
+    }
+
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function setDevis(Collection $devis): self
+    {
+        $this->devis = $devis;
+
+        foreach ($devis as $devi) {
+            $devi->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function setFactures(Collection $factures): self
+    {
+        $this->factures = $factures;
+
+        foreach ($factures as $facture) {
+            $facture->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function getFactures(): Collection
+    {
+        return $this->factures;
     }
 }

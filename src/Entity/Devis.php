@@ -16,7 +16,7 @@ class Devis
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: 'client_name', type: 'string', length: 255, nullable: true)]
     private ?string $clientName = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
@@ -27,6 +27,9 @@ class Devis
 
     #[ORM\OneToMany(mappedBy: 'devis', targetEntity: Facture::class)]
     private Collection $factures;
+
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'devis')]
+    private ?Client $client = null;
 
     public function __construct()
     {
@@ -70,6 +73,18 @@ class Devis
     public function setTaxes(string $taxes): static
     {
         $this->taxes = $taxes;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
 
         return $this;
     }
