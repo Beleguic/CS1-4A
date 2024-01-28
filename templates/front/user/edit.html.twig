@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Account - Plumbpay{% endblock %}
+
+{% block body %}
+    <h1>Edit Account - Plumbpay</h1>
+    <a href="{{ path('front_app_account') }}">Account</a>
+    <section>
+        {{ form_start(form) }}
+        <div class="input-field">
+            <label for="{{ form.lastname.vars.id }}">Lastname</label>
+            {{ form_widget(form.lastname, {'value': form.vars.value.lastname}) }}
+            {{ form_errors(form.lastname) }}
+        </div>
+        <br>
+        <div class="input-field">
+            <label for="{{ form.firstname.vars.id }}">Firstname</label>
+            {{ form_widget(form.firstname, {'value': form.vars.value.firstname}) }}
+            {{ form_errors(form.firstname) }}
+        </div>
+        <br>
+        <div class="input-field">
+            {{ form_row(form.email) }}
+        </div>
+        <br>
+        <div class="input-field">
+            <div class="flex flex-row gap-2">
+                {{ form_widget(form.showPassword, {'attr': {'class': 'cursor-pointer'}}) }}
+                <label for="{{ form.showPassword.vars.id }}" class="cursor-pointer">Change password</label>
+            </div>
+        </div>
+        <br>
+        <div id="passwords" class="hidden">
+            <div class="input-field password">
+                <label for="{{ form.oldPassword.vars.id }}">Old Password</label>
+                {{ form_widget(form.oldPassword) }}
+                {{ form_errors(form.oldPassword) }}
+            </div>
+            <br>
+            <div class="input-field password">
+                <label for="{{ form.newPassword.vars.id }}">New Password</label>
+                {{ form_widget(form.newPassword.first) }}
+                {{ form_errors(form.newPassword.first) }}
+            </div>
+            <br>
+            <div class="input-field password">
+                <label for="{{ form.newPassword.vars.id }}">{{ form.newPassword.second.vars.label }}</label>
+                {{ form_widget(form.newPassword.second) }}
+                {{ form_errors(form.newPassword.second) }}
+            </div>
+            <br>
+        </div>
+        {{ form_row(form._token) }}
+        <button type="submit">Modifier</button>
+        {{ form_end(form) }}
+    </section>
+    <script src="{{ asset('js/account.js') }}"></script>
+    {% if app.flashes('redirect') %}
+        <script>
+            setTimeout(function() {
+                window.location.href = '{{ path('app_logout') }}';
+            }, 3000);
+        </script>
+    {% endif %}
+{% endblock %}

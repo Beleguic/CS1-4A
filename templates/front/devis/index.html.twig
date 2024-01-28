@@ -1,0 +1,41 @@
+{% extends '../front/base.html.twig' %}
+
+{% block title %}Devis Index{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>Devis Index</h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Client</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for devis in devis %}
+                <tr>
+                    <td>{{ devis.id }}</td>
+                    <td>{{ devis.clientName }}</td>
+                    <td>{{ devis.totalPrice() is not null ? devis.totalPrice() : 'N/A' }}</td>
+                    <td>
+                        <a href="{{ path('app_devis_show', {'id': devis.id}) }}" class="btn btn-info">Show</a>
+                        <a href="{{ path('app_devis_edit', {'id': devis.id}) }}" class="btn btn-warning">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+        <a href="{{ path('app_devis_new') }}" class="btn btn-success">Create New</a>
+    </div>
+{% endblock %}
