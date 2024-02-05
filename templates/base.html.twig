@@ -49,7 +49,13 @@
             <div class="p-4 lg:max-w-10xl mx-auto w-full">
                 <section>
                     {% block footer %}
-                        footer du site
+                        <nav class="flex flex-col lg:flex-row gap-4">
+                            <ul class="flex flex-col gap-4">
+                                <li>
+                                    <a href="{{ path('front_design_index') }}">Design</a>
+                                </li>
+                            </ul>
+                        </nav>
                     {% endblock %}
                 </section>
             </div>

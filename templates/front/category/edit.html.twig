@@ -1,13 +1,13 @@
-{% extends '../front/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Edit Category{% endblock %}
 
 {% block body %}
     <h1>Edit Category</h1>
 
-    {{ include('category/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('/front/category/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_category_index') }}">back to list</a>
+    <a href="{{ path('front_app_category_index') }}">back to list</a>
 
-    {{ include('category/_delete_form.html.twig') }}
+    {{ include('/front/category/_delete_form.html.twig') }}
 {% endblock %}
