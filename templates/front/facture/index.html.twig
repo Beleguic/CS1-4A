@@ -1,0 +1,45 @@
+{% extends '../front/base.html.twig' %}
+
+{% block title %}Invoice index{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>Facture Index</h1>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Devis</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Paid</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for facture in factures %}
+                    <tr>
+                        <td>{{ facture.id }}</td>
+                        <td>{{ facture.devis.clientName }}</td>
+                        <td>{{ facture.date ? facture.date|date('Y-m-d H:i:s') : 'N/A' }}</td>
+                        <td>{{ facture.amount is not null ? facture.amount : 'N/A' }}</td>
+                        <td>{{ facture.paid ? 'Yes' : 'No' }}</td>
+                        <td>
+                            <a href="{{ path('app_facture_show', {'id': facture.id}) }}" class="btn btn-info">Show</a>
+                            <a href="{{ path('app_facture_edit', {'id': facture.id}) }}" class="btn btn-warning">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">No records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{{ path('app_facture_new') }}" class="btn btn-success">Create New</a>
+    </div>
+{% endblock %}

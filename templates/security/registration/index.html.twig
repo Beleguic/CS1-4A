@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register - Plumbpay{% endblock %}
+
+{% block body %}
+    <h1>Register</h1>
+    <section class="form-container">
+        {{ form_start(registrationForm) }}
+        <div>
+            <div>
+                {{ form_errors(registrationForm.email) }}
+            </div>
+            <label for="{{ registrationForm.email.vars.id }}">Email</label>
+            <input type="email" id="{{ registrationForm.email.vars.id }}" name="{{ field_name(registrationForm.email) }}" placeholder="email@plumbpay.com" required="required">
+        </div>
+        <br>
+        <div>
+            <div>
+                {{ form_errors(registrationForm.password.first)}}
+            </div>
+            <label for="{{ registrationForm.password.first.vars.id }}">New Password</label>
+            <input type="password" id="{{ registrationForm.password.first.vars.id }}" name="{{ field_name(registrationForm.password.first) }}" required="required">
+        </div>
+        <br>
+        <div>
+            <div>
+                {{ form_errors(registrationForm.password.second)}}
+            </div>
+            <label for="{{ registrationForm.password.second.vars.id }}">Repeat Password</label>
+            <input type="password" id="{{ registrationForm.password.second.vars.id }}" name="{{ field_name(registrationForm.password.second) }}" required="required">
+        </div>
+        <br>
+        {{ form_widget(registrationForm._token) }}
+        <br>
+        <button type="submit" class="btn">Register</button>
+        {{ form_end(registrationForm) }}
+    </section>
+    <section>
+        <p>Already have an account ? <a href="{{ path('app_login') }}">Login in here</a></p>
+    </section>
+{% endblock %}

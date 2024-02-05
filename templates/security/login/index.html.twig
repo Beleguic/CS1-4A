@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login - Plumbpay{% endblock %}
+
+{% block body %}
+    {% if error %}
+        <section>
+            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        </section>
+    {% endif %}
+    <section class="form-container">
+        <form action="{{ path('app_login') }}" method="POST">
+            <div>
+                <label for="username">Email:</label>
+                <input type="email" id="username" name="_username" value="{{ last_username }}" required>
+            </div>
+            <br>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="_password" required>
+            </div>
+            <br><br>
+            <button type="submit">login</button>
+        </form>
+    </section>
+    <section>
+        <p>Not registered ? <a href="{{ path('app_register') }}">Register here</a></p>
+    </section>
+{% endblock %}

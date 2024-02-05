@@ -21,6 +21,10 @@ module.exports = {
         secondaryColor :{
           400: "#0091C2",
         }
+      },
+      maxWidth:{
+        '9xl': "9rem",
+        '10xl': "100rem",
       }
     },
   },
