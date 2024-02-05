@@ -1,4 +1,4 @@
-{% extends '../front/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Invoice index{% endblock %}
 
@@ -27,8 +27,8 @@
                         <td>{{ facture.amount is not null ? facture.amount : 'N/A' }}</td>
                         <td>{{ facture.paid ? 'Yes' : 'No' }}</td>
                         <td>
-                            <a href="{{ path('app_facture_show', {'id': facture.id}) }}" class="btn btn-info">Show</a>
-                            <a href="{{ path('app_facture_edit', {'id': facture.id}) }}" class="btn btn-warning">Edit</a>
+                            <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="btn btn-info">Show</a>
+                            <a href="{{ path('front_app_facture_edit', {'id': facture.id}) }}" class="btn btn-warning">Edit</a>
                         </td>
                     </tr>
                 {% else %}
@@ -40,6 +40,6 @@
             </table>
         </div>
 
-        <a href="{{ path('app_facture_new') }}" class="btn btn-success">Create New</a>
+        <a href="{{ path('front_app_facture_new') }}" class="btn btn-success">Create New</a>
     </div>
 {% endblock %}

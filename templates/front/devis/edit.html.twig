@@ -1,13 +1,13 @@
-{% extends '../front/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Edit Devis{% endblock %}
 
 {% block body %}
     <h1>Edit Devis</h1>
 
-    {{ include('devis/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('/front/devis/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_devis_index') }}">back to list</a>
+    <a href="{{ path('front_app_devis_index') }}">back to list</a>
 
-    {{ include('devis/_delete_form.html.twig') }}
+    {{ include('/front/devis/_delete_form.html.twig') }}
 {% endblock %}

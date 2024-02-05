@@ -17,7 +17,7 @@ class ClientController extends AbstractController
     #[Route('/', name: 'app_client_index', methods: ['GET'])]
     public function index(ClientRepository $clientRepository): Response
     {
-        return $this->render('front/client/base.html.twig', [
+        return $this->render('front/client/index.html.twig', [
             'clients' => $clientRepository->findAll(),
         ]);
     }
@@ -33,7 +33,7 @@ class ClientController extends AbstractController
             $entityManager->persist($client);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_app_client_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('front/client/new.html.twig', [

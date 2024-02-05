@@ -1,4 +1,4 @@
-{% extends '../front/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Devis Index{% endblock %}
 
@@ -23,8 +23,8 @@
                     <td>{{ devis.clientName }}</td>
                     <td>{{ devis.totalPrice() is not null ? devis.totalPrice() : 'N/A' }}</td>
                     <td>
-                        <a href="{{ path('app_devis_show', {'id': devis.id}) }}" class="btn btn-info">Show</a>
-                        <a href="{{ path('app_devis_edit', {'id': devis.id}) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ path('front_app_devis_show', {'id': devis.id}) }}" class="btn btn-info">Show</a>
+                        <a href="{{ path('front_app_devis_edit', {'id': devis.id}) }}" class="btn btn-warning">Edit</a>
                     </td>
                 </tr>
             {% else %}
@@ -36,6 +36,6 @@
         </table>
     </div>
 
-        <a href="{{ path('app_devis_new') }}" class="btn btn-success">Create New</a>
+        <a href="{{ path('front_app_devis_new') }}" class="btn btn-success">Create New</a>
     </div>
 {% endblock %}

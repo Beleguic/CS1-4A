@@ -1,4 +1,4 @@
-{% extends '../front/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}New Category{% endblock %}
 
@@ -7,5 +7,5 @@
 
     {{ include('category/_form.html.twig') }}
 
-    <a href="{{ path('app_category_index') }}">back to list</a>
+    <a href="{{ path('front_app_category_index') }}">back to list</a>
 {% endblock %}
