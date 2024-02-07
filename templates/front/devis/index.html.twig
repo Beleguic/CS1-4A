@@ -12,7 +12,8 @@
                 <tr>
                     <th>ID</th>
                     <th>Client</th>
-                    <th>Total</th>
+                    <th>Numero de Devis</th>
+                    <th>Message</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -20,8 +21,10 @@
             {% for devis in devis %}
                 <tr>
                     <td>{{ devis.id }}</td>
-                    <td>{{ devis.clientName }}</td>
-                    <td>{{ devis.totalPrice() is not null ? devis.totalPrice() : 'N/A' }}</td>
+                    <td>{{ devis.client }}</td>
+                    {#  <td>{{ devis.totalPrice() is not null ? devis.totalPrice() : 'N/A' }}</td> #}
+                    <td>{{ devis.numDevis }}</td>
+                    <td>{{ devis.message }}</td>
                     <td>
                         <a href="{{ path('front_app_devis_show', {'id': devis.id}) }}" class="btn btn-info">Show</a>
                         <a href="{{ path('front_app_devis_edit', {'id': devis.id}) }}" class="btn btn-warning">Edit</a>

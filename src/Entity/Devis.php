@@ -7,74 +7,44 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: DevisRepository::class)]
 class Devis
 {
+
+    use Traits\Timestampable;
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
-    #[ORM\Column(name: 'client_name', type: 'string', length: 255, nullable: true)]
-    private ?string $clientName = null;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $totalPrice = null;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
-    private ?string $taxes = null;
-
-    #[ORM\OneToMany(mappedBy: 'devis', targetEntity: Facture::class)]
-    private Collection $factures;
-
-    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'devis')]
+    #[ORM\ManyToOne(inversedBy: 'client')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
+
+    #[ORM\Column]
+    private array $produits = [];
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $message = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $num_devis = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $entreprise = null;
 
     public function __construct()
     {
-        $this->factures = new ArrayCollection();
+
     }
 
-    public function getId(): ?int
+    public function getId(): Uuid
     {
         return $this->id;
-    }
-
-    public function getClientName(): ?string
-    {
-        return $this->clientName;
-    }
-
-    public function setClientName(string $clientName): static
-    {
-        $this->clientName = $clientName;
-
-        return $this;
-    }
-
-    public function getTotalPrice(): ?string
-    {
-        return $this->totalPrice;
-    }
-
-    public function setTotalPrice(string $totalPrice): static
-    {
-        $this->totalPrice = $totalPrice;
-
-        return $this;
-    }
-
-    public function getTaxes(): ?string
-    {
-        return $this->taxes;
-    }
-
-    public function setTaxes(string $taxes): static
-    {
-        $this->taxes = $taxes;
-
-        return $this;
     }
 
     public function getClient(): ?Client
@@ -89,33 +59,54 @@ class Devis
         return $this;
     }
 
-    /**
-     * @return Collection<int, Facture>
-     */
-    public function getFactures(): Collection
+    public function getProduits(): array
     {
-        return $this->factures;
+        return $this->produits;
     }
 
-    public function addFacture(Facture $facture): static
+    public function setProduits(array $produits): static
     {
-        if (!$this->factures->contains($facture)) {
-            $this->factures->add($facture);
-            $facture->setDevis($this);
-        }
+        $this->produits = $produits;
 
         return $this;
     }
 
-    public function removeFacture(Facture $facture): static
+    public function getMessage(): ?string
     {
-        if ($this->factures->removeElement($facture)) {
-            // set the owning side to null (unless already changed)
-            if ($facture->getDevis() === $this) {
-                $facture->setDevis(null);
-            }
-        }
+        return $this->message;
+    }
+
+    public function setMessage(?string $message): static
+    {
+        $this->message = $message;
 
         return $this;
     }
+
+    public function getNumDevis(): ?string
+    {
+        return $this->num_devis;
+    }
+
+    public function setNumDevis(string $num_devis): static
+    {
+        $this->num_devis = $num_devis;
+
+        return $this;
+    }
+
+
+    public function getEntreprise(): ?string
+    {
+        return $this->entreprise;
+    }
+
+    public function setEntreprise(string $entreprise): static
+    {
+        $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+
 }

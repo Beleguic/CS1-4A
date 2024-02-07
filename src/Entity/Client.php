@@ -33,10 +33,14 @@ class Client
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Facture::class)]
     private Collection $factures;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Devis::class)]
+    private Collection $client;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
         $this->factures = new ArrayCollection();
+        $this->client = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -127,5 +131,35 @@ class Client
     public function getFactures(): Collection
     {
         return $this->factures;
+    }
+
+    /**
+     * @return Collection<int, Devis>
+     */
+    public function getClient(): Collection
+    {
+        return $this->client;
+    }
+
+    public function addClient(Devis $client): static
+    {
+        if (!$this->client->contains($client)) {
+            $this->client->add($client);
+            $client->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Devis $client): static
+    {
+        if ($this->client->removeElement($client)) {
+            // set the owning side to null (unless already changed)
+            if ($client->getClient() === $this) {
+                $client->setClient(null);
+            }
+        }
+
+        return $this;
     }
 }

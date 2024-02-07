@@ -25,35 +25,40 @@ class DevisController extends AbstractController
     #[Route('/new', name: 'app_devis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $devi = new Devis();
-        $form = $this->createForm(DevisType::class, $devi);
+        //$entrepriseId = 1;
+
+        $devis = new Devis();
+        $form = $this->createForm(DevisType::class, $devis);
+        /*$form = $this->createForm(DevisType::class, $devi, [
+            'entreprise_id' => $entrepriseId,
+        ]);*/
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($devi);
+            $entityManager->persist($devis);
             $entityManager->flush();
 
             return $this->redirectToRoute('front_app_devis_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('front/devis/new.html.twig', [
-            'devi' => $devi,
+            'devis' => $devis,
             'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_devis_show', methods: ['GET'])]
-    public function show(Devis $devi): Response
+    public function show(Devis $devis): Response
     {
         return $this->render('front/devis/show.html.twig', [
-            'devi' => $devi,
+            'devi' => $devis,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_devis_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Devis $devi, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Devis $devis, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(DevisType::class, $devi);
+        $form = $this->createForm(DevisType::class, $devis);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,16 +68,16 @@ class DevisController extends AbstractController
         }
 
         return $this->render('front/devis/edit.html.twig', [
-            'devi' => $devi,
+            'devi' => $devis,
             'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_devis_delete', methods: ['POST'])]
-    public function delete(Request $request, Devis $devi, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Devis $devis, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$devi->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($devi);
+        if ($this->isCsrfTokenValid('delete'.$devis->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($devis);
             $entityManager->flush();
         }
 
