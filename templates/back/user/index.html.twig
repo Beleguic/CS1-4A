@@ -1,0 +1,45 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+    <h1>User index</h1>
+    <div class="flex flex-row gap-4">
+        <a href="{{ path('back_app_user_new') }}" class="btn btn-new">Add new user</a>
+    </div>
+    <div class="table-container">
+        <div>
+            <h3 class="text-xl font-bold uppercase">{{ pagination|length }} users found</h3>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Lastname</th>
+                    <th>Firstname</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in pagination %}
+                <tr>
+                    <td title="{{ user.id }}">{{ user.id|slice(-5) }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.firstname }}</td>
+                    <td>
+                        <a href="{{ path('back_app_user_show', {'id': user.id}) }}" class="btn btn-show">Show</a>
+                        <a href="{{ path('back_app_user_edit', {'id': user.id}) }}" class="btn btn-edit">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {{ knp_pagination_render(pagination) }}
+{% endblock %}

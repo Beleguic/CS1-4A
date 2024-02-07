@@ -71,6 +71,14 @@
         @apply border text-TextColor-800 border-mainColor-400 bg-mainColor-400 hover:bg-secondaryColor-400 hover:border-secondaryColor-400  focus:bg-secondaryColor-400 focus:border-secondaryColor-400 rounded-md py-2 px-4
     }
 
+    .btn.btn-edit{
+        @apply border text-TextColor-800 border-blue-800 bg-blue-800 hover:bg-blue-900 hover:border-blue-900  focus:bg-blue-900 focus:border-blue-900
+    }
+
+    .btn.btn-delete{
+        @apply border text-TextColor-800 border-red-600 bg-red-600 hover:bg-red-800 hover:border-red-800  focus:bg-red-800 focus:border-red-800
+    }
+
     table tbody tr .btn{
         @apply hover:border hover:border-mainColor-400 hover:bg-secondaryColor-400
     }
@@ -101,5 +109,30 @@
 
     .accordions-container .accordion-container.active .accordion-icon{
         @apply rotate-0
+    }
+
+    .badge-role{
+        @apply bg-cyan-600 hover:bg-cyan-800 px-2 py-0.5 rounded-sm
+    }
+
+    .pagination {
+        @apply text-base
+    }
+
+    .pagination > span > *,
+    .pagination > span.current{
+        @apply p-2 border border-slate-100
+    }
+
+    .pagination .first a{
+        @apply border border-slate-100 rounded-l-lg
+    }
+
+    .pagination .last a{
+        @apply border border-slate-100 rounded-r-lg
+    }
+
+    .pagination > span.current{
+        @apply bg-mainColor-400
     }
 }

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Welcome to Plumbpay{% endblock %}</title>
+        <title>{% block title %}Admin - Plumbpay{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -16,6 +16,9 @@
                     <div class="lg:max-w-10xl mx-auto w-full p-4">
                         <nav class="flex flex-col lg:flex-row gap-4">
                             <ul class="flex flex-col lg:w-10/12 lg:flex-row gap-4">
+                                <li>
+                                    <a href="{{ path('front_default_index') }}">Go to Front</a>
+                                </li>
                             </ul>
                             <ul class="flex flex-col lg:w-2/12 lg:flex-row gap-4 lg:justify-end">
                                 <li>
@@ -33,7 +36,7 @@
                     <nav class="flex flex-col lg:flex-row gap-4">
                         <ul class="flex flex-col lg:w-10/12 lg:flex-row gap-4">
                             <li>
-                                <a href="{{ path('front_default_index') }}">Home</a>
+                                <a href="{{ path('back_app_user') }}">Users</a>
                             </li>
                         </ul>
                         <ul class="flex flex-col lg:w-2/12 lg:flex-row gap-4 lg:justify-end">
@@ -50,7 +53,7 @@
                 {% endblock %}
             </div>
         </header>
-        <main class="flex flex-col gap-8 grow p-4 lg:max-w-10xl mx-auto w-full">
+        <main class="flex flex-col gap-8 grow p-4 pb-10 lg:max-w-10xl mx-auto w-full">
             <div class="flashs">
                 {% for type, flashMessages in app.flashes %}
                     {% for message in flashMessages %}
@@ -66,13 +69,7 @@
             <div class="p-4 lg:max-w-10xl mx-auto w-full">
                 <section>
                     {% block footer %}
-                        <nav class="flex flex-col lg:flex-row gap-4">
-                            <ul class="flex flex-col gap-4">
-                                <li>
-                                    <a href="{{ path('front_design_index') }}">Design</a>
-                                </li>
-                            </ul>
-                        </nav>
+                        footer du site
                     {% endblock %}
                 </section>
             </div>
