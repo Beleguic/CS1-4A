@@ -12,14 +12,14 @@
     <body>
         {% if app.user %}
             {% if is_granted('ROLE_ADMIN') %}
-                <header class="border-b border-b-TextColor-400 dark:border-b-TextColor-800">
+                <header class="border-b border-b-slate-50">
                     <div class="lg:max-w-10xl mx-auto w-full p-4">
                         <nav class="flex flex-col lg:flex-row gap-4">
                             <ul class="flex flex-col lg:w-10/12 lg:flex-row gap-4">
                             </ul>
                             <ul class="flex flex-col lg:w-2/12 lg:flex-row gap-4 lg:justify-end">
                                 <li>
-                                    <a href="{{ path('back_app_index') }}">Administration</a>
+                                    <a href="{{ path(' back_app_index ') }}">Administration</a>
                                 </li>
                             </ul>
                         </nav>
@@ -27,7 +27,7 @@
                 </header>
             {% endif %}
         {% endif %}
-        <header class="border-b border-b-TextColor-400 dark:border-b-TextColor-800">
+        <header class="border-b border-b-slate-50">
             <div class="lg:max-w-10xl mx-auto w-full p-4">
                 {% block header %}
                     <nav class="flex flex-col lg:flex-row gap-4">
@@ -62,17 +62,11 @@
             </div>
             {% block body %}{% endblock %}
         </main>
-        <footer class="border-t border-t-TextColor-400 dark:border-t-TextColor-800">
+        <footer class="border-t border-t-slate-50">
             <div class="p-4 lg:max-w-10xl mx-auto w-full">
                 <section>
                     {% block footer %}
-                        <nav class="flex flex-col lg:flex-row gap-4">
-                            <ul class="flex flex-col gap-4">
-                                <li>
-                                    <a href="{{ path('front_design_index') }}">Design</a>
-                                </li>
-                            </ul>
-                        </nav>
+                        footer du site
                     {% endblock %}
                 </section>
             </div>
