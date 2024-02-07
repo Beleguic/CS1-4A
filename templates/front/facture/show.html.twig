@@ -13,8 +13,8 @@
                     <td>{{ facture.id }}</td>
                 </tr>
                 <tr>
-                    <th>Devis</th>
-                    <td>{{ facture.devis.clientName }}</td>
+                    <th>Client Name</th>
+                    <td>{{ facture.devis.clientName }}  {{ facture.devis.Client }}</td>
                 </tr>
                 <tr>
                     <th>Date</th>
@@ -23,6 +23,10 @@
                 <tr>
                     <th>Amount</th>
                     <td>{{ facture.amount is not null ? facture.amount : 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <th>Taxes</th>
+                    <td>{{ facture.devis.taxes }}</td>
                 </tr>
                 <tr>
                     <th>Paid</th>
