@@ -81,6 +81,9 @@ class FactureController extends AbstractController
     public function paid(Request $request, Facture $facture, EntityManagerInterface $entityManager): Response
     {
         $stripe = new StripeClient('pk_test_51Oh8R5Cl4sk51Mu5Gd3FJCty3MICA3ZLW4HajUes3WoTbx0wgjgHoziMOWStmJlyV2AZAEIP8zugif9IFyNyXVrL00BK7EuAfr');
+        header('Content-Type: application/json');
+
+        $YOUR_DOMAIN = 'http://localhost:4242';
 
         $checkout_session = $stripe->checkout->sessions->create([
         'ui_mode' => 'embedded',
