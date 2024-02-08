@@ -18,6 +18,7 @@
         "phpstan/phpdoc-parser": "^1.8",
         "sensio/framework-extra-bundle": "6.*",
         "stof/doctrine-extensions-bundle": "^1.10",
+        "stripe/stripe-php": "^13.10",
         "symfony/asset": "6.*",
         "symfony/console": "6.*",
         "symfony/doctrine-messenger": "6.*",
