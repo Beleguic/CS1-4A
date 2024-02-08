@@ -29,6 +29,8 @@
                         <td>
                             <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="btn btn-info">Show</a>
                             <a href="{{ path('front_app_facture_edit', {'id': facture.id}) }}" class="btn btn-warning">Edit</a>
+                            <a href="{{ path('front_app_facture_paid', {'id': facture.id}) }}" class="btn btn-warning">Paid with Stripe</a>
+
                         </td>
                     </tr>
                 {% else %}

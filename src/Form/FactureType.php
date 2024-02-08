@@ -30,7 +30,7 @@ class FactureType extends AbstractType
         ->add('amount', TextType::class, [
             'label' => 'Montant',
         ])
-        ->add('paid', CheckboxType::class, [
+        ->add('ispaid', CheckboxType::class, [
             'label' => 'Payée',
             'required' => false,
         ]);

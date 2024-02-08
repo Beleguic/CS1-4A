@@ -75,6 +75,15 @@ class FactureController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/paid', name: 'app_facture_paid', methods: ['GET', 'POST'])]
+    public function paid(Request $request, Facture $facture, EntityManagerInterface $entityManager): Response
+    {
+
+        return $this->render('front/facture/paid.html.twig', [
+            'facture' => $facture,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_facture_delete', methods: ['POST'])]
     public function delete(Request $request, Facture $facture, EntityManagerInterface $entityManager): Response
     {
