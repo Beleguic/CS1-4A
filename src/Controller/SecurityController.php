@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use App\Service\BrevoEmailService;
 class SecurityController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
@@ -35,7 +36,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, BrevoEmailService $emailService): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -52,7 +53,24 @@ class SecurityController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_login');
+            // Envoyer un e-mail de confirmation
+            $senderName = 'Plumb Pay';
+            $senderEmail = 'team_plombpay@outlook.com';
+            $recipientName = $user->getUserIdentifier();
+            $recipientEmail = $user->getEmail();
+            $subject = 'Confirmation d\'inscription';
+            $htmlContent = '<html><head></head><body><p>Bienvenue sur notre site !</p><p>Votre inscription a été confirmée.</p></body></html>';
+
+            $response = $emailService->sendEmail($senderName, $senderEmail, $recipientName, $recipientEmail, $subject, $htmlContent);
+
+            // Gérer la réponse de l'envoi de l'e-mail
+            if ($response['success']) {
+                // L'e-mail de confirmation a été envoyé avec succès
+                return $this->redirectToRoute('security/login/index.html.twig');
+            } else {
+                // Une erreur s'est produite lors de l'envoi de l'e-mail
+                return $this->redirectToRoute('error_page');
+            }
         }
 
         return $this->render('security/registration/index.html.twig', [
