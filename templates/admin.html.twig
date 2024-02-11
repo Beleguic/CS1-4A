@@ -11,7 +11,7 @@
     </head>
     <body>
         {% if app.user %}
-            {% if is_granted('ROLE_ADMIN') %}
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <header class="border-b border-b-TextColor-400 dark:border-b-TextColor-800">
                     <div class="lg:max-w-10xl mx-auto w-full p-4">
                         <nav class="flex flex-col lg:flex-row gap-4">
@@ -37,6 +37,9 @@
                         <ul class="flex flex-col lg:w-10/12 lg:flex-row gap-4">
                             <li>
                                 <a href="{{ path('back_app_user') }}">Users</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('back_app_company') }}">Companies</a>
                             </li>
                         </ul>
                         <ul class="flex flex-col lg:w-2/12 lg:flex-row gap-4 lg:justify-end">
