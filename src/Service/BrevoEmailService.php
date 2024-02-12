@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class BrevoEmailService
 {
@@ -14,7 +16,7 @@ class BrevoEmailService
             'base_uri' => 'https://api.brevo.com/v3/smtp/',
             'headers' => [
                 'accept' => 'application/json',
-                'api-key' => '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',
+                'api-key' => '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',
                 'content-type' => 'application/json',
             ],
         ]);
