@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Company - {{ company.name }} - PLumbpay{% endblock %}
+
+{% block body %}
+    <h1>My Company - {{ company.name }} - Plumbpay</h1>
+    {{ include('/front/company/_nav.html.twig') }}
+    {{ include('/front/company/_info.html.twig') }}
+{% endblock %}

@@ -1,0 +1,6 @@
+<div class="flex flex-row gap-4">
+    <a href="{{ path('front_app_company') }}" class="btn btn-all">My Company - {{ company.name }}</a>
+    {% if 'ROLE_SUPER_ADMIN' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
+        <a href="{{ path('front_app_company_edit') }}" class="btn btn-edit">Edit</a>
+    {% endif %}
+</div>

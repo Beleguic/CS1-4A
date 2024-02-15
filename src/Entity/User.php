@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Company;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -43,6 +44,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $verifiedAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $companyId = null;
+
+    #[ORM\ManyToOne(targetEntity: Company::class)]
+    #[ORM\JoinColumn(name: 'company_id', referencedColumnName: 'id')]
+    private ?Company $company = null;
 
     public function getId(): ?Uuid
     {
@@ -150,4 +158,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getID();
+    }
+
+    public function getCompanyId(): ?string
+    {
+        return $this->companyId;
+    }
+
+    public function setCompanyId(?string $companyId): static
+    {
+        $this->companyId = $companyId;
+
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
+        return $this;
+    }
+
 }
