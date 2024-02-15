@@ -45,8 +45,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $verifiedAt = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $companyId = null;
+    #[ORM\Column(type: 'uuid', nullable: true)]
+    private ?Uuid $companyId = null;
 
     #[ORM\ManyToOne(targetEntity: Company::class)]
     #[ORM\JoinColumn(name: 'company_id', referencedColumnName: 'id')]
@@ -164,15 +164,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getID();
     }
 
-    public function getCompanyId(): ?string
+    public function getCompanyId(): ?Uuid
     {
         return $this->companyId;
     }
 
-    public function setCompanyId(?string $companyId): static
+    public function setCompanyId(?Uuid $companyId): static
     {
         $this->companyId = $companyId;
-
         return $this;
     }
 
