@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
         .font-family-karla { font-family: karla; }
@@ -18,9 +18,11 @@
 </head>
 <body class="bg-gray-100 font-family-karla flex">
 
+
 <aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
-    <img src="public/plumbpaylogo-removebg-preview.png" class="w-12 h-12 rounded-full absolute top-0 -mt-6 left-16">
-    <div class="p-6">
+    <img src="/plumbpaylogo-removebg-preview.png" class="w-40 h-40 absolute top-0 -mt-6 left-1/2 transform -translate-x-1/2">
+
+    <div class="pt-32 p-8 flex justify-center">
         <a href="{{ path('front_app_account') }}" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Admin</a>
     </div>
     <nav class="text-white text-base font-semibold pt-3">
@@ -45,6 +47,8 @@
     </nav>
 </aside>
 
+
+
 <div class="w-full flex flex-col h-screen overflow-y-hidden">
         <!-- Desktop Header -->
         <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
@@ -62,60 +66,58 @@
             </div>
         </header>
 
-        <!-- Mobile Header & Nav -->
-        <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
-            <div class="flex items-center justify-between">
-                <a href="index.html" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Admin</a>
-                <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
-                    <i x-show="!isOpen" class="fas fa-bars"></i>
-                    <i x-show="isOpen" class="fas fa-times"></i>
-                </button>
-            </div>
+       <!-- Mobile Header & Nav -->
+<header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
+    <div class="flex items-center justify-between">
+        <!-- Lien vers la page d'accueil/Admin -->
+        <a href="{{ path('front_default_index') }}" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Admin</a>
+        <!-- Bouton pour ouvrir/fermer le menu mobile -->
+        <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
+            <!-- Icône pour ouvrir le menu (bars), s'affiche lorsque le menu est fermé -->
+            <i x-show="!isOpen" class="fas fa-bars"></i>
+            <!-- Icône pour fermer le menu (times), s'affiche lorsque le menu est ouvert -->
+            <i x-show="isOpen" class="fas fa-times"></i>
+        </button>
+    </div>
 
-            <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
-                <a href="{{ path('front_default_index') }}" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
-                    <i class="fas fa-tachometer-alt mr-3"></i>
-                    Dashboard
-                </a>
-                <!-- Remplacez 'blank.html' par le chemin approprié ou laissez-le tel quel si aucune route n'est applicable -->
-                <a href="blank.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-sticky-note mr-3"></i>
-                    Blank Page
-                </a>
-                <!-- Ajustez ou laissez ces liens comme ils sont si aucune route spécifique n'est applicable -->
-                <a href="tables.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-table mr-3"></i>
-                    Tables
-                </a>
-                <a href="forms.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-align-left mr-3"></i>
-                    Forms
-                </a>
-                <a href="tabs.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-tablet-alt mr-3"></i>
-                    Tabbed Content
-                </a>
-                <!-- Supposons que "Calendar" n'a pas de route dédiée dans la liste fournie -->
-                <a href="calendar.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-calendar mr-3"></i>
-                    Calendar
-                </a>
-                <!-- Les liens de support, mon compte et déconnexion peuvent nécessiter des actions spécifiques ou des routes non listées -->
-                <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-cogs mr-3"></i>
-                    Support
-                </a>
-                <a href="{{ path('front_app_account') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-user mr-3"></i>
-                    My Account
-                </a>
-                <a href="{{ path('app_logout') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-sign-out-alt mr-3"></i>
-                    Sign Out
-                </a>
-            </nav>
-             
-        </header>
+    <!-- Navigation mobile, s'affiche lorsque isOpen est true -->
+    <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
+        <a href="{{ path('front_default_index') }}" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Dashboard
+        </a>
+        <a href="{{ path('front_app_category_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-sticky-note mr-3"></i>
+            Category
+        </a>
+        <a href="{{ path('front_app_product_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-table mr-3"></i>
+            Product
+        </a>
+        <a href="{{ path('front_app_devis_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-align-left mr-3"></i>
+            Devis
+        </a>
+        <a href="{{ path('front_app_facture_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-tablet-alt mr-3"></i>
+            Facture
+        </a>
+        <a href="{{ path('front_default_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-calendar mr-3"></i>
+            Gestions
+        </a>
+        <a href="{{ path('front_app_account') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-user mr-3"></i>
+            My Account
+        </a>
+        <a href="{{ path('app_logout') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-sign-out-alt mr-3"></i>
+            Sign Out
+        </a>
+    </nav>
+</header>
+
+
     
         <div class="w-full overflow-x-hidden border-t flex flex-col">
             <main class="w-full flex-grow p-6">
