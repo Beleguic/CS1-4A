@@ -5,18 +5,19 @@ namespace App\Service;
 use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class BrevoEmailService
 {
     private $client;
-
-    public function __construct()
+    private $apiKey;
+    public function __construct(ParameterBagInterface $params)
     {
+        $this->apiKey = $params->get('brevo_api_key');
         $this->client = new Client([
             'base_uri' => 'https://api.brevo.com/v3/smtp/',
             'headers' => [
                 'accept' => 'application/json',
-                'api-key' => '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',
+                'api-key' => $this->apiKey,
                 'content-type' => 'application/json',
             ],
         ]);
