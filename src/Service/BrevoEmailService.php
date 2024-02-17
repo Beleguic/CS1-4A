@@ -16,7 +16,7 @@ class BrevoEmailService
             'base_uri' => 'https://api.brevo.com/v3/smtp/',
             'headers' => [
                 'accept' => 'application/json',
-                'api-key' => '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',
+                'api-key' => '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',
                 'content-type' => 'application/json',
             ],
         ]);

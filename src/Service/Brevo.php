@@ -2,11 +2,11 @@
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: api-key
-$config = Brevo\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = Brevo\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', '1oILuiUkpAcQD5lE');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // $config = Brevo\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 // Configure API key authorization: partner-key
-$config = Brevo\Client\Configuration::getDefaultConfiguration()->setApiKey('partner-key', 'YOUR_API_KEY');
+$config = Brevo\Client\Configuration::getDefaultConfiguration()->setApiKey('partner-key', '1oILuiUkpAcQD5lE');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // $config = Brevo\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('partner-key', 'Bearer');
 
