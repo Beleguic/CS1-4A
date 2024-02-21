@@ -8,6 +8,22 @@
         {{ form_start(registrationForm) }}
         <div>
             <div>
+                {{ form_errors(registrationForm.firstname) }}
+            </div>
+            <label for="{{ registrationForm.email.vars.id }}">Nom</label>
+            <input type="text" id="{{ registrationForm.firstname.vars.id }}" name="{{ field_name(registrationForm.firstname) }}" placeholder="Nom" required="required">
+        </div>
+        <br>
+        <div>
+            <div>
+                {{ form_errors(registrationForm.lastname) }}
+            </div>
+            <label for="{{ registrationForm.lastname.vars.id }}">Prénom</label>
+            <input type="text" id="{{ registrationForm.lastname.vars.id }}" name="{{ field_name(registrationForm.lastname) }}" placeholder="Prénom" required="required">
+        </div>
+        <br>
+        <div>
+            <div>
                 {{ form_errors(registrationForm.email) }}
             </div>
             <label for="{{ registrationForm.email.vars.id }}">Email</label>
