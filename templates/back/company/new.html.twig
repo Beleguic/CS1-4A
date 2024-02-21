@@ -1,0 +1,12 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}New - Company - Plumbpay{% endblock %}
+
+{% block body %}
+    <h1>Create new Company</h1>
+    <div class="flex flex-row gap-4">
+        <a href="{{ path('back_app_company') }}" class="btn btn-all">All companies</a>
+    </div>
+    {{ include('/back/company/_form.html.twig') }}
+
+{% endblock %}

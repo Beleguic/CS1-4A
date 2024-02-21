@@ -31,9 +31,19 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
+    access_decision_manager:
+        strategy: unanimous
+
     access_control:
+        - { path: '^/admin', roles: ROLE_SUPER_ADMIN }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_PLUMBER, ROLE_ACCOUNTANT, ROLE_USER]
+        ROLE_ADMIN : [ROLE_PLUMBER, ROLE_ACCOUNTANT, ROLE_USER]
+        ROLE_PLUMBER : [ROLE_USER]
+        ROLE_ACCOUNTANT : [ROLE_USER]
 
 when@test:
     security:

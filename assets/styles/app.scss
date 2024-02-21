@@ -51,12 +51,12 @@
         @apply font-bold py-2 px-4
     }
 
-    table tbody tr td:last-child{
+    table tbody tr td:last-child:not(.logo-action){
         @apply flex gap-2
     }
 
     table tbody tr td{
-        @apply py-2 px-4
+        @apply px-4 py-2
     }
 
     table tbody tr{
@@ -134,5 +134,9 @@
 
     .pagination > span.current{
         @apply bg-mainColor-400
+    }
+
+    .vich-image img{
+        @apply w-40 h-40
     }
 }

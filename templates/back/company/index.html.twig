@@ -1,0 +1,51 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Companies - Plumbpay{% endblock %}
+
+{% block body %}
+    <h1>Companies - Plumbpay</h1>
+    <div class="flex flex-row gap-4">
+        <a href="{{ path('back_app_company_new') }}" class="btn btn-new">Add new company</a>
+    </div>
+    <div class="table-container">
+        <div>
+            <h3 class="text-xl font-bold uppercase">{{ pagination|length }} companies found</h3>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Logo</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for company in pagination %}
+                <tr>
+                    <td title="{{ company.id }}">{{ company.id|slice(-5) }}</td>
+                    <td>{{ company.name }}</td>
+                    <td>{{ company.email }}</td>
+                    <td>
+                        {% if company.imageName != "" %}
+                            <img src="{{ vich_uploader_asset(company, 'imageFile') }}" class="w-12 h-12">
+                        {% endif %}
+                    </td>
+                    <td class="logo-action">
+                        <div class="h-full w-full flex gap-4">
+                            <a href="{{ path('back_app_company_show', {'id': company.id}) }}" class="btn btn-show">Show</a>
+                            <a href="{{ path('back_app_company_edit', {'id': company.id}) }}" class="btn btn-edit">Edit</a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {{ knp_pagination_render(pagination) }}
+{% endblock %}
