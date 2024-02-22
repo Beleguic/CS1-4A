@@ -69,13 +69,9 @@
        <!-- Mobile Header & Nav -->
 <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
     <div class="flex items-center justify-between">
-        <!-- Lien vers la page d'accueil/Admin -->
         <a href="{{ path('front_default_index') }}" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Admin</a>
-        <!-- Bouton pour ouvrir/fermer le menu mobile -->
         <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
-            <!-- Icône pour ouvrir le menu (bars), s'affiche lorsque le menu est fermé -->
             <i x-show="!isOpen" class="fas fa-bars"></i>
-            <!-- Icône pour fermer le menu (times), s'affiche lorsque le menu est ouvert -->
             <i x-show="isOpen" class="fas fa-times"></i>
         </button>
     </div>
@@ -122,8 +118,6 @@
         <div class="w-full overflow-x-hidden border-t flex flex-col">
             <main class="w-full flex-grow p-6">
                 <h1 class="text-3xl text-black pb-6">Dashboard</h1>
-    
-               
             </main>
     
             <footer class="w-full bg-white text-right p-4">
