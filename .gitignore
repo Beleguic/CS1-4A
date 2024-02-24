@@ -54,3 +54,4 @@ ehthumbs_vista.db
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+/config/packages/brevo.yml
