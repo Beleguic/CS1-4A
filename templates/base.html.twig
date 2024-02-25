@@ -35,6 +35,9 @@
                             <li>
                                 <a href="{{ path('front_default_index') }}">Home</a>
                             </li>
+                            <li>
+                                <a href="{{ path('front_app_contact') }}">Contact Us</a>
+                            </li>
                         </ul>
                         <ul class="flex flex-col lg:w-2/12 lg:flex-row gap-4 lg:justify-end">
                             {% if app.user %}
@@ -85,7 +88,7 @@
             </div>
         </footer>
         {% block javascripts %}
-            <script src="{{ asset('build/script.js') }}"></script>
+            <script src="{{ asset('js/script.js') }}"></script>
         {% endblock %}
     </body>
 </html>

@@ -1,0 +1,53 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Contact - Admin - Plumbpay{% endblock %}
+
+{% block body %}
+    <h1>Contact - Admin</h1>
+    <div class="table-container">
+        <div>
+            <h3 class="text-xl font-bold uppercase">{{ pagination|length }} contacts found</h3>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Lastname</th>
+                    <th>Firstname</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Company</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for contact in pagination %}
+                <tr>
+                    <td title="{{ contact.id }}">{{ contact.id|slice(-5) }}</td>
+                    <td>{{ contact.lastname }}</td>
+                    <td>{{ contact.firstname }}</td>
+                    <td>{{ contact.email }}</td>
+                    <td>{{ contact.phone }}</td>
+                    <td>{{ contact.company }}</td>
+                    <td>{{ contact.subject|slice(0,10) }}</td>
+                    <td>{{ contact.message|slice(0,20) }}</td>
+                    <td>{{ contact.createdAt ? contact.createdAt|date('d/m/Y H:i') : '' }}</td>
+                    <td>
+                        <div class="h-full w-full flex gap-4">
+                            <a href="{{ path('back_app_contact_show', {'id': contact.id}) }}" class="btn btn-show">Show</a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {{ knp_pagination_render(pagination) }}
+{% endblock %}
