@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "2ddf0ac91a29e3351217306d605c9a1b",
+=======
+    "content-hash": "fe120bcf4950fdc7797502776a401585",
+>>>>>>> cd1f577b... Envoie Mail / User + Register
     "packages": [
         {
             "name": "behat/transliterator",
@@ -5518,6 +5522,7 @@
         },
         {
             "name": "symfony/mailer",
+<<<<<<< HEAD
             "version": "v6.4.3",
             "source": {
                 "type": "git",
@@ -5528,6 +5533,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/mailer/zipball/74412c62f88a85a41b61f0b71ab0afcaad6f03ee",
                 "reference": "74412c62f88a85a41b61f0b71ab0afcaad6f03ee",
+=======
+            "version": "v6.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/mailer.git",
+                "reference": "ca8dcf8892cdc5b4358ecf2528429bb5e706f7ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/mailer/zipball/ca8dcf8892cdc5b4358ecf2528429bb5e706f7ba",
+                "reference": "ca8dcf8892cdc5b4358ecf2528429bb5e706f7ba",
+>>>>>>> cd1f577b... Envoie Mail / User + Register
                 "shasum": ""
             },
             "require": {
@@ -5578,7 +5595,11 @@
             "description": "Helps sending emails",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/mailer/tree/v6.4.3"
+=======
+                "source": "https://github.com/symfony/mailer/tree/v6.4.0"
+>>>>>>> cd1f577b... Envoie Mail / User + Register
             },
             "funding": [
                 {
@@ -5594,7 +5615,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2024-01-29T15:01:07+00:00"
+=======
+            "time": "2023-11-12T18:02:22+00:00"
+>>>>>>> cd1f577b... Envoie Mail / User + Register
         },
         {
             "name": "symfony/messenger",
@@ -8760,6 +8785,52 @@
                 }
             ],
             "time": "2024-01-23T14:51:35+00:00"
+        },
+        {
+            "name": "symfonycasts/verify-email-bundle",
+            "version": "v1.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SymfonyCasts/verify-email-bundle.git",
+                "reference": "b04714a7fa76ef3ba87e8747c87c5958dcc51979"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SymfonyCasts/verify-email-bundle/zipball/b04714a7fa76ef3ba87e8747c87c5958dcc51979",
+                "reference": "b04714a7fa76ef3ba87e8747c87c5958dcc51979",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=8.1",
+                "symfony/config": "^5.4 | ^6.0 | ^7.0",
+                "symfony/dependency-injection": "^5.4 | ^6.0 | ^7.0",
+                "symfony/deprecation-contracts": "^2.2 | ^3.0",
+                "symfony/http-kernel": "^5.4 | ^6.0 | ^7.0",
+                "symfony/routing": "^5.4 | ^6.0 | ^7.0"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.7",
+                "doctrine/persistence": "^2.0",
+                "symfony/framework-bundle": "^5.4 | ^6.0 | ^7.0",
+                "symfony/phpunit-bridge": "^5.4 | ^6.0 | ^7.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "SymfonyCasts\\Bundle\\VerifyEmail\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Simple, stylish Email Verification for Symfony",
+            "support": {
+                "issues": "https://github.com/SymfonyCasts/verify-email-bundle/issues",
+                "source": "https://github.com/SymfonyCasts/verify-email-bundle/tree/v1.16.0"
+            },
+            "time": "2023-12-18T21:54:19+00:00"
         },
         {
             "name": "twig/extra-bundle",

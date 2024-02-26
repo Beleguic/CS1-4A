@@ -10,7 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class FactureType extends AbstractType
 {
@@ -33,7 +34,10 @@ class FactureType extends AbstractType
         ->add('ispaid', CheckboxType::class, [
             'label' => 'Payée',
             'required' => false,
-        ]);
+        ])
+        ->add('sendEmail', SubmitType::class, [
+            'label' => 'Envoyer l\'email',
+        ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
