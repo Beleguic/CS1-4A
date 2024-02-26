@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FactureRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,6 +30,17 @@ class Facture
 
     #[ORM\Column]
     private ?bool $paid = null;
+
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'factures')]
+    private ?self $Client = null;
+
+    #[ORM\OneToMany(mappedBy: 'Client', targetEntity: self::class)]
+    private Collection $factures;
+
+    public function __construct()
+    {
+        $this->factures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,6 +103,7 @@ class Facture
     public function setClient(?Client $client): static
     {
         $this->client = $client;
+
 
         return $this;
     }

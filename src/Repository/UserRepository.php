@@ -40,6 +40,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+<<<<<<< HEAD
     public function paginationQuery()
     {
         return $this->createQueryBuilder('u')
@@ -48,6 +49,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
 
+=======
+>>>>>>> 171361b37785dd90349a46cfeb63edae39ce424b
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */

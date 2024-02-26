@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
 
+
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -42,6 +43,7 @@ class RegistrationFormType extends AbstractType
                 ],
                 'second_options' => ['label' => 'Repeat Password'],
                 'invalid_message' => 'The password fields must match.',
+
             ])
         ;
     }
