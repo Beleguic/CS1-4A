@@ -8,4 +8,9 @@
     {{ include('/front/devis/_form.html.twig') }}
 
     <a href="{{ path('front_app_devis_index') }}">back to list</a>
+
+
+    <script>
+        var products = {{ product|raw }};
+    </script>
 {% endblock %}
