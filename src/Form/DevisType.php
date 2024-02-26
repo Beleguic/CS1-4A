@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Devis;
 use App\Entity\Client;
+use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,6 +32,14 @@ class DevisType extends AbstractType
                     ->andWhere('c.entreprise = :entrepriseId')
                     ->setParameter('entrepriseId', $entrepriseId);
             },*/
+        ])
+        ->add('produits', CollectionType::class, [
+            'entry_type' => ProductType::class,
+            'label' => "PRODUITS",
+            'allow_add' => true,
+            'allow_delete' => true,
+            'by_reference' => false,
+            "allow_extra_fields" => true,
         ]);
     }
 
