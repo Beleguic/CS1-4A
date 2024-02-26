@@ -16,18 +16,21 @@ class DevisType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        ->add('numDevis', TextType::class, [
+            'label' => 'Numero de Devis',
+        ])
+        ->add('entreprise', TextType::class, [
+            'label' => 'Entreprise',
+        ])
         ->add('client', EntityType::class, [
             'class' => Client::class,
-            
-        ])
-        ->add('clientName', TextType::class, [
-            'label' => 'Nom du client',
-        ])
-        ->add('totalPrice', TextType::class, [
-            'label' => 'Prix total',
-        ])
-        ->add('taxes', TextType::class, [
-            'label' => 'Taxes',
+            'label' => 'Sélectionnez un client',
+            'choice_label' => 'Nom',
+            /*'query_builder' => function (EntityRepository $er) use ($entrepriseId) {
+                return $er->createQueryBuilder('c')
+                    ->andWhere('c.entreprise = :entrepriseId')
+                    ->setParameter('entrepriseId', $entrepriseId);
+            },*/
         ]);
     }
 
