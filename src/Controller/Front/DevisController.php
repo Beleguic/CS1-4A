@@ -19,6 +19,7 @@ class DevisController extends AbstractController
     {
         return $this->render('front/devis/index.html.twig', [
             'devis' => $devisRepository->findAll(),
+            
         ]);
     }
 
