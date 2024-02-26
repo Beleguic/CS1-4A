@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Product;
 
 #[Route('/devis')]
 class DevisController extends AbstractController
@@ -26,6 +27,22 @@ class DevisController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         //$entrepriseId = 1;
+        $products = $entityManager->getRepository(Product::class)->findAll();
+
+        $productArray = [];
+        foreach ($products as $product) {
+            $productArray[] = [
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'description' => $product->getDescription(),
+                'price' => $product->getPrice(),
+                'tva' => $product->getTva(),
+                //'category' => $products->getCategory()->getName(),
+                // Ajoutez d'autres champs selon votre entité
+            ];
+        }
+
+        $products = json_encode($productArray);
 
         $devis = new Devis();
         $form = $this->createForm(DevisType::class, $devis);
@@ -44,6 +61,7 @@ class DevisController extends AbstractController
         return $this->render('front/devis/new.html.twig', [
             'devis' => $devis,
             'form' => $form,
+            'product' => $products,
         ]);
     }
 
