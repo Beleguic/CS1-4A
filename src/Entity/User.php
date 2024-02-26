@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Company;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -40,9 +41,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstname = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $activationToken;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $enabled = null;
+
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $verifiedAt = null;
+
+    #[ORM\Column(type: 'uuid', nullable: true)]
+    private ?Uuid $companyId = null;
+
+    #[ORM\ManyToOne(targetEntity: Company::class)]
+    #[ORM\JoinColumn(name: 'company_id', referencedColumnName: 'id')]
+    private ?Company $company = null;
+
+    public function __construct()
+    {
+        $this->enabled = false; // Par défaut, l'utilisateur est désactivé lors de la création
+    }
+
 
     public function getId(): ?Uuid
     {
@@ -57,6 +77,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
 
         return $this;
     }
@@ -150,4 +182,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getID();
+    }
+
+    public function getCompanyId(): ?Uuid
+    {
+        return $this->companyId;
+    }
+
+    public function setCompanyId(?Uuid $companyId): static
+    {
+        $this->companyId = $companyId;
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
+        return $this;
+    }
+
+    public function getActivationToken(): ?string
+    {
+        return $this->activationToken;
+    }
+
+    public function setActivationToken(?string $activationToken): self
+    {
+        $this->activationToken = $activationToken;
+
+        return $this;
+    }
+
 }

@@ -1,0 +1,7 @@
+<div class="flex flex-row gap-4">
+    <a href="{{ path('back_app_company') }}" class="btn btn-all">Show All Companies</a>
+
+    <a href="{{ path('back_app_company_edit', {'id': company.id}) }}" class="btn btn-edit">Edit</a>
+
+    {{ include('back/company/_delete_form.html.twig') }}
+</div>

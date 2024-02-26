@@ -1,0 +1,13 @@
+vich_uploader:
+    db_driver: orm
+
+    metadata:
+        type: attribute
+
+    mappings:
+        companyLogo:
+            uri_prefix: /uploads/company/logo
+            upload_destination: '%kernel.project_dir%/public/uploads/company/logo'
+            namer:
+                service: Vich\UploaderBundle\Naming\PropertyNamer
+                options: { property: 'id' }

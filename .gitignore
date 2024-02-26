@@ -8,6 +8,8 @@
 /var/
 /vendor/
 /node_modules/
+/public/uploads/
+/public/uploads/*
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -52,3 +54,4 @@ ehthumbs_vista.db
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+/config/packages/brevo.yml

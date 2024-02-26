@@ -17,17 +17,19 @@ class UserFixtures extends Fixture
         $pwd = 'test';
 
         $object = (new User())
-            ->setEmail('user@user.fr')
+            ->setEmail('admin@user.fr')
             ->setRoles(['ROLE_ADMIN'])
             ->setLastname($faker->lastName)
+            ->setFirstname($faker->firstName)
         ;
         $object->setPassword($this->passwordHasher->hashPassword($object, $pwd));
         $manager->persist($object);
 
         $object = (new User())
-            ->setEmail('admin@user.fr')
-            ->setRoles(['ROLE_ADMIN'])
+            ->setEmail('super@user.fr')
+            ->setRoles(['ROLE_SUPER_ADMIN'])
             ->setLastname($faker->lastName)
+            ->setFirstname($faker->firstName)
         ;
         $object->setPassword($this->passwordHasher->hashPassword($object, $pwd));
         $manager->persist($object);

@@ -18,6 +18,7 @@
                     <th>Email</th>
                     <th>Lastname</th>
                     <th>Firstname</th>
+                    <th>Company</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -28,6 +29,7 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.lastname }}</td>
                     <td>{{ user.firstname }}</td>
+                    <td title="{{ user.companyId }}">{{ user.companyId|slice(-5) }}</td>
                     <td>
                         <a href="{{ path('back_app_user_show', {'id': user.id}) }}" class="btn btn-show">Show</a>
                         <a href="{{ path('back_app_user_edit', {'id': user.id}) }}" class="btn btn-edit">Edit</a>

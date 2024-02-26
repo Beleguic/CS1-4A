@@ -13,13 +13,14 @@
         "doctrine/doctrine-bundle": "2.*",
         "doctrine/doctrine-migrations-bundle": "3.*",
         "doctrine/orm": "2.*",
+        "guzzlehttp/guzzle": "^7.8",
         "knplabs/knp-paginator-bundle": "^6.3",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.8",
         "sensio/framework-extra-bundle": "6.*",
-        "stof/doctrine-extensions-bundle": "^1.10",
-        "stripe/stripe-php": "^13.10",
+        "stof/doctrine-extensions-bundle": "*",
         "symfony/asset": "6.*",
+        "symfony/brevo-mailer": "6.*",
         "symfony/console": "6.*",
         "symfony/doctrine-messenger": "6.*",
         "symfony/dotenv": "6.*",
@@ -49,7 +50,8 @@
         "symfony/webpack-encore-bundle": "^2.1",
         "symfony/yaml": "6.*",
         "twig/extra-bundle": "3.*",
-        "twig/twig": "3.*"
+        "twig/twig": "3.*",
+        "vich/uploader-bundle": "^2.3"
     },
     "config": {
         "allow-plugins": {
