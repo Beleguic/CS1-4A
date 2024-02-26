@@ -3,55 +3,51 @@
 {% block title %}Register - Plumbpay{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
-    <section class="form-container">
-        {{ form_start(registrationForm) }}
-        <div>
+    <h1 class="text-3xl font-bold text-center mb-4">Register</h1>
+    <section class="form-container max-w-md mx-auto">
+        {{ form_start(registrationForm, {'attr': {'class': 'bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'}}) }}
+        <div class="mb-4">
+         <img src="{{ asset('images/logo.png') }}" alt="Logo" class="mx-auto mt-8" style="width: 100px; height: 100px;">
+        
             <div>
                 {{ form_errors(registrationForm.firstname) }}
             </div>
-            <label for="{{ registrationForm.email.vars.id }}">Nom</label>
-            <input type="text" id="{{ registrationForm.firstname.vars.id }}" name="{{ field_name(registrationForm.firstname) }}" placeholder="Nom" required="required">
+            <label for="{{ registrationForm.firstname.vars.id }}" class="block text-gray-700 text-sm font-bold mb-2">Nom</label>
+            <input type="text" id="{{ registrationForm.firstname.vars.id }}" name="{{ field_name(registrationForm.firstname) }}" placeholder="Nom" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
-        <br>
-        <div>
+        <div class="mb-4">
             <div>
                 {{ form_errors(registrationForm.lastname) }}
             </div>
-            <label for="{{ registrationForm.lastname.vars.id }}">Prénom</label>
-            <input type="text" id="{{ registrationForm.lastname.vars.id }}" name="{{ field_name(registrationForm.lastname) }}" placeholder="Prénom" required="required">
+            <label for="{{ registrationForm.lastname.vars.id }}" class="block text-gray-700 text-sm font-bold mb-2">Prénom</label>
+            <input type="text" id="{{ registrationForm.lastname.vars.id }}" name="{{ field_name(registrationForm.lastname) }}" placeholder="Prénom" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
-        <br>
-        <div>
+        <div class="mb-4">
             <div>
                 {{ form_errors(registrationForm.email) }}
             </div>
-            <label for="{{ registrationForm.email.vars.id }}">Email</label>
-            <input type="email" id="{{ registrationForm.email.vars.id }}" name="{{ field_name(registrationForm.email) }}" placeholder="email@plumbpay.com" required="required">
+            <label for="{{ registrationForm.email.vars.id }}" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+            <input type="email" id="{{ registrationForm.email.vars.id }}" name="{{ field_name(registrationForm.email) }}" placeholder="email@plumbpay.com" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
-        <br>
-        <div>
+        <div class="mb-4">
             <div>
                 {{ form_errors(registrationForm.password.first)}}
             </div>
-            <label for="{{ registrationForm.password.first.vars.id }}">New Password</label>
-            <input type="password" id="{{ registrationForm.password.first.vars.id }}" name="{{ field_name(registrationForm.password.first) }}" required="required">
+            <label for="{{ registrationForm.password.first.vars.id }}" class="block text-gray-700 text-sm font-bold mb-2">New Password</label>
+            <input type="password" id="{{ registrationForm.password.first.vars.id }}" name="{{ field_name(registrationForm.password.first) }}" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
-        <br>
-        <div>
+        <div class="mb-4">
             <div>
                 {{ form_errors(registrationForm.password.second)}}
             </div>
-            <label for="{{ registrationForm.password.second.vars.id }}">Repeat Password</label>
-            <input type="password" id="{{ registrationForm.password.second.vars.id }}" name="{{ field_name(registrationForm.password.second) }}" required="required">
+            <label for="{{ registrationForm.password.second.vars.id }}" class="block text-gray-700 text-sm font-bold mb-2">Repeat Password</label>
+            <input type="password" id="{{ registrationForm.password.second.vars.id }}" name="{{ field_name(registrationForm.password.second) }}" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
-        <br>
         {{ form_widget(registrationForm._token) }}
-        <br>
-        <button type="submit" class="btn">Register</button>
+        <div class="mb-6">
+            <button type="submit" class="btn bg-mainColor-400 hover:bg-opacity-75 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register</button>
+        </div>
+        <p>Already have an account ? <a href="{{ path('app_login') }}" class="text-blue-500 hover:bg-mainColor-700">Login in here</a></p>
         {{ form_end(registrationForm) }}
-    </section>
-    <section>
-        <p>Already have an account ? <a href="{{ path('app_login') }}">Login in here</a></p>
     </section>
 {% endblock %}
