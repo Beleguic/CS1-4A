@@ -1,33 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register - Plumbpay{% endblock %}
-
 {% block body %}
-    <h1 class="text-3xl font-bold text-center mb-4">Register</h1>
     <section class="form-container max-w-md mx-auto">
         {{ form_start(registrationForm, {'attr': {'class': 'bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'}}) }}
+        <div class="mb-4 flex justify-center">
+         <img src="{{ asset('plumbpaylogo-removebg-preview.png') }}" alt="PlumbPay" class="flex justify-center" style="width: 170px; height: 170px;">
+        </div>
         <div class="mb-4">
-         <img src="{{ asset('images/logo.png') }}" alt="Logo" class="mx-auto mt-8" style="width: 100px; height: 100px;">
-        
             <div>
                 {{ form_errors(registrationForm.firstname) }}
             </div>
             <label for="{{ registrationForm.firstname.vars.id }}" class="block text-gray-700 text-sm font-bold mb-2">Nom</label>
-            <input type="text" id="{{ registrationForm.firstname.vars.id }}" name="{{ field_name(registrationForm.firstname) }}" placeholder="Nom" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <input type="text" id="{{ registrationForm.firstname.vars.id }}" name="{{ field_name(registrationForm.firstname) }}" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
         <div class="mb-4">
             <div>
                 {{ form_errors(registrationForm.lastname) }}
             </div>
             <label for="{{ registrationForm.lastname.vars.id }}" class="block text-gray-700 text-sm font-bold mb-2">Prénom</label>
-            <input type="text" id="{{ registrationForm.lastname.vars.id }}" name="{{ field_name(registrationForm.lastname) }}" placeholder="Prénom" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <input type="text" id="{{ registrationForm.lastname.vars.id }}" name="{{ field_name(registrationForm.lastname) }}" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
         <div class="mb-4">
             <div>
                 {{ form_errors(registrationForm.email) }}
             </div>
             <label for="{{ registrationForm.email.vars.id }}" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-            <input type="email" id="{{ registrationForm.email.vars.id }}" name="{{ field_name(registrationForm.email) }}" placeholder="email@plumbpay.com" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <input type="email" id="{{ registrationForm.email.vars.id }}" name="{{ field_name(registrationForm.email) }}" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
         <div class="mb-4">
             <div>
@@ -44,8 +42,8 @@
             <input type="password" id="{{ registrationForm.password.second.vars.id }}" name="{{ field_name(registrationForm.password.second) }}" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
         {{ form_widget(registrationForm._token) }}
-        <div class="mb-6">
-            <button type="submit" class="btn bg-mainColor-400 hover:bg-opacity-75 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register</button>
+        <div class="mb-6 flex justify-center text-mainColor-400">
+            <button type="submit" class="btn bg-bgBody-400 hover:bg-opacity-75 text-mainColor-400 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register</button>
         </div>
         <p>Already have an account ? <a href="{{ path('app_login') }}" class="text-blue-500 hover:bg-mainColor-700">Login in here</a></p>
         {{ form_end(registrationForm) }}
