@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240221194852 extends AbstractMigration
+final class Version20240227201219 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -30,6 +30,8 @@ final class Version20240221194852 extends AbstractMigration
         $this->addSql('CREATE TABLE client (id INT NOT NULL, nom VARCHAR(255) NOT NULL, prenom VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, numero_telephone VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE company (id UUID NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, invoice_email VARCHAR(255) DEFAULT NULL, address_number VARCHAR(255) DEFAULT NULL, address_type VARCHAR(255) DEFAULT NULL, address_name VARCHAR(255) DEFAULT NULL, address_zip_code VARCHAR(255) DEFAULT NULL, address_city VARCHAR(255) DEFAULT NULL, address_country VARCHAR(255) DEFAULT NULL, company_number VARCHAR(20) DEFAULT NULL, iban VARCHAR(34) DEFAULT NULL, bic VARCHAR(11) DEFAULT NULL, image_name VARCHAR(255) DEFAULT NULL, image_size INT DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN company.id IS \'(DC2Type:uuid)\'');
+        $this->addSql('CREATE TABLE contact (id UUID NOT NULL, lastname VARCHAR(255) NOT NULL, firstname VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, phone VARCHAR(255) NOT NULL, company VARCHAR(255) NOT NULL, subject VARCHAR(255) NOT NULL, message TEXT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN contact.id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE devis (id INT NOT NULL, client_id INT DEFAULT NULL, client_name VARCHAR(255) DEFAULT NULL, total_price NUMERIC(10, 2) NOT NULL, taxes NUMERIC(5, 2) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_8B27C52B19EB6921 ON devis (client_id)');
         $this->addSql('CREATE TABLE facture (id INT NOT NULL, devis_id INT DEFAULT NULL, client_id INT DEFAULT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, amount NUMERIC(10, 2) NOT NULL, paid BOOLEAN NOT NULL, PRIMARY KEY(id))');
@@ -84,6 +86,7 @@ final class Version20240221194852 extends AbstractMigration
         $this->addSql('DROP TABLE category');
         $this->addSql('DROP TABLE client');
         $this->addSql('DROP TABLE company');
+        $this->addSql('DROP TABLE contact');
         $this->addSql('DROP TABLE devis');
         $this->addSql('DROP TABLE facture');
         $this->addSql('DROP TABLE product');

@@ -1,91 +1,138 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Welcome to Plumbpay{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% if app.user %}
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                <header class="border-b border-b-TextColor-400 dark:border-b-TextColor-800">
-                    <div class="lg:max-w-10xl mx-auto w-full p-4">
-                        <nav class="flex flex-col lg:flex-row gap-4">
-                            <ul class="flex flex-col lg:w-10/12 lg:flex-row gap-4">
-                            </ul>
-                            <ul class="flex flex-col lg:w-2/12 lg:flex-row gap-4 lg:justify-end">
-                                <li>
-                                    <a href="{{ path('back_app_index') }}">Administration</a>
-                                </li>
-                            </ul>
-                        </nav>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <title>PlumbPay</title>
+    <link rel="icon" href="/plombier.png" type="image/png">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+        .font-family-karla { font-family: karla; }
+        .bg-sidebar { background: #134F63; }
+        .cta-btn { color: #0091C2; }
+        .upgrade-btn { background: #05C1FA; }
+        .active-nav-link { background: #05C1FA; }
+        .nav-item:hover { background: #05C1FA; }
+        .account-link:hover { background: #05C1FA; }
+    </style>
+</head>
+<body class="bg-gray-100 font-family-karla flex">
+
+
+<aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+    <img src="/plumbpaylogo-removebg-preview.png" class="w-40 h-40 absolute top-0 -mt-6 left-1/2 transform -translate-x-1/2">
+
+    <div class="pt-32 p-8 flex justify-center">
+    </div>
+    <nav class="text-white text-base font-semibold pt-3">
+        <a href="{{ path('front_default_index') }}" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
+            <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+        </a>
+        <a href="{{ path('front_app_category_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-sticky-note mr-3"></i>Category
+        </a>
+        <a href="{{ path('front_app_product_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-table mr-3"></i>Product
+        </a>
+        <a href="{{ path('front_app_devis_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-align-left mr-3"></i>Devis
+        </a>
+        <a href="{{ path('front_app_facture_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-tablet-alt mr-3"></i>Facture
+        </a>
+        <a href="{{ path('front_default_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-calendar mr-3"></i>Gestions
+        </a>
+    </nav>
+</aside>
+
+
+
+<div class="w-full flex flex-col h-screen overflow-y-hidden">
+
+               
+        <!-- Desktop Header -->
+        <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+            <div class="w-1/2"></div>
+            <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
+                <button @click="isOpen = !isOpen" class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
+                    <img src="https://source.unsplash.com/uJ8LNVCBjFQ/400x400">
+                </button>
+                <button x-show="isOpen" @click="isOpen = false" class="h-full w-full fixed inset-0 cursor-default"></button>
+                    <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
+                        <a href="{{ path('front_app_account') }}" class="block px-4 py-2 account-link hover:text-white">my company</a>
+                        <a href="{{ path('front_app_account') }}" class="block px-4 py-2 account-link hover:text-white">My Account</a>
+                        <a href="{{ path('app_logout') }}" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
                     </div>
-                </header>
-            {% endif %}
-        {% endif %}
-        <header class="border-b border-b-TextColor-400 dark:border-b-TextColor-800">
-            <div class="lg:max-w-10xl mx-auto w-full p-4">
-                {% block header %}
-                    <nav class="flex flex-col lg:flex-row gap-4">
-                        <ul class="flex flex-col lg:w-10/12 lg:flex-row gap-4">
-                            <li>
-                                <a href="{{ path('front_default_index') }}">Home</a>
-                            </li>
-                        </ul>
-                        <ul class="flex flex-col lg:w-2/12 lg:flex-row gap-4 lg:justify-end">
-                            {% if app.user %}
-                                {% if app.user.companyId is not null %}
-                                    <li>
-                                        <a href="{{ path('front_app_company') }}">My Company</a>
-                                    </li>
-                                {% endif %}
-                            {% endif %}
-                            <li>
-                                <a href="{{ path('front_app_account') }}">Account</a>
-                            </li>
-                            {% if app.user %}
-                                <li>
-                                    <a href="{{ path('app_logout') }}">Logout</a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                {% endblock %}
             </div>
         </header>
-        <main class="flex flex-col gap-8 grow p-4 lg:max-w-10xl mx-auto w-full">
-            <div class="flashs">
-                {% for type, flashMessages in app.flashes %}
-                    {% for message in flashMessages %}
-                        <div class="flash" data-flash="{{ type }}">
-                            <p>{{ message }}</p>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            </div>
-            {% block body %}{% endblock %}
-        </main>
-        <footer class="border-t border-t-TextColor-400 dark:border-t-TextColor-800">
-            <div class="p-4 lg:max-w-10xl mx-auto w-full">
-                <section>
-                    {% block footer %}
-                        <nav class="flex flex-col lg:flex-row gap-4">
-                            <ul class="flex flex-col gap-4">
-                                <li>
-                                    <a href="{{ path('front_design_index') }}">Design</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    {% endblock %}
-                </section>
-            </div>
+
+       <!-- Mobile Header & Nav -->
+<header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
+    <div class="flex items-center justify-between">
+        <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
+            <i x-show="!isOpen" class="fas fa-bars"></i>
+            <i x-show="isOpen" class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Navigation mobile, s'affiche lorsque isOpen est true -->
+    <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
+        <a href="{{ path('front_default_index') }}" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Dashboard
+        </a>
+        <a href="{{ path('front_app_category_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-sticky-note mr-3"></i>
+            Category
+        </a>
+        <a href="{{ path('front_app_product_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-table mr-3"></i>
+            Product
+        </a>
+        <a href="{{ path('front_app_devis_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-align-left mr-3"></i>
+            Devis
+        </a>
+        <a href="{{ path('front_app_facture_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-tablet-alt mr-3"></i>
+            Facture
+        </a>
+        <a href="{{ path('front_default_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-calendar mr-3"></i>
+            Gestions
+        </a>
+        <a href="{{ path('front_app_account') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-user mr-3"></i>
+            My Account
+        </a>
+        <a href="{{ path('app_logout') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-sign-out-alt mr-3"></i>
+            Sign Out
+        </a>
+    </nav>
+</header>
+
+
+    
+    <div class="flex flex-col min-h-screen overflow-hidden">
+        <div class="flex-grow">
+            <main class="p-6">
+                <h1 class="text-3xl text-black pb-6">{% block title %}{% endblock %}</h1>
+                {% block body %}
+
+                {% endblock %}
+            </main>
+        </div>
+
+        <footer class="w-full bg-white text-right p-4">
+        
         </footer>
-        {% block javascripts %}
-            <script src="{{ asset('build/script.js') }}"></script>
-        {% endblock %}
-    </body>
+    </div>
+        
+    </div>
+
+</body>
 </html>

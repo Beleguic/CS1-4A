@@ -1,0 +1,64 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Contact - Show - Plumbpay{% endblock %}
+
+{% block body %}
+    <h1>Contact</h1>
+    {{ include('back/contact/_nav.html.twig') }}
+    <div class="flex flex-col gap-12">
+        <section class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">ID</div>
+                <div>{{ contact.id }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Created at</div>
+                <div>{{ contact.createdAt ? contact.createdAt|date('d/m/Y H:i') : '' }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Updated at</div>
+                <div>{{ contact.updatedAt ? contact.updatedAt|date('d/m/Y H:i') : '' }}</div>
+            </div>
+        </section>
+        <section class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Lastname</div>
+                <div>{{ contact.lastname }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Firstname</div>
+                <div>{{ contact.firstname }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Email</div>
+                <div>{{ contact.email }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Email</div>
+                <div>{{ contact.email }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Phone</div>
+                <div>{{ contact.phone }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Company</div>
+                <div>{{ contact.company }}</div>
+            </div>
+        </section>
+        <section class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Subject</div>
+                <div>{{ contact.subject }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Message</div>
+                <div>
+                    <textarea readonly rows="15">
+                        {{ contact.message }}
+                    </textarea>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
