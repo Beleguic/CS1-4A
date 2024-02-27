@@ -1,7 +1,23 @@
-{% extends '../../../front/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Oups, une erreur....{% endblock %}
+{% block title %}Page non trouvée{% endblock %}
 
 {% block body %}
-    Oups, une erreur....
+<style>
+    .error-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+    .error-container img {
+        max-width: 100%;
+        height: auto; /* Rend l'image responsive */
+    }
+</style>
+<div class="error-container">
+    <img src="{{ asset('404error.png') }}" alt="Error Page Not Found">
+</div>
 {% endblock %}
