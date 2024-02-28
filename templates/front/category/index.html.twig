@@ -3,35 +3,38 @@
 {% block title %}Category index{% endblock %}
 
 {% block body %}
-    <h1>Category index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
-            <tr>
-                <td>{{ category.id }}</td>
-                <td>{{ category.name }}</td>
-                <td>{{ category.description }}</td>
-                <td>
-                    <a href="{{ path('front_app_category_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('front_app_category_edit', {'id': category.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="py-3 px-6">Id</th>
+                    <th scope="col" class="py-3 px-6">Name</th>
+                    <th scope="col" class="py-3 px-6">Description</th>
+                    <th scope="col" class="py-3 px-6">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td class="py-4 px-6">{{ category.id }}</td>
+                    <td class="py-4 px-6">{{ category.name }}</td>
+                    <td class="py-4 px-6">{{ category.description }}</td>
+                    <td class="py-4 px-6 flex space-x-2">
+                        <a href="{{ path('front_app_category_show', {'id': category.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Show</a>
+                        <a href="{{ path('front_app_category_edit', {'id': category.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Edit</a>
+                        <a href="{{ path('front_app_category_delete', {'id': category.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">Delete</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td colspan="4" class="py-4 px-6">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <a href="{{ path('front_app_category_new') }}">Create new</a>
+    <a href="{{ path('front_app_category_new') }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Create New</a>
+
 {% endblock %}
