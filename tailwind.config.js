@@ -8,12 +8,12 @@ module.exports = {
     extend: {
       colors: {
         bgBody: { 
-          400: "#EEEBE7",
-          800: "#1D1B1B",
+          400: "#ffffff",
+          800: "#181717",
         },
         TextColor: {
-          400: "#1D1B1B",
-          800: "#EEEBE7",
+          400: "#181717",
+          800: "#ffffff",
         },
         mainColor :{
           400: "#134F63",
