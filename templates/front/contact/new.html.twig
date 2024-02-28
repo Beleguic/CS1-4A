@@ -1,9 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'contact.html.twig' %}
 
 {% block title %}Plumbpay - Contact Us{% endblock %}
 
 {% block body %}
-    <h1>Plumbpay - Contact Us</h1>
-
-    {{ include('front/contact/_form.html.twig') }}
+    <div class="flex flex-col gap-4">
+        <div>
+            <a href="{{ path('front_default_index') }}" class="text-TextColor-400 dark:text-TextColor-800">Go to home</a>
+        </div>
+        <h1>Plumbpay - Contact Us</h1>
+        {{ include('front/contact/_form.html.twig') }}
+    </div>
 {% endblock %}

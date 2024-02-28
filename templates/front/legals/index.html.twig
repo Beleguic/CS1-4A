@@ -1,0 +1,37 @@
+{% extends 'default.html.twig' %}
+
+{% block title %}Legals - Plumbpay{% endblock %}
+
+{% block body %}
+    <div class="h-screen flex flex-col items-center justify-center gap-8">
+        <h1>Plumbpay - Contact Us</h1>
+        <section class="grid gap-4">
+            <div>
+                <h2 class="pb-2 font-bold text-xl">Site infos</h2>
+                <p>Made by Plumbpay</p>
+                <p>For Challenge Stack 4A S1 (Symfony, UX/UI/Accessibilité, Intégration)</p>
+                <p>ESGI - Paris</p>
+                <p><a href="https://github.com/Beleguic/CS1-4A"  class="border-b border-b-transparent hover:border-b-TextColor-400 focus:border-b-TextColor-400 dark:hover:border-b-TextColor-800 dark:focus:border-b-TextColor-800">Github project profile</a></p>
+            </div>
+            <div>
+                <h2 class="pb-2 font-bold text-xl">Publication Manager</h2>
+                <p>PHANG Willy</p>
+                <p>40 rue Auguste Poullain</p>
+                <p>93200, Saint-Denis</p>
+                <p>France</p>
+            </div>
+            <div>
+                <h2 class="pb-2 font-bold text-xl">Web Hosting</h2>
+                <p>Hostinger - HOSTINGER INTERNATIONAL LTD</p>
+                <p>61 Lordou Vironos Street</p>
+                <p>6023 Larnaca</p>
+                <p>CYPRUS</p>
+            </div>
+            <div>
+                <h2 class="pb-2 font-bold text-xl">Contact</h2>
+                <p><a href="{{ path('front_app_contact') }}" class="border-b border-b-transparent hover:border-b-TextColor-400 focus:border-b-TextColor-400 dark:hover:border-b-TextColor-800 dark:focus:border-b-TextColor-800">Page contact us</a></p>
+                <p><a href="mailto:plumbpay_team@outlook.com" class="border-b border-b-transparent hover:border-b-TextColor-400 focus:border-b-TextColor-400 dark:hover:border-b-TextColor-800 dark:focus:border-b-TextColor-800">plumbpay_team@outlook.com</a></p>
+            </div>
+        </section>
+    </div>
+{% endblock %}
