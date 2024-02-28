@@ -1,29 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Login - Plumbpay{% endblock %}
-
 {% block body %}
     {% if error %}
         <section>
             <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         </section>
     {% endif %}
-    <section class="form-container">
-        <form action="{{ path('app_login') }}" method="POST">
-            <div>
-                <label for="username">Email:</label>
-                <input type="email" id="username" name="_username" value="{{ last_username }}" required>
+    <section class="form-container max-w-md mx-auto">
+    <form action="{{ path('app_login') }}" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="flex justify-center">
+            <img src="{{ asset('plumbpaylogo-removebg-preview.png') }}" alt="PlumbPay" class="flex justify-center" style="width: 170px; height: 170px;">
+        </div>
+        <h1 class="flex justify-center text-3xl text-mainColor-400 pb-2" style="color: #134F63;">Connectez-vous ici</h1>
+        
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700 text-sm font-bold mb-2" style="color: #134F63;">Email</label>
+                <input type="email" id="username" name="_username" value="{{ last_username }}" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
-            <br>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="_password" required>
+            <div class="mb-4">
+                <label for="password" class="block text-gray-700 text-sm font-bold mb-2" style="color: #134F63;">Password</label>
+                <input type="password" id="password" name="_password" required="required" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
-            <br><br>
-            <button type="submit">login</button>
+            <div class="mb-6 flex justify-center text-mainColor-400">
+                <button type="submit" class="mb-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; transition: background-color 0.2s ease-in-out;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Login</button>
+            </div>
+            <p>Non enregistré? <a href="{{ path('app_register') }}" class="text-blue-500 hover:bg-mainColor-700">Inscrivez-vous ici</a></p>
         </form>
-    </section>
-    <section>
-        <p>Not registered ? <a href="{{ path('app_register') }}">Register here</a></p>
+        
     </section>
 {% endblock %}
