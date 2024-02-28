@@ -22,6 +22,7 @@ module.exports = {
           400: "#0091C2",
         }
       },
+      lightBlue: "#134F63",
       maxWidth:{
         '9xl': "9rem",
         '10xl': "100rem",
