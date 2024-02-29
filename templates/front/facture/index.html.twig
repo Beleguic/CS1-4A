@@ -3,45 +3,41 @@
 {% block title %}Invoice index{% endblock %}
 
 {% block body %}
-    <div>
-        <h1>Facture Index</h1>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Devis</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Paid</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for facture in factures %}
-                    <tr>
-                        <td>{{ facture.id }}</td>
-                        <td>{{ facture.devis.clientName }}</td>
-                        <td>{{ facture.date ? facture.date|date('Y-m-d H:i:s') : 'N/A' }}</td>
-                        <td>{{ facture.amount is not null ? facture.amount : 'N/A' }}</td>
-                        <td>{{ facture.paid ? 'Yes' : 'No' }}</td>
-                        <td>
-                            <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="btn btn-info">Show</a>
-                            <a href="{{ path('front_app_facture_edit', {'id': facture.id}) }}" class="btn btn-warning">Edit</a>
-                            <a href="{{ path('front_app_facture_paid', {'id': facture.id}) }}" class="btn btn-warning">Paid with Stripe</a>
-
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="6">No records found</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <a href="{{ path('front_app_facture_new') }}" class="btn btn-success">Create New</a>
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="py-3 px-6">ID</th>
+                    <th scope="col" class="py-3 px-6">Devis</th>
+                    <th scope="col" class="py-3 px-6">Date</th>
+                    <th scope="col" class="py-3 px-6">Amount</th>
+                    <th scope="col" class="py-3 px-6">Paid</th>
+                    <th scope="col" class="py-3 px-6">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for facture in factures %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td class="py-4 px-6">{{ facture.id }}</td>
+                    <td class="py-4 px-6">{{ facture.devis.clientName }}</td>
+                    <td class="py-4 px-6">{{ facture.date ? facture.date|date('Y-m-d H:i:s') : 'N/A' }}</td>
+                    <td class="py-4 px-6">{{ facture.amount is not null ? facture.amount : 'N/A' }}</td>
+                    <td class="py-4 px-6">{{ facture.paid ? 'Yes' : 'No' }}</td>
+                    <td class="py-4 px-6 flex space-x-2">
+                        <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Show</a>
+                        <a href="{{ path('front_app_facture_edit', {'id': facture.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Edit</a>
+                        <a href="{{ path('front_app_facture_paid', {'id': facture.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-700">Paid with Stripe</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td colspan="6" class="py-4 px-6">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
+
+    <a href="{{ path('front_app_facture_new') }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Create New</a>
+
 {% endblock %}

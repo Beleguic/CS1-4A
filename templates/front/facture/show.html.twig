@@ -3,42 +3,41 @@
 {% block title %}Facture {{ facture.id }}{% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
-        <h1>Facture {{ facture.id }}</h1>
 
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th>Id</th>
-                    <td>{{ facture.id }}</td>
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg my-5">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <tbody class="bg-white dark:bg-gray-800">
+                <tr class="border-b dark:border-gray-700">
+                    <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">Id</th>
+                    <td class="py-4 px-6">{{ facture.id }}</td>
                 </tr>
-                <tr>
-                    <th>Client Name</th>
-                    <td>{{ facture.devis.clientName }}  {{ facture.devis.Client }}</td>
+                <tr class="border-b dark:border-gray-700">
+                    <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">Client Name</th>
+                    <td class="py-4 px-6">{{ facture.devis.clientName }}  {{ facture.devis.Client }}</td>
                 </tr>
-                <tr>
-                    <th>Date</th>
-                    <td>{{ facture.date ? facture.date|date('Y-m-d H:i:s') : 'N/A' }}</td>
+                <tr class="border-b dark:border-gray-700">
+                    <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">Date</th>
+                    <td class="py-4 px-6">{{ facture.date ? facture.date|date('Y-m-d H:i:s') : 'N/A' }}</td>
                 </tr>
-                <tr>
-                    <th>Amount</th>
-                    <td>{{ facture.amount is not null ? facture.amount : 'N/A' }}</td>
+                <tr class="border-b dark:border-gray-700">
+                    <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">Amount</th>
+                    <td class="py-4 px-6">{{ facture.amount is not null ? facture.amount : 'N/A' }}</td>
                 </tr>
-                <tr>
-                    <th>Taxes</th>
-                    <td>{{ facture.devis.taxes }}</td>
+                <tr class="border-b dark:border-gray-700">
+                    <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">Taxes</th>
+                    <td class="py-4 px-6">{{ facture.devis.taxes }}</td>
                 </tr>
-                <tr>
-                    <th>Paid</th>
-                    <td>{{ facture.paid ? 'Yes' : 'No' }}</td>
+                <tr class="border-b dark:border-gray-700">
+                    <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">Paid</th>
+                    <td class="py-4 px-6">{{ facture.paid ? 'Yes' : 'No' }}</td>
                 </tr>
             </tbody>
         </table>
-
-        <a href="{{ path('front_app_facture_index') }}" class="btn btn-secondary">Back to List</a>
-
-        <a href="{{ path('front_app_facture_edit', {'id': facture.id}) }}" class="btn btn-primary">Edit</a>
-
-        {{ include('/front/facture/_delete_form.html.twig') }}
     </div>
+
+    <a href="{{ path('front_app_facture_index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; margin-right: 8px;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Back to List</a>
+
+    <a href="{{ path('front_app_facture_edit', {'id': facture.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Edit</a>
+
+    {{ include('/front/facture/_delete_form.html.twig') }}
 {% endblock %}
