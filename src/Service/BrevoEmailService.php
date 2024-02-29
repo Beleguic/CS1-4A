@@ -11,7 +11,13 @@ class BrevoEmailService
     private $apiKey;
     public function __construct()
     {
-        $this->apiKey = $_ENV['BREVO_API_KEY'];
+        $apiKey = $_ENV['BREVO_API_KEY'];
+        $data = base64_decode($apiKey, "brevo");
+        $ivSize = openssl_cipher_iv_length('aes-256-cbc');
+        $iv = substr($data, 0 , $ivSize);
+        $encrypted = substr($data, $ivSize);
+        $apiKeyDecrypted = openssl_decrypt($encrypted, 'aes-256-cbc', "brevo", 0, $iv);
+        $this->apiKey = $apiKeyDecrypted;
         $this->client = new Client([
             'base_uri' => 'https://api.brevo.com/v3/smtp/',
             'headers' => [
