@@ -42,7 +42,7 @@ class SecurityController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             // Générer et stocker un token unique pour l'activation du compte
             $token = bin2hex(random_bytes(32)); // Génère un token unique
@@ -51,8 +51,8 @@ class SecurityController extends AbstractController
             // Envoyer un e-mail de confirmation avec le lien d'activation
             $activationLink = $this->generateUrl('activate_account', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
     
-            $senderName = 'Plumb Pay';
-            $senderEmail = 'team_plombpay@outlook.com';
+            $senderName = 'Plumbpay';
+            $senderEmail = 'team_plumbpay@outlook.com';
             $recipientName = $user->getUserIdentifier();
             $recipientEmail = $user->getEmail();
             $subject = 'Confirmation d\'inscription';
