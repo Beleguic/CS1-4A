@@ -1,0 +1,39 @@
+{# templates/product/pdf_template.html.twig #}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF du Produit</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 24px;
+        }
+        .product-info {
+            margin-bottom: 20px;
+        }
+        .product-name, .product-category, .product-price {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .product-name {
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .product-category {
+            font-style: italic;
+        }
+        .product-price {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="product-info">
+        <div class="product-name">Nom du produit : {{ product.name }}</div>
+        <div class="product-category">Catégorie : {{ product.category ? product.category.name : 'Non catégorisé' }}</div>
+        <div class="product-price">Prix : {{ product.price }} €</div>
+    </div>
+</body>
+</html>

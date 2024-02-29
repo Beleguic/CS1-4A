@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 
 #[Route('/product')]
 class ProductController extends AbstractController
@@ -77,5 +80,31 @@ class ProductController extends AbstractController
         }
 
         return $this->redirectToRoute('front_app_product_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/download-pdf', name: 'app_product_download_pdf', methods: ['GET'])]
+    public function downloadPdf(Product $product): Response
+    {
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        
+        $dompdf = new Dompdf($pdfOptions);
+        
+        $html = $this->renderView('front/product/pdf_template.html.twig', ['product' => $product]);
+
+        
+        
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        
+        // Nom du fichier PDF à télécharger
+        $pdfFileName = "product_".$product->getId().".pdf";
+
+        // Envoi du PDF au navigateur
+        return new Response($dompdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="'.$pdfFileName.'"',
+        ]);
     }
 }
