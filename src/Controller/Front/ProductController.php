@@ -82,6 +82,8 @@ class ProductController extends AbstractController
         return $this->redirectToRoute('front_app_product_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    // src/Controller/Front/ProductController.php
+
     #[Route('/{id}/download-pdf', name: 'app_product_download_pdf', methods: ['GET'])]
     public function downloadPdf(Product $product): Response
     {
@@ -92,19 +94,18 @@ class ProductController extends AbstractController
         
         $html = $this->renderView('front/product/pdf_template.html.twig', ['product' => $product]);
 
-        
-        
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         
-        // Nom du fichier PDF à télécharger
-        $pdfFileName = "product_".$product->getId().".pdf";
+        $productNameSafe = preg_replace('/[^A-Za-z0-9\-]/', '_', $product->getName());
 
-        // Envoi du PDF au navigateur
+        $pdfFileName = "product_" . $productNameSafe . "_" . $product->getId() . ".pdf";
+
         return new Response($dompdf->output(), 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'attachment; filename="'.$pdfFileName.'"',
         ]);
     }
+
 }

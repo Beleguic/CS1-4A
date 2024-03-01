@@ -8,18 +8,46 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            margin: 24px;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            background-color: #134F63;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #05C1FA;
+            color: white;
+            padding: 5px 10px;
+            font-size: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-logo {
+            height: 15px; 
         }
         .product-info {
-            margin-bottom: 20px;
+            margin: 50px 20px 60px;
         }
-        .product-name, .product-category, .product-price {
+        .product-name, .product-category, .product-price, .product-description {
             margin-top: 10px;
             font-size: 16px;
         }
         .product-name {
             font-weight: bold;
             font-size: 20px;
+        }
+        .product-description {
+            font-size: 15px;
         }
         .product-category {
             font-style: italic;
@@ -30,10 +58,18 @@
     </style>
 </head>
 <body>
+    <header>
+        Informations sur le Produit
+    </header>
     <div class="product-info">
         <div class="product-name">Nom du produit : {{ product.name }}</div>
         <div class="product-category">Catégorie : {{ product.category ? product.category.name : 'Non catégorisé' }}</div>
+        <div class="product-description">Description : {{ product.description }}</div>
         <div class="product-price">Prix : {{ product.price }} €</div>
     </div>
+    <footer>
+        <div>© 2024 Mon Entreprise - Tous droits réservés</div>
+        <div>Généré avec l'application Plumbpay</div>
+    </footer>
 </body>
 </html>
