@@ -17,14 +17,16 @@
                 </tr>
             </thead>
             <tbody>
-            {% for devis in devis %}
+            {% for devi in devis %}
                 <tr>
-                    <td>{{ devis.id }}</td>
-                    <td>{{ devis.clientName }}</td>
-                    <td>{{ devis.totalPrice() is not null ? devis.totalPrice() : 'N/A' }}</td>
+                    <td>{{ devi.id }}</td>
+                    <td>{{ devi.getClient().getNom() ~ " " ~ devi.getClient().getPrenom()}}</td>
+                    <td>{{ devi.getTotalPrice() }}</td>
                     <td>
-                        <a href="{{ path('front_app_devis_show', {'id': devis.id}) }}" class="btn btn-info">Show</a>
-                        <a href="{{ path('front_app_devis_edit', {'id': devis.id}) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ path('front_app_devis_show', {'id': devi.id}) }}" class="btn btn-info">Show</a>
+                        <a href="{{ path('front_app_devis_delete', {'id': devi.id}) }}" class="btn btn-danger">Delete</a>
+                        {#  <a href="{{ path('front_app_devis_send', {'id': devi.id}) }}" class="btn btn-primary">Send</a>#}
+                        <a href="{{ path('front_app_devis_edit', {'id': devi.id}) }}" class="btn btn-warning">Edit</a>
                     </td>
                 </tr>
             {% else %}

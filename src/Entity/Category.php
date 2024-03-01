@@ -17,7 +17,7 @@ class Category
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    protected ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -40,6 +40,13 @@ class Category
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(string $id): static
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -94,5 +101,10 @@ class Category
         }
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars( $this );
     }
 }

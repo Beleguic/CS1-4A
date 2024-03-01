@@ -3,35 +3,46 @@
 {% block title %}Devis{% endblock %}
 
 {% block body %}
+    {% set messages = devis.message | default('Pas de remarques') %}
+
     <h1>Devis</h1>
+    <h2> Client : {{ devis.client.getNom() ~ " " ~ devis.client.getPrenom()}}</h2>
+    <h3> Date : {{ devis.createdAt|date('d/m/Y') }}</h3>
+    <h3> N° de devis : {{ devis.numDevis }} </h3>
 
-    <table class="table">
+    <p> Remarques : {{ messages }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Description</th>
+                <th>Prix unitaire</th>
+                <th>TVA</th>
+                <th>Categorie</th>
+                <th>Quantité</th>
+                <th>Prix totale</th>
+            </tr>
+        </thead>
         <tbody>
+    {% for produit in devis.produits %}
             <tr>
-                <th>Id</th>
-                <td>{{ devi.id }}</td>
+                <td>{{ produit.name }}</td>
+                <td>{{ produit.description }}</td>
+                <td>{{ produit.price }} €</td>
+                <td>{{ produit.tva }} %</td>
+                <td>{{ produit.category.name }}</td>
+                <td>{{ produit.quantite }}</td>
+                <td>{{ produit.prix_totale }} €</td>
             </tr>
-
-            <tr>
-                <th>Client Name</th>
-                <td>{{ devi.clientName }}  {{ devi.Client }}</td>
-            </tr>
-
-            <tr>
-                <th>Price</th>
-                <td>{{ devi.totalPrice }}</td>
-            </tr>
-
-            <tr>
-                <th>Taxes</th>
-                <td>{{ devi.taxes }}</td>
-            </tr>
+    {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('front_app_devis_index') }}">back to list</a>
+    <h3> Prix Total : {{ devis.totalPrice }} €</h3>
 
-    <a href="{{ path('front_app_devis_edit', {'id': devi.id}) }}">edit</a>
+    <a href="{{ path('front_app_devis_index') }}">back to list</a>
+    <a href="{{ path('front_app_devis_edit', {'id': devis.id}) }}">edit</a>
 
     {{ include('/front/devis/_delete_form.html.twig') }}
 {% endblock %}

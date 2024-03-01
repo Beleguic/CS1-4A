@@ -4,10 +4,18 @@
 
 {% block body %}
     <h1>Edit Devis</h1>
+    <script>
+        var products = {{ product|raw }};
+        var productsDevis = {{ devisProduit|raw }};
+
+        console.log(productsDevis);
+    </script>
 
     {{ include('/front/devis/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('front_app_devis_index') }}">back to list</a>
 
     {{ include('/front/devis/_delete_form.html.twig') }}
+
+
 {% endblock %}
