@@ -104,6 +104,24 @@ class DevisController extends AbstractController
     public function edit(Request $request, Devis $devis, EntityManagerInterface $entityManager): Response
     {
 
+        $products = $entityManager->getRepository(Product::class)->findAll();
+
+        $productArray = [];
+        foreach ($products as $product) {
+            $category = $product->getCategory();
+            $productArray[] = [
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'description' => $product->getDescription(),
+                'price' => $product->getPrice(),
+                'tva' => $product->getTva(),
+                'category' => $category->getName(),
+                // Ajoutez d'autres champs selon votre entité
+            ];
+        }
+
+        $products = json_encode($productArray);
+
         dump($devis->getProduits()[0]);
         $prodTemp = [];
         foreach ($devis->getProduits() as $product) {
@@ -114,23 +132,53 @@ class DevisController extends AbstractController
         }
         $devis->setProduits($prodTemp);
 
-        dump($prodTemp);
-        dump($devis);
-
-        //arrayToProduit
-
         $form = $this->createForm(DevisType::class, $devis);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+
+
+            // Recupere tout les produits
+            $products = $devis->getProduits();
+            //Recupere tout les attribut de mon objet pour les mettre dans un tableau
+            // On effectue ce traitement car sinon, les element n'arrive pas a etre enregistrer dans la base de données
+            $prod = [];
+            foreach ($products as $product) {
+                $product->setName($productArray[$product->getName()]["name"]);
+                $prodtemp = $product->jsonSerialize();
+                $prodtemp['category'] = $product->getCategory()->jsonSerialize();
+
+                $prod[] = $prodtemp;
+            }
+            // on enregistre les produits dans l'objet devis
+            $devis->setProduits($prod);
+            // calcul du prix total
+            $totalPrice = 0;
+            foreach ($products as $product) {
+                $totalPrice += $product->getPrixTotale();
+            }
+
+            $devis->setTotalPrice($totalPrice);
             $entityManager->flush();
 
             return $this->redirectToRoute('front_app_devis_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $produitsTable = [];
+        $produitDevis = $devis->getProduits();
+        foreach ($produitDevis as $produit) {
+            $categoryTemp = $produit->getCategory()->jsonSerialize();
+            $produitsTemp = $produit->jsonSerialize();
+            $produitsTemp['category'] = $categoryTemp;
+            $produitsTable[] = $produitsTemp;
+        }
+
         return $this->render('front/devis/edit.html.twig', [
             'devis' => $devis,
+            'devisProduit' => json_encode($produitsTable),
             'form' => $form,
+            'product' => $products,
         ]);
     }
 

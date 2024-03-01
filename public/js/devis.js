@@ -1,6 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     var index = 0;
+
+    let divCollection = [];
+
+    if(typeof productsDevis != 'undefined') {
+        divCollection = initDevis();
+    }
+
+    //throw new Error("Something went badly wrong!");
+
     const table = document.createElement("table");
     // Récupérer le prototype du formulaire pour les tags
     const tagForm = document.getElementById('devis_produits');
@@ -18,28 +27,43 @@ document.addEventListener('DOMContentLoaded', function () {
     // Ajouter le bouton à la fin de la liste des tags
     tagFormContainer.appendChild(newTagLinkLi);
 
-    addTagForm(index, table);
+    const prototype = tagForm.getAttribute('data-prototype').replace(/__name__/g, index);
+
+    // Créer un élément div pour analyser la chaîne HTML
+    var divElement = document.createElement('div');
+    divElement.innerHTML = prototype;
+
+
+    if(divCollection.length > 0) {
+        for (let i = 0; i < divCollection.length; i++) {
+            console.log(divCollection[i]);
+            addTagForm(index, table, divCollection[i]);
+            index++;
+        }
+    }
+    else{
+        addTagForm(index, table, divElement);
+        index++;
+    }
 
     // Gérer l'ajout de nouveaux champs au clic sur le bouton
     addButton.addEventListener('click', function (e) {
         index++;
-        addTagForm(index, table);
-    });
-
-    // Fonction pour ajouter un nouveau champ de tag
-    function addTagForm(index, table) {
-        // Récupérer le nombre total de tags présents
-
-        // Récupérer le prototype du champ tag
         const prototype = tagForm.getAttribute('data-prototype').replace(/__name__/g, index);
 
         // Créer un élément div pour analyser la chaîne HTML
         var divElement = document.createElement('div');
         divElement.innerHTML = prototype;
+        addTagForm(index, table, divElement);
+    });
+
+    // Fonction pour ajouter un nouveau champ de tag
+    function addTagForm(index, table, divElement) {
 
         // Sélectionner tous les éléments input dans le div
         // Créer un élément div pour analyser la chaîne HTML
         var inputData = [];
+
         let g = divElement.children[0].children[1].children;
 
         for (let i = 0; i < g.length; i++) {
@@ -109,6 +133,9 @@ document.addEventListener('DOMContentLoaded', function () {
         for (var i = 0; i < products.length; i++) {
             let option = document.createElement('option');
             option.value = i;
+            if(products[i].name == inputData[0].input.value) {
+                option.selected = true;
+            }
             option.textContent = products[i].name;
             select.appendChild(option);
         }
@@ -117,7 +144,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let selected = select.selectedOptions[0].value;
             let trChildren = j.target.parentElement.parentElement.children;
-            console.log(products[selected]);
 
             var selectElement = trChildren[2].children[0];
 
@@ -294,6 +320,35 @@ document.addEventListener('DOMContentLoaded', function () {
         formToRemove.remove();
     }
 
+    function initDevis(){
+
+        let devis = document.getElementById('devis_produits');
+
+        console.log(devis);
+
+        let divCollection = []
+
+        for (let i = 0; i < devis.children.length; i++) {
+            let divElement = document.createElement('div');
+            let copieProduit = devis.children[i].cloneNode(true);
+            divElement.appendChild(copieProduit);
+            divCollection.push(divElement);
+        }
+
+        console.log(divCollection);
+
+        let length = devis.children.length;
+
+        for (let i = 0; i < length; i++) {
+                console.log(devis.children);
+                devis.children[0].remove();
+        }
+
+        return divCollection
+
+    }
+
 
 
 });
+
