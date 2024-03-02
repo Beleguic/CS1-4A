@@ -18,7 +18,7 @@
         {% endif %}
         {{ include('security/login/_form.html.twig') }}
         <section>
-            <p>Forgot password ? <a href="#" class="font-semibold text-mainColor-400 hover:text-secondaryColor-400 focus:text-secondaryColor-400">Recover password</a></p>
+            <p>Forgot password ? <a href="{{ path('forgot_password') }}" class="font-semibold text-mainColor-400 hover:text-secondaryColor-400 focus:text-secondaryColor-400">Recover password</a></p>
         </section>
     </div>
 
