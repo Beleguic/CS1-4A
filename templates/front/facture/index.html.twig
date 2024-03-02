@@ -2,7 +2,7 @@
 
 {% block title %}Invoice index{% endblock %}
 
-{% block body %}
+{% block body %}docke
     <div>
         <h1>Facture Index</h1>
 
@@ -12,7 +12,7 @@
                     <tr>
                         <th>N° Facture</th>
                         <th>N° Devis</th>
-                        {#  <th>Client</th> #}
+                        <th>Client</th>
                         <th>Prix totale</th>
                         <th>Payé ?</th>
                         <th>Montant déjà payé</th>
@@ -26,7 +26,7 @@
                     <tr>
                         <td>{{ facture.numFacture }}</td>
                         <td>{{ facture.numDevis }}</td>
-                        {# <td>{{ facture.getClient().getNom() ~ " " ~ factures.getClient().getPrenom() }}</td>  #}
+                        <td>{{ facture.client.Nom ~ ' ' ~ facture.client.Prenom }}</td>
                         <td>{{ facture.prixTotal }}</td>
                         <td>{{ facture.paid }}</td>
                         <td>{{ facture.prixPaye }}</td>
@@ -34,6 +34,7 @@
                         <td>{{ facture.dateEcheance|date("Y-m-d") }}</td>
                         <td>
                             <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="btn btn-info">Show</a>
+                            <a href="{{ path('front_app_facture_send', {'id': facture.id}) }}" class="btn btn-primary">Send</a>
                             <a href="{{ path('front_app_facture_paid', {'id': facture.id}) }}" class="btn btn-warning">Paid with Stripe</a>
 
                         </td>

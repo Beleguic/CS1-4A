@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Stripe\StripeClient;
 use stripe\Stripe;
+use Doctrine\Common\Proxy\Proxy;
 
 #[Route('/facture')]
 class FactureController extends AbstractController
@@ -21,8 +22,32 @@ class FactureController extends AbstractController
     public function index(FactureRepository $factureRepository, EntityManagerInterface $entityManager): Response
     {
 
+        $factures = $factureRepository->findAll();
+
+        foreach ($factures as $facture) {
+            $clientId = $facture->getClient()->getId();
+            $client = $entityManager->find(Client::class, $clientId);
+
+            if ($client instanceof Proxy) {
+                // Force le chargement complet du proxy s'il n'a pas encore été chargé
+                $entityManager->refresh($client);
+            }
+        }
+
+
+
+        /*$clientId = $factureRepository->getClient()->getId();
+        $client = $entityManager->find(Client::class, $clientId);
+
+        if ($client instanceof Proxy) {
+            // Force le chargement complet du proxy s'il n'a pas encore été chargé
+            $entityManager->refresh($client);
+        }*/
+
+        dump($factures);
+
         return $this->render('front/facture/index.html.twig', [
-            'factures' => $factureRepository->findAll(),
+            'factures' => $factures,
         ]);
     }
 
@@ -53,9 +78,30 @@ class FactureController extends AbstractController
     ]);
     }
 
-    #[Route('/{id}', name: 'app_facture_show', methods: ['GET'])]
-    public function show(Facture $facture): Response
+    #[Route('/{id}/send', name: 'app_facture_send', methods: ['GET', 'POST'])]
+    public function send(Request $request, Facture $facture, EntityManagerInterface $entityManager): Response
     {
+        // Genere un PDF avec les donnée de la facture
+        // Envoyer le PDF par mail au client via son adrsse mail
+        // Mettre a jour la facture pour dire qu'elle a été envoyé
+
+
+        return 0;
+    }
+
+    #[Route('/{id}', name: 'app_facture_show', methods: ['GET'])]
+    public function show(Facture $facture, EntityManagerInterface $entityManager): Response
+    {
+        $clientId = $facture->getClient()->getId();
+        $client = $entityManager->find(Client::class, $clientId);
+
+        if ($client instanceof Proxy) {
+            // Force le chargement complet du proxy s'il n'a pas encore été chargé
+            $entityManager->refresh($client);
+        }
+
+        dump($facture);
+
         return $this->render('front/facture/show.html.twig', [
             'facture' => $facture,
         ]);
