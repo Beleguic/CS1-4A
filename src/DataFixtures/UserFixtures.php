@@ -21,6 +21,8 @@ class UserFixtures extends Fixture
             ->setRoles(['ROLE_ADMIN'])
             ->setLastname($faker->lastName)
             ->setFirstname($faker->firstName)
+            ->setVerifiedAt(new \DateTimeImmutable())
+            ->setEnabled(true)
         ;
         $object->setPassword($this->passwordHasher->hashPassword($object, $pwd));
         $manager->persist($object);
@@ -30,6 +32,8 @@ class UserFixtures extends Fixture
             ->setRoles(['ROLE_SUPER_ADMIN'])
             ->setLastname($faker->lastName)
             ->setFirstname($faker->firstName)
+            ->setVerifiedAt(new \DateTimeImmutable())
+            ->setEnabled(true)
         ;
         $object->setPassword($this->passwordHasher->hashPassword($object, $pwd));
         $manager->persist($object);
@@ -39,6 +43,8 @@ class UserFixtures extends Fixture
                 ->setEmail($faker->email)
                 ->setLastname($faker->lastName)
                 ->setFirstname($faker->firstName)
+                ->setVerifiedAt(new \DateTimeImmutable())
+                ->setEnabled(true)
             ;
             $object->setPassword($this->passwordHasher->hashPassword($object, $pwd));
             $manager->persist($object);
