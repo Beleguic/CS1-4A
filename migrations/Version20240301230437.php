@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240229161049 extends AbstractMigration
+final class Version20240301230437 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -31,14 +31,14 @@ final class Version20240229161049 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN company.id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE contact (id UUID NOT NULL, lastname VARCHAR(255) NOT NULL, firstname VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, phone VARCHAR(255) NOT NULL, company VARCHAR(255) NOT NULL, subject VARCHAR(255) NOT NULL, message TEXT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN contact.id IS \'(DC2Type:uuid)\'');
-        $this->addSql('CREATE TABLE devis (id UUID NOT NULL, client_id INT NOT NULL, produits JSON NOT NULL, message TEXT DEFAULT NULL, num_devis VARCHAR(255) NOT NULL, entreprise VARCHAR(255) NOT NULL, total_price DOUBLE PRECISION NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE devis (id UUID NOT NULL, client_id INT NOT NULL, message TEXT DEFAULT NULL, num_devis VARCHAR(255) NOT NULL, entreprise VARCHAR(255) NOT NULL, total_price DOUBLE PRECISION NOT NULL, produits JSON DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_8B27C52B19EB6921 ON devis (client_id)');
         $this->addSql('COMMENT ON COLUMN devis.id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE facture (id INT NOT NULL, devis_id UUID DEFAULT NULL, client_id INT DEFAULT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, amount NUMERIC(10, 2) NOT NULL, paid BOOLEAN NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_FE86641041DEFADA ON facture (devis_id)');
         $this->addSql('CREATE INDEX IDX_FE86641019EB6921 ON facture (client_id)');
         $this->addSql('COMMENT ON COLUMN facture.devis_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('CREATE TABLE product (id INT NOT NULL, category_id INT NOT NULL, name VARCHAR(255) NOT NULL, description TEXT NOT NULL, price INT NOT NULL, tva DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE product (id INT NOT NULL, category_id INT NOT NULL, name VARCHAR(255) NOT NULL, description TEXT NOT NULL, price INT NOT NULL, tva DOUBLE PRECISION NOT NULL, quantite INT DEFAULT NULL, prix_totale DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_D34A04AD12469DE2 ON product (category_id)');
         $this->addSql('CREATE TABLE role (id INT NOT NULL, name VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE "user" (id UUID NOT NULL, company_id UUID DEFAULT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) DEFAULT NULL, lastname VARCHAR(255) DEFAULT NULL, firstname VARCHAR(255) DEFAULT NULL, activation_token VARCHAR(255) DEFAULT NULL, enabled BOOLEAN DEFAULT NULL, verified_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');

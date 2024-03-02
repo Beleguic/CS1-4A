@@ -64,6 +64,11 @@
                     <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
                         <a href="{{ path('front_app_account') }}" class="block px-4 py-2 account-link hover:text-white">my company</a>
                         <a href="{{ path('front_app_account') }}" class="block px-4 py-2 account-link hover:text-white">My Account</a>
+                        {% if app.user %}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <a href="{{ path('back_app_index') }}" class="block px-4 py-2 account-link hover:text-white">Admin</a>
+                            {% endif %}
+                        {% endif %}
                         <a href="{{ path('app_logout') }}" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
                     </div>
             </div>

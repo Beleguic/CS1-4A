@@ -10,24 +10,24 @@
         {% endblock %}
     </head>
     <body>
-    {% if app.user %}
-        {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <aside class="border-b border-b-TextColor-400 dark:border-b-TextColor-800">
-                <div class="lg:max-w-10xl mx-auto w-full py-2 px-4">
-                    <nav class="flex flex-col lg:flex-row gap-4">
-                        <ul class="flex flex-col lg:w-8/12 lg:flex-row gap-8">
-                        </ul>
-                        <ul class="flex flex-col lg:w-4/12 lg:flex-row gap-8 lg:justify-end">
-                            <li>
-                                <a href="{{ path('back_app_index') }}" class="border-b border-b-transparent hover:border-b-TextColor-400 focus:border-b-TextColor-400 dark:hover:border-b-TextColor-800 dark:focus:border-b-TextColor-800">Administration</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </aside>
-        {% endif %}
-    {% endif %}
         <header class="top-0 fixed z-10 w-full bg-bgBody-400 dark:bg-bgBody-800 text-TextColor-400 dark:text-TextColor-800">
+            {% if app.user %}
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <aside class="border-b border-b-TextColor-400 dark:border-b-TextColor-800">
+                        <div class="lg:max-w-10xl mx-auto w-full py-2 px-4">
+                            <nav class="flex flex-col lg:flex-row gap-4">
+                                <ul class="flex flex-col lg:w-8/12 lg:flex-row gap-8">
+                                </ul>
+                                <ul class="flex flex-col lg:w-4/12 lg:flex-row gap-8 lg:justify-end">
+                                    <li>
+                                        <a href="{{ path('back_app_index') }}" class="border-b border-b-transparent hover:border-b-TextColor-400 focus:border-b-TextColor-400 dark:hover:border-b-TextColor-800 dark:focus:border-b-TextColor-800">Administration</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </aside>
+                {% endif %}
+            {% endif %}
             <div class="lg:max-w-10xl mx-auto w-full p-4">
                 {% block header %}
                     <nav class="flex flex-col lg:flex-row gap-4">
