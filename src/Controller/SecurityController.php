@@ -110,42 +110,45 @@ class SecurityController extends AbstractController
     #[Route('/forgot-password', name: 'forgot_password')]
     public function forgotPassword(Request $request, EntityManagerInterface $entityManager, BrevoEmailService $emailService): Response
     {
-        if ($request->isMethod('POST')) {
-            $email = $request->request->get('email');
+        $successMessage = null;
 
-            $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+    if ($request->isMethod('POST')) {
+        $email = $request->request->get('email');
 
-            if ($user instanceof UserInterface) {
+        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
-                $token = bin2hex(random_bytes(32)); // Génère un token unique
-                $user->setResetPasswordToken($token);
-                $entityManager->flush();
+        if ($user instanceof UserInterface) {
+            $token = bin2hex(random_bytes(32)); // Génère un token unique
+            $user->setResetPasswordToken($token);
+            $entityManager->flush();
 
-                // Envoyer un e-mail de réinitialisation avec le lien de réinitialisation
-                $resetLink = $this->generateUrl('reset_password_new', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+            // Envoyer un e-mail de réinitialisation avec le lien de réinitialisation
+            $resetLink = $this->generateUrl('reset_password_new', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
-                $senderName = 'Plumbpay';
-                $senderEmail = 'team_plumbpay@outlook.com';
-                $recipientName = $user->getUserIdentifier();
-                $recipientEmail = $user->getEmail();
-                $subject = 'Réinitialisation du mot de passe';
-                $htmlContent = '<html><head></head><body><p>Veuillez cliquer sur le lien suivant pour réinitialiser votre mot de passe : <a href="' . $resetLink . '">Réinitialiser votre mot de passe</a></p></body></html>';
+            $senderName = 'Plumbpay';
+            $senderEmail = 'team_plumbpay@outlook.com';
+            $recipientName = $user->getUserIdentifier();
+            $recipientEmail = $user->getEmail();
+            $subject = 'Réinitialisation du mot de passe';
+            $htmlContent = '<html><head></head><body><p>Veuillez cliquer sur le lien suivant pour réinitialiser votre mot de passe : <a href="' . $resetLink . '">Réinitialiser votre mot de passe</a></p></body></html>';
 
-                // Envoyer l'e-mail de réinitialisation
-                $response = $emailService->sendEmail($senderName, $senderEmail, $recipientName, $recipientEmail, $subject, $htmlContent);
+            // Envoyer l'e-mail de réinitialisation
+            $response = $emailService->sendEmail($senderName, $senderEmail, $recipientName, $recipientEmail, $subject, $htmlContent);
 
-                if ($response['success']) {
-                    // Rediriger vers une page de confirmation
-                    return $this->redirectToRoute('reset_password_new', ['token' => $token]);
-                    
-                } else {
-                    // Gérer les erreurs d'envoi d'e-mail
-                    return $this->redirectToRoute('app_register');
-                }
+            if ($response['success']) {
+                // Message de succès
+                $successMessage = 'Un email de réinitialisation a été envoyé à votre adresse.';
+            } else {
+                // Gérer les erreurs d'envoi d'e-mail
+                return $this->redirectToRoute('app_register');
             }
         }
+    }
 
-        return $this->render('security/forgot_password.html.twig');
+    return $this->render('security/forgot_password.html.twig', [
+        'successMessage' => $successMessage,
+    ]);
+
     }
 
 
@@ -170,10 +173,9 @@ class SecurityController extends AbstractController
             $newPassword = $form->get('newPassword')->getData();
             $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
             $user->setPassword($hashedPassword);
-            #$user->setResetPasswordToken(null); // Supprimer le token de réinitialisation
+            $user->setResetPasswordToken(null); // Supprimer le token de réinitialisation
             $entityManager->flush();
 
-            // Rediriger vers une page de confirmation ou de connexion
             return $this->redirectToRoute('app_login', ['success' => 'Password reset successfully']);
         }
 
