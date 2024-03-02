@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Product;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 #[Route('/devis')]
 class DevisController extends AbstractController
@@ -192,4 +194,32 @@ class DevisController extends AbstractController
 
         return $this->redirectToRoute('front_app_devis_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/download-pdf', name: 'app_devis_download_pdf', methods: ['GET'])]
+    public function downloadPdf(Devis $devis): Response
+    {
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        
+        $dompdf = new Dompdf($pdfOptions);
+        
+        $html = $this->renderView('front\devis\pdf_devis_template.html.twig', ['devis' => $devis]);
+    
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+    
+        $client = $devis->getClient();
+        $clientNameSafe = $client ? preg_replace('/[^A-Za-z0-9\-]/', '_', $client->getNom() . '_' . $client->getPrenom()) : 'Client_Inconnu';
+    
+        
+        $pdfFileName = "devis_" . $clientNameSafe . "_" . $devis->getId()->toRfc4122() . ".pdf";
+
+
+        return new Response($dompdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="'.$pdfFileName.'"',
+        ]);
+    }
+    
 }
