@@ -1,0 +1,16 @@
+{% extends 'security.html.twig' %}
+
+{% block title %}Register - Plumbpay{% endblock %}
+
+{% block body %}
+<div class="flex flex-col gap-4 lg:justify-between h-full">
+    <div>
+        <a href="{{ path('front_default_index') }}" class="text-TextColor-400 dark:text-TextColor-800">Go to home</a>
+    </div>
+    <div class="flex flex-col gap-4">
+        <h1 class="font-bold text-2xl">Welcome to plumbpay !</h1>
+        <p>Let's generate some new invoices</p>
+    </div>
+    {{ include('security/registration/_form.html.twig') }}
+</div>
+{% endblock %}
