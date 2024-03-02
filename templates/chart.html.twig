@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="chart-container"></div> 
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch("{{ path('chart_data') }}")
+                .then(response => response.json())
+                .then(data => {
+                    Highcharts.chart('chart-container', {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'Nombre de Produits, Contacts, Sociétés et Utilisateurs'
+                        },
+                        xAxis: {
+                            categories: ['Produits', 'Contacts', 'Sociétés', 'Utilisateurs']
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Nombre'
+                            }
+                        },
+                        series: [{
+                            name: 'Nombre',
+                            data: [data.products, data.contacts, data.companies, data.users]
+                        }]
+                    });
+                });
+        });
+    </script>
+{% endblock %}
