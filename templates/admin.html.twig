@@ -119,9 +119,12 @@
                     </main>
                 </div> 
 
-                <main class="p-6">
+                <main class="flex p-6">
                 <!-- Section pour afficher le graphique -->
-                    <div id="container" style="width:700px; height: 400px"></div>
+                    <div id="container" style=" height: 400px"></div>
+
+                    <div id="container-pie" style="height: 400px"></div>
+
                 </main>
 
                 <footer class="w-full bg-white text-right p-4">
@@ -131,35 +134,71 @@
                 
             </div>
 
-           <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        <script>
+
+           //Premier Graph
+            document.addEventListener('DOMContentLoaded', function () {
+                // Utiliser les données récupérées pour configurer le graphique
+                Highcharts.chart('container', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Nombre d\'utilisateurs, d\'entreprises et de contacts'
+                    },
+                    xAxis: {
+                        categories: [
+                            'Utilisateurs',
+                            'Entreprises',
+                            'Contacts'
+                        ]
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Nombre'
+                        }
+                    },
+                    series: [{
+                        name: 'Nombre',
+                        data: [
+                            {{ cards.general[1].nb }},
+                            {{ cards.general[2].nb }},
+                            {{ cards.general[3].nb }}
+                        ]
+                    }]
+                });
+            });
+
+            //Deuxieme graph
+
+            document.addEventListener('DOMContentLoaded', function () {
             // Utiliser les données récupérées pour configurer le graphique
-            Highcharts.chart('container', {
+            Highcharts.chart('container-pie', {
                 chart: {
-                    type: 'column'
+                    type: 'pie'
                 },
                 title: {
-                    text: 'Nombre d\'utilisateurs, d\'entreprises et de contacts'
+                    text: 'Répartition du nombre de produits, catégories, devis et factures'
                 },
-                xAxis: {
-                    categories: [
-                        'Utilisateurs',
-                        'Entreprises',
-                        'Contacts'
-                    ]
-                },
-                yAxis: {
-                    title: {
-                        text: 'Nombre'
-                    }
+                tooltip: {
+                    pointFormat: '<b>{point.percentage:.1f}%</b>'
                 },
                 series: [{
                     name: 'Nombre',
-                    data: [
-                        {{ cards.general[1].nb }},
-                        {{ cards.general[2].nb }},
-                        {{ cards.general[3].nb }}
-                    ]
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Produits',
+                        y: {{ cards.product[1].nb }}
+                    }, {
+                        name: 'Catégories',
+                        y: {{ cards.product[2].nb }}
+                    }, {
+                        name: 'Devis',
+                        y: {{ cards.pdf[1].nb }}
+                    }, {
+                        name: 'Factures',
+                        y: {{ cards.pdf[2].nb }}
+                    }]
                 }]
             });
         });
