@@ -3,12 +3,16 @@
 {% block title %}New Devis{% endblock %}
 
 {% block body %}
-    <h1>Create new Devis</h1>
+    <h1 class="text-3xl font-bold underline text-center my-8" style="color: #000000;">Create New Devis</h1>
 
-    {{ include('/front/devis/_form.html.twig') }}
 
-    <a href="{{ path('front_app_devis_index') }}">back to list</a>
+    <div class="mx-auto" style="max-width: 90%;">
+        {{ include('/front/devis/_form.html.twig') }}
+    </div>
 
+    <div class="text-center mt-4">
+        <a href="{{ path('front_app_devis_index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; transition: background-color 0.2s ease-in-out;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Back to List</a>
+    </div>
 
     <script>
         var products = {{ product|raw }};

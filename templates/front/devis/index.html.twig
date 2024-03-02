@@ -3,41 +3,37 @@
 {% block title %}Devis Index{% endblock %}
 
 {% block body %}
-    <div>
-        <h1>Devis Index</h1>
+<div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="py-3 px-6">ID</th>
+                <th scope="col" class="py-3 px-6">Client</th>
+                <th scope="col" class="py-3 px-6">Total</th>
+                <th scope="col" class="py-3 px-6">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for devi in devis %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="py-4 px-6">{{ devi.id }}</td>
+                <td class="py-4 px-6">{{ devi.getClient().getNom() ~ " " ~ devi.getClient().getPrenom() }}</td>
+                <td class="py-4 px-6">{{ devi.getTotalPrice() }}</td>
+                <td class="py-4 px-6 flex space-x-2">
+                    <a href="{{ path('front_app_devis_show', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Show</a>
+                    <a href="{{ path('front_app_devis_edit', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Edit</a>
+                    <a href="{{ path('front_app_devis_delete', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">Delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td colspan="4" class="py-4 px-6">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Client</th>
-                    <th>Total</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for devi in devis %}
-                <tr>
-                    <td>{{ devi.id }}</td>
-                    <td>{{ devi.getClient().getNom() ~ " " ~ devi.getClient().getPrenom()}}</td>
-                    <td>{{ devi.getTotalPrice() }}</td>
-                    <td>
-                        <a href="{{ path('front_app_devis_show', {'id': devi.id}) }}" class="btn btn-info">Show</a>
-                        <a href="{{ path('front_app_devis_delete', {'id': devi.id}) }}" class="btn btn-danger">Delete</a>
-                        {#  <a href="{{ path('front_app_devis_send', {'id': devi.id}) }}" class="btn btn-primary">Send</a>#}
-                        <a href="{{ path('front_app_devis_edit', {'id': devi.id}) }}" class="btn btn-warning">Edit</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="5">No records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<a href="{{ path('front_app_devis_new') }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Create New</a>
 
-        <a href="{{ path('front_app_devis_new') }}" class="btn btn-success">Create New</a>
-    </div>
 {% endblock %}
