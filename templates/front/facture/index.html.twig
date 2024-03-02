@@ -10,25 +10,30 @@
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Devis</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Paid</th>
+                        <th>N° Facture</th>
+                        <th>N° Devis</th>
+                        {#  <th>Client</th> #}
+                        <th>Prix totale</th>
+                        <th>Payé ?</th>
+                        <th>Montant déjà payé</th>
+                        <th>Date d'emission de la facture</th>
+                        <th>Date d'echeance</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for facture in factures %}
                     <tr>
-                        <td>{{ facture.id }}</td>
-                        <td>{{ facture.devis.clientName }}</td>
-                        <td>{{ facture.date ? facture.date|date('Y-m-d H:i:s') : 'N/A' }}</td>
-                        <td>{{ facture.amount is not null ? facture.amount : 'N/A' }}</td>
-                        <td>{{ facture.paid ? 'Yes' : 'No' }}</td>
+                        <td>{{ facture.numFacture }}</td>
+                        <td>{{ facture.numDevis }}</td>
+                        {# <td>{{ facture.getClient().getNom() ~ " " ~ factures.getClient().getPrenom() }}</td>  #}
+                        <td>{{ facture.prixTotal }}</td>
+                        <td>{{ facture.paid }}</td>
+                        <td>{{ facture.prixPaye }}</td>
+                        <td>{{ facture.dateFacture|date("Y-m-d") }}</td>
+                        <td>{{ facture.dateEcheance|date("Y-m-d") }}</td>
                         <td>
                             <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="btn btn-info">Show</a>
-                            <a href="{{ path('front_app_facture_edit', {'id': facture.id}) }}" class="btn btn-warning">Edit</a>
                             <a href="{{ path('front_app_facture_paid', {'id': facture.id}) }}" class="btn btn-warning">Paid with Stripe</a>
 
                         </td>
@@ -44,4 +49,5 @@
 
         <a href="{{ path('front_app_facture_new') }}" class="btn btn-success">Create New</a>
     </div>
+
 {% endblock %}

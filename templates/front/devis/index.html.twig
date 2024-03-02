@@ -27,6 +27,7 @@
                         <a href="{{ path('front_app_devis_delete', {'id': devi.id}) }}" class="btn btn-danger">Delete</a>
                         {#  <a href="{{ path('front_app_devis_send', {'id': devi.id}) }}" class="btn btn-primary">Send</a>#}
                         <a href="{{ path('front_app_devis_edit', {'id': devi.id}) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ path('front_app_devis_transform_devis', {'id': devi.id}) }}" class="btn btn-warning">Devis to Facture</a>
                     </td>
                 </tr>
             {% else %}

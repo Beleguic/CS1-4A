@@ -3,6 +3,7 @@
 namespace App\Controller\Front;
 
 use App\Entity\Facture;
+use App\Entity\Client;
 use App\Form\FactureType;
 use App\Repository\FactureRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,11 +18,11 @@ use stripe\Stripe;
 class FactureController extends AbstractController
 {
     #[Route('/', name: 'app_facture_index', methods: ['GET'])]
-    public function index(FactureRepository $factureRepository): Response
+    public function index(FactureRepository $factureRepository, EntityManagerInterface $entityManager): Response
     {
+
         return $this->render('front/facture/index.html.twig', [
             'factures' => $factureRepository->findAll(),
-            
         ]);
     }
 
