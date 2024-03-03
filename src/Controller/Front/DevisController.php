@@ -60,10 +60,9 @@ class DevisController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Recupere tout les produits
+            
             $products = $devis->getProduits();
-            //Recupere tout les attribut de mon objet pour les mettre dans un tableau
-            // On effectue ce traitement car sinon, les element n'arrive pas a etre enregistrer dans la base de données
+
             $prod = [];
             foreach ($products as $product) {
                 $product->setName($productArray[$product->getName()]["name"]);
@@ -120,7 +119,7 @@ class DevisController extends AbstractController
                 'price' => $product->getPrice(),
                 'tva' => $product->getTva(),
                 'category' => $category->getName(),
-                // Ajoutez d'autres champs selon votre entité
+
             ];
         }
 
@@ -143,10 +142,9 @@ class DevisController extends AbstractController
 
 
 
-            // Recupere tout les produits
+
             $products = $devis->getProduits();
-            //Recupere tout les attribut de mon objet pour les mettre dans un tableau
-            // On effectue ce traitement car sinon, les element n'arrive pas a etre enregistrer dans la base de données
+
             $prod = [];
             foreach ($products as $product) {
                 $product->setName($productArray[$product->getName()]["name"]);
@@ -155,9 +153,7 @@ class DevisController extends AbstractController
 
                 $prod[] = $prodtemp;
             }
-            // on enregistre les produits dans l'objet devis
             $devis->setProduits($prod);
-            // calcul du prix total
             $totalPrice = 0;
             foreach ($products as $product) {
                 $totalPrice += $product->getPrixTotale();

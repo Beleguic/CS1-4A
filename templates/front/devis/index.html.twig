@@ -16,7 +16,7 @@
         <tbody>
         {% for devi in devis %}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td class="py-4 px-6">{{ devi.id }}</td>
+                <td class="py-4 px-6">{{ devi.numDevis }}</td>
                 <td class="py-4 px-6">{{ devi.getClient().getNom() ~ " " ~ devi.getClient().getPrenom() }}</td>
                 <td class="py-4 px-6">{{ devi.getTotalPrice() }}</td>
                 <td class="py-4 px-6 flex space-x-2">
