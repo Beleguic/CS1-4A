@@ -2,53 +2,50 @@
 
 {% block title %}Invoice index{% endblock %}
 
-{% block body %}docke
-    <div>
-        <h1>Facture Index</h1>
+{% block body %}
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="py-3 px-6">N° Facture</th>
+                    <th scope="col" class="py-3 px-6">N° Devis</th>
+                    <th scope="col" class="py-3 px-6">Client</th>
+                    <th scope="col" class="py-3 px-6">Prix totale</th>
+                    <th scope="col" class="py-3 px-6">Payé ?</th>
+                    <th scope="col" class="py-3 px-6">Montant déjà payé</th>
+                    <th scope="col" class="py-3 px-6">Date d'emission de la facture</th>
+                    <th scope="col" class="py-3 px-6">Date d'echeance</th>
+                    <th scope="col" class="py-3 px-6">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for facture in factures %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td class="py-4 px-6">{{ facture.numFacture }}</td>
+                    <td class="py-4 px-6">{{ facture.numDevis }}</td>
+                    <td class="py-4 px-6">{{ facture.client.Nom ~ ' ' ~ facture.client.Prenom }}</td>
+                    <td class="py-4 px-6">{{ facture.prixTotal }}</td>
+                    <td class="py-4 px-6">{{ facture.paid }}</td>
+                    <td class="py-4 px-6">{{ facture.prixPaye }}</td>
+                    <td class="py-4 px-6">{{ facture.dateFacture|date("Y-m-d") }}</td>
+                    <td class="py-4 px-6">{{ facture.dateEcheance|date("Y-m-d") }}</td>
+                    <td class="py-4 px-6 flex space-x-2">
+                        <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Show</a>
+                        <a href="{{ path('front_app_facture_send_email', {'id': facture.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-700">Envoyé au client par mail</a>
+                        <a href="{{ path('front_app_facture_download_pdf', {'id': facture.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">PDF</a>
+                        <a href="{{ path('front_app_facture_paid', {'id': facture.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-400 hover:bg-blue-700">Paid with Stripe</a>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>N° Facture</th>
-                        <th>N° Devis</th>
-                        <th>Client</th>
-                        <th>Prix totale</th>
-                        <th>Payé ?</th>
-                        <th>Montant déjà payé</th>
-                        <th>Date d'emission de la facture</th>
-                        <th>Date d'echeance</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for facture in factures %}
-                    <tr>
-                        <td>{{ facture.numFacture }}</td>
-                        <td>{{ facture.numDevis }}</td>
-                        <td>{{ facture.client.Nom ~ ' ' ~ facture.client.Prenom }}</td>
-                        <td>{{ facture.prixTotal }}</td>
-                        <td>{{ facture.paid }}</td>
-                        <td>{{ facture.prixPaye }}</td>
-                        <td>{{ facture.dateFacture|date("Y-m-d") }}</td>
-                        <td>{{ facture.dateEcheance|date("Y-m-d") }}</td>
-                        <td>
-                            <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="btn btn-info">Show</a>
-                            <a href="{{ path('front_app_facture_send', {'id': facture.id}) }}" class="btn btn-primary">Send</a>
-                            <a href="{{ path('front_app_facture_paid', {'id': facture.id}) }}" class="btn btn-warning">Paid with Stripe</a>
-
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="6">No records found</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <a href="{{ path('front_app_facture_new') }}" class="btn btn-success">Create New</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
+
+    <a href="{{ path('front_app_facture_new') }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Create New</a>
 
 {% endblock %}

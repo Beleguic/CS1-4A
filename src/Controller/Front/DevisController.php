@@ -278,7 +278,7 @@ class DevisController extends AbstractController
         ]);
     }
 
-        #[Route('/{id}/send-devis-email', name: 'app_devis_send_email', methods: ['GET'])]
+    #[Route('/{id}/send-devis-email', name: 'app_devis_send_email', methods: ['GET'])]
     public function sendDevisEmail(Devis $devis, BrevoEmailService $emailService, UrlGeneratorInterface $urlGenerator): Response
     {
 
@@ -350,11 +350,12 @@ class DevisController extends AbstractController
 
         $facture = new Facture();
         $facture->setNumFacture('F' . date('Ymd') . '-' . rand(1000, 9999));
-        $facture->setClient($devis->getClient());
+        $facture->setClient($devis->getClient()->jsonSerialize());
         $facture->setDateFacture(new \DateTime());
         $facture->setNumDevis($devis->getNumDevis());
         $facture->setPrixTotal($devis->getTotalPrice());
         $facture->setProduits($devis->getProduits());
+        $facture->setMessages($devis->getMessage());
         //$facture->setCompagny($devi->getEntreprise());
         $facture->setPaid(false);
         $facture->setPrixPaye(0);

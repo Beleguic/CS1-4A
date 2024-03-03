@@ -227,4 +227,27 @@ class Client
     {
         return $this->address_number . ' ' . $this->address_type . ' ' . $this->address_name . ' ' . $this->address_zip_code . ' ' . $this->address_city . ' ' . $this->address_country;
     }
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars( $this );
+    }
+
+    public static function arrayToClient($array)
+    {
+        // Vérifier que le tableau contient les clés nécessaires
+
+        $client = new Client();
+        $client->setNom($array['Nom']);
+        $client->setPrenom($array['Prenom']);
+        $client->setEmail($array['Email']);
+        $client->setNumeroTelephone($array['NumeroTelephone']);
+        $client->setAddressNumber($array['address_number']);
+        $client->setAddressType($array['address_type']);
+        $client->setAddressName($array['address_name']);
+        $client->setAddressZipCode($array['address_zip_code']);
+        $client->setAddressCity($array['address_city']);
+        $client->setAddressCountry($array['address_country']);
+        return $client;
+    }
 }
