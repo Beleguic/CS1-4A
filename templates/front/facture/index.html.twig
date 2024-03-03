@@ -25,7 +25,7 @@
                     <td class="py-4 px-6">{{ facture.numDevis }}</td>
                     <td class="py-4 px-6">{{ facture.client.Nom ~ ' ' ~ facture.client.Prenom }}</td>
                     <td class="py-4 px-6">{{ facture.prixTotal }}</td>
-                    <td class="py-4 px-6">{{ facture.paid }}</td>
+                    <td class="py-4 px-6">{{ facture.paid ? 'oui' : 'non' }}</td>
                     <td class="py-4 px-6">{{ facture.prixPaye }}</td>
                     <td class="py-4 px-6">{{ facture.dateFacture|date("Y-m-d") }}</td>
                     <td class="py-4 px-6">{{ facture.dateEcheance|date("Y-m-d") }}</td>
@@ -45,7 +45,4 @@
             </tbody>
         </table>
     </div>
-
-    <a href="{{ path('front_app_facture_new') }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Create New</a>
-
 {% endblock %}

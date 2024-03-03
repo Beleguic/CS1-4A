@@ -43,6 +43,9 @@ class Devis
     #[ORM\Column(nullable: true)]
     private ?array $produits = null;
 
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $company_id = null;
+
 
 
     public function __construct()
@@ -126,6 +129,18 @@ class Devis
     public function setProduits(?array $produits): static
     {
         $this->produits = $produits;
+
+        return $this;
+    }
+
+    public function getCompanyId(): ?Uuid
+    {
+        return $this->company_id;
+    }
+
+    public function setCompanyId(Uuid $company_id): static
+    {
+        $this->company_id = $company_id;
 
         return $this;
     }

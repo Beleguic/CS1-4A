@@ -55,6 +55,9 @@ class Client
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address_country = null;
 
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $company_id = null;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
@@ -249,5 +252,17 @@ class Client
         $client->setAddressCity($array['address_city']);
         $client->setAddressCountry($array['address_country']);
         return $client;
+    }
+
+    public function getCompanyId(): ?Uuid
+    {
+        return $this->company_id;
+    }
+
+    public function setCompanyId(Uuid $company_id): static
+    {
+        $this->company_id = $company_id;
+
+        return $this;
     }
 }

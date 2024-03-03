@@ -28,4 +28,11 @@ class ContactFixtures extends Fixture
 
         $manager->flush();
     }
+
+    public function getDependencies() : array
+    {
+        return [
+            CompanyFixtures::class,
+        ];
+    }
 }

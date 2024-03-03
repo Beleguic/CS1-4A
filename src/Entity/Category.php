@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -26,6 +27,9 @@ class Category
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
     private Collection $products;
+
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $company_id = null;
 
     public function __construct()
     {
@@ -108,5 +112,17 @@ class Category
     public function jsonSerialize(): array
     {
         return get_object_vars( $this );
+    }
+
+    public function getCompanyId(): ?Uuid
+    {
+        return $this->company_id;
+    }
+
+    public function setCompanyId(Uuid $company_id): static
+    {
+        $this->company_id = $company_id;
+
+        return $this;
     }
 }

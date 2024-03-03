@@ -20,19 +20,27 @@ class ProductController extends AbstractController
     #[Route('/', name: 'app_product_index', methods: ['GET'])]
     public function index(ProductRepository $productRepository): Response
     {
+
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+
         return $this->render('front/product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+            'products' => $productRepository->findByCompagny($companyId),
         ]);
     }
 
     #[Route('/new', name: 'app_product_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $product->setCompanyId($companyId);
             $entityManager->persist($product);
             $entityManager->flush();
 

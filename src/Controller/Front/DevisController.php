@@ -26,8 +26,12 @@ class DevisController extends AbstractController
     #[Route('/', name: 'app_devis_index', methods: ['GET'])]
     public function index(DevisRepository $devisRepository): Response
     {
+
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+
         return $this->render('front/devis/index.html.twig', [
-            'devis' => $devisRepository->findAll(),
+            'devis' => $devisRepository->findByCompagny($companyId),
         ]);
     }
 
@@ -35,7 +39,10 @@ class DevisController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         //$entrepriseId = 1;
-        $products = $entityManager->getRepository(Product::class)->findAll();
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+
+        $products = $entityManager->getRepository(Product::class)->findByCompagny($companyId);
 
         $productArray = [];
         foreach ($products as $product) {
@@ -56,14 +63,10 @@ class DevisController extends AbstractController
         $devis = new Devis();
         $devis->setNumDevis('D' . date('Ymd') . '-' . rand(1000, 9999));
         $form = $this->createForm(DevisType::class, $devis);
-        /*$form = $this->createForm(DevisType::class, $devi, [
-            'entreprise_id' => $entrepriseId,
-        ]);*/
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            
+            $devis->setCompanyId($companyId);
             $products = $devis->getProduits();
 
             $prod = [];
@@ -138,7 +141,10 @@ class DevisController extends AbstractController
     public function edit(Request $request, Devis $devis, EntityManagerInterface $entityManager): Response
     {
 
-        $products = $entityManager->getRepository(Product::class)->findAll();
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+
+        $products = $entityManager->getRepository(Product::class)->findByCompagny($companyId);
 
         $productArray = [];
         foreach ($products as $product) {
@@ -156,7 +162,6 @@ class DevisController extends AbstractController
 
         $products = json_encode($productArray);
 
-        dump($devis->getProduits()[0]);
         $prodTemp = [];
         foreach ($devis->getProduits() as $product) {
             $produitTemp = Product::arrayToProduit($product);
@@ -348,6 +353,9 @@ class DevisController extends AbstractController
     public function transform_devis(Request $request, Devis $devis, EntityManagerInterface $entityManager): Response
     {
 
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+
         $facture = new Facture();
         $facture->setNumFacture('F' . date('Ymd') . '-' . rand(1000, 9999));
         $facture->setClient($devis->getClient()->jsonSerialize());
@@ -356,7 +364,7 @@ class DevisController extends AbstractController
         $facture->setPrixTotal($devis->getTotalPrice());
         $facture->setProduits($devis->getProduits());
         $facture->setMessages($devis->getMessage());
-        //$facture->setCompagny($devi->getEntreprise());
+        $facture->setCompanyId($companyId);
         $facture->setPaid(false);
         $facture->setPrixPaye(0);
         $facture->setReduction(0);

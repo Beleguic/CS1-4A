@@ -21,6 +21,17 @@ class FactureRepository extends ServiceEntityRepository
         parent::__construct($registry, Facture::class);
     }
 
+    public function findByCompagny($value): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.company_id = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return Facture[] Returns an array of Facture objects
 //     */

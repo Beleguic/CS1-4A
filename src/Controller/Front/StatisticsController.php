@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 
-#[Security('is_granted("ROLE_ACCOUNTANT"')]
+#[Security('is_granted("ROLE_ACCOUNTANT")')]
 #[Route('/statistics')]
 class StatisticsController extends AbstractController
 {
@@ -18,6 +18,7 @@ class StatisticsController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        $company_id = $user->getCompany()->getId();
         $company = $user->getCompany();
 
         $creationYear = $company->getCreatedAt()->format('Y');
@@ -38,16 +39,22 @@ class StatisticsController extends AbstractController
 
         $selectedYear = $request->query->getInt('year', date('Y'));
 
-        $totalCustomers = $this->countEntitiesByDate($entityManager, 'App\Entity\Client', new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"));
-        $totalCategories = $this->countEntitiesByDate($entityManager, 'App\Entity\Category', new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"));
-        $totalProducts = $this->countEntitiesByDate($entityManager, 'App\Entity\Product', new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"));
-        $totalQuotations = $this->countEntitiesByDate($entityManager, 'App\Entity\Devis', new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"));
-        $totalPriceQuotations = $this->getTotalPriceOfQuotations($entityManager, new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"));
+        $totalCustomers = $this->countEntitiesByDate($entityManager, 'App\Entity\Client', new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"), $company_id);
+        $totalCategories = $this->countEntitiesByDate($entityManager, 'App\Entity\Category', new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"), $company_id);
+        $totalProducts = $this->countEntitiesByDate($entityManager, 'App\Entity\Product', new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"), $company_id);
+        $totalQuotations = $this->countEntitiesByDate($entityManager, 'App\Entity\Devis', new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"), $company_id);
+        $totalPriceQuotations = $this->getTotalPriceOfQuotations($entityManager, new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"), $company_id);
+        $totalInvoices = $this->countEntitiesByDate($entityManager, 'App\Entity\Facture', new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"), $company_id);
+        $totalPriceInvoices = $this->getTotalPriceOfQuotations($entityManager, new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"), $company_id);
+
+
 
         $hasStats = false;
         $stats = [];
 
-        if($totalCustomers>0 && $totalCategories>0 && $totalProducts>0 && $totalQuotations>0 && $totalPriceQuotations>0){
+        //dd($totalCustomers, $totalCategories, $totalProducts, $totalQuotations, $totalPriceQuotations, $totalInvoices, $totalPriceInvoices);
+
+        if($totalCustomers>0 && $totalCategories>0 && $totalProducts>0 && $totalQuotations>0 && $totalPriceQuotations>0 && $totalPriceInvoices>0 && $totalPriceInvoices>0){
             $hasStats = true;
             for ($month = 1; $month <= 12; $month++) {
                 $lastDayOfMonth = (int) date('t', strtotime("$selectedYear-$month-01"));
@@ -55,11 +62,12 @@ class StatisticsController extends AbstractController
                 $startDate = new \DateTime("$selectedYear-$month-01 00:00:00");
                 $endDate = new \DateTime("$selectedYear-$month-$lastDayOfMonth 23:59:59");
 
-                $customerCount = $this->countEntitiesByDate($entityManager, 'App\Entity\Client', $startDate, $endDate);
-                $categoryCount = $this->countEntitiesByDate($entityManager, 'App\Entity\Category', $startDate, $endDate);
-                $productCount = $this->countEntitiesByDate($entityManager, 'App\Entity\Product', $startDate, $endDate);
-                $quotationsCount = $this->countEntitiesByDate($entityManager, 'App\Entity\Devis', $startDate, $endDate);
-                $totalPriceMonth = $this->getTotalPriceOfQuotations($entityManager, $startDate, $endDate);
+                $customerCount = $this->countEntitiesByDate($entityManager, 'App\Entity\Client', $startDate, $endDate, $company_id);
+                $categoryCount = $this->countEntitiesByDate($entityManager, 'App\Entity\Category', $startDate, $endDate, $company_id);
+                $productCount = $this->countEntitiesByDate($entityManager, 'App\Entity\Product', $startDate, $endDate, $company_id);
+                $quotationsCount = $this->countEntitiesByDate($entityManager, 'App\Entity\Devis', $startDate, $endDate, $company_id);
+                $invoicesCount = $this->countEntitiesByDate($entityManager, 'App\Entity\Facture', $startDate, $endDate, $company_id);
+                $totalPriceMonth = $this->getTotalPriceOfQuotations($entityManager, $startDate, $endDate, $company_id);
 
                 $stats[$month] = [
                     'month' => date('F', mktime(0, 0, 0, $month, 1)),
@@ -81,10 +89,17 @@ class StatisticsController extends AbstractController
                         'percent' => number_format($totalQuotations > 0 ? ($quotationsCount / $totalQuotations) * 100 : 0, 2),
                         'percent_total_price' => number_format($totalPriceQuotations > 0 ? ($totalPriceMonth / $totalPriceQuotations) * 100 : 0, 2),
                     ],
+                    'invoices' => [
+                        'total' => $invoicesCount,
+                        'total_price' => number_format($totalPriceMonth, 2),
+                        'percent' => number_format($totalInvoices > 0 ? ($invoicesCount / $totalInvoices) * 100 : 0, 2),
+                        'percent_total_price' => number_format($totalPriceInvoices > 0 ? ($totalPriceMonth / $totalPriceInvoices) * 100 : 0, 2),
+                    ],
                 ];
             }
 
-            $totalPriceAllQuotations = $this->getTotalPriceOfQuotations($entityManager, new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"));
+            $totalPriceAllQuotations = $this->getTotalPriceOfQuotations($entityManager, new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"),$company_id);
+            $totalPriceAllInvoices = $this->getTotalPriceOfInvoices($entityManager, new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"),$company_id);
 
             $summary = [
                 'customer' => [
@@ -98,7 +113,11 @@ class StatisticsController extends AbstractController
                 ],
                 'quotations' => [
                     'total' => $totalQuotations,
-                    'total_price' => number_format($totalPriceAllQuotations, 2), // Format total_price with 2 decimals
+                    'total_price' => number_format($totalPriceAllQuotations, 2),
+                ],
+                'invoices' => [
+                    'total' => $totalInvoices,
+                    'total_price' => number_format($totalPriceAllInvoices, 2),
                 ],
             ];
 
@@ -126,7 +145,7 @@ class StatisticsController extends AbstractController
         ]);
     }
 
-    private function countEntitiesByDate(EntityManagerInterface $entityManager, $entityClass, $startDate, $endDate)
+    private function countEntitiesByDate(EntityManagerInterface $entityManager, $entityClass, $startDate, $endDate, $company_id)
     {
         $qb = $entityManager->createQueryBuilder();
 
@@ -135,22 +154,47 @@ class StatisticsController extends AbstractController
 
         $qb->select('COUNT(e.id)')
             ->from($className, 'e')
-            ->where($qb->expr()->between('e.createdAt', ':start', ':end'))
+            ->where($qb->expr()->andX(
+                $qb->expr()->between('e.createdAt', ':start', ':end'),
+                $qb->expr()->eq('e.company_id', ':company_id') // Assuming you have a 'company' field in your entities
+            ))
             ->setParameter('start', $startDate)
-            ->setParameter('end', $endDate);
+            ->setParameter('end', $endDate)
+            ->setParameter('company_id', $company_id);
 
         return $qb->getQuery()->getSingleScalarResult();
     }
 
-    private function getTotalPriceOfQuotations(EntityManagerInterface $entityManager, $startDate, $endDate)
+    private function getTotalPriceOfQuotations(EntityManagerInterface $entityManager, $startDate, $endDate, $company_id)
     {
         $qb = $entityManager->createQueryBuilder();
 
-        $qb->select('SUM(q.total_price)')
-            ->from('App\Entity\Devis', 'q')
-            ->where($qb->expr()->between('q.createdAt', ':start', ':end'))
+        $qb->select('SUM(e.total_price)')
+            ->from('App\Entity\Devis', 'e')
+            ->where($qb->expr()->andX(
+                $qb->expr()->between('e.createdAt', ':start', ':end'),
+                $qb->expr()->eq('e.company_id', ':company_id') // Assuming you have a 'company' field in your entities
+            ))
             ->setParameter('start', $startDate)
-            ->setParameter('end', $endDate);
+            ->setParameter('end', $endDate)
+            ->setParameter('company_id', $company_id);
+
+        return $qb->getQuery()->getSingleScalarResult() ?? 0;
+    }
+
+    private function getTotalPriceOfInvoices(EntityManagerInterface $entityManager, $startDate, $endDate, $company_id)
+    {
+        $qb = $entityManager->createQueryBuilder();
+
+        $qb->select('SUM(e.prix_total)')
+            ->from('App\Entity\Facture', 'e')
+            ->where($qb->expr()->andX(
+                $qb->expr()->between('e.createdAt', ':start', ':end'),
+                $qb->expr()->eq('e.company_id', ':company_id') // Assuming you have a 'company' field in your entities
+            ))
+            ->setParameter('start', $startDate)
+            ->setParameter('end', $endDate)
+            ->setParameter('company_id', $company_id);
 
         return $qb->getQuery()->getSingleScalarResult() ?? 0;
     }

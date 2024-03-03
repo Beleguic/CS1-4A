@@ -13,6 +13,10 @@
                 <th scope="col" class="py-3 px-6">Quotations Total Price</th>
                 <th scope="col" class="py-3 px-6">Quotations Percent</th>
                 <th scope="col" class="py-3 px-6">Quotations Percent Total Price</th>
+                <th scope="col" class="py-3 px-6">Invoices Total</th>
+                <th scope="col" class="py-3 px-6">Invoices Total Price</th>
+                <th scope="col" class="py-3 px-6">Invoices Percent</th>
+                <th scope="col" class="py-3 px-6">Invoices Percent Total Price</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +33,10 @@
                 <td class="py-4 px-6">{{ item.quotations.total_price }}</td>
                 <td class="py-4 px-6">{{ item.quotations.percent|default('00.00') }}%</td>
                 <td class="py-4 px-6">{{ item.quotations.percent_total_price|default('00.00') }}%</td>
+                <td class="py-4 px-6">{{ item.invoices.total }}</td>
+                <td class="py-4 px-6">{{ item.invoices.total_price }}</td>
+                <td class="py-4 px-6">{{ item.invoices.percent|default('00.00') }}%</td>
+                <td class="py-4 px-6">{{ item.invoices.percent_total_price|default('00.00') }}%</td>
             </tr>
         {% endfor %}
         </tbody>

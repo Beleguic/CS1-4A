@@ -17,8 +17,11 @@ class CategoryController extends AbstractController
     #[Route('/', name: 'app_category_index', methods: ['GET'])]
     public function index(CategoryRepository $categoryRepository): Response
     {
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+
         return $this->render('front/category/index.html.twig', [
-            'categories' => $categoryRepository->findAll(),
+            'categories' => $categoryRepository->findByCompagny($companyId),
             
         ]);
     }
@@ -26,11 +29,15 @@ class CategoryController extends AbstractController
     #[Route('/new', name: 'app_category_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $category->setCompanyId($companyId);
             $entityManager->persist($category);
             $entityManager->flush();
 

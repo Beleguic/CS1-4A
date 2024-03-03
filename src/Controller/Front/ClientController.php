@@ -3,9 +3,11 @@
 namespace App\Controller\Front;
 
 use App\Entity\Client;
+use App\Entity\Company;
 use App\Form\ClientType;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,19 +19,26 @@ class ClientController extends AbstractController
     #[Route('/', name: 'app_client_index', methods: ['GET'])]
     public function index(ClientRepository $clientRepository): Response
     {
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+
         return $this->render('front/client/index.html.twig', [
-            'clients' => $clientRepository->findAll(),
+            'clients' => $clientRepository->findByCompagny($companyId),
         ]);
     }
 
     #[Route('/new', name: 'app_client_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(ManagerRegistry $registry, Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $client->setCompanyId($companyId);
             $entityManager->persist($client);
             $entityManager->flush();
 
