@@ -35,10 +35,12 @@ class IndexController extends AbstractController
         }
 
         $cards = $this->generatedCards();
+        $charts = $this->chartData();
 
         return $this->render('back/index/index.html.twig', [
             'controller_name' => 'IndexController',
-            "cards" => $cards
+            "cards" => $cards,
+            "charts" => $charts
         ]);
     }
 
