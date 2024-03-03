@@ -12,7 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Product;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use App\Service\BrevoEmailService;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 use App\Entity\Facture;
+
 
 #[Route('/devis')]
 class DevisController extends AbstractController
@@ -57,10 +63,9 @@ class DevisController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Recupere tout les produits
+            
             $products = $devis->getProduits();
-            //Recupere tout les attribut de mon objet pour les mettre dans un tableau
-            // On effectue ce traitement car sinon, les element n'arrive pas a etre enregistrer dans la base de données
+
             $prod = [];
             foreach ($products as $product) {
                 $product->setName($productArray[$product->getName()]["name"]);
@@ -117,7 +122,7 @@ class DevisController extends AbstractController
                 'price' => $product->getPrice(),
                 'tva' => $product->getTva(),
                 'category' => $category->getName(),
-                // Ajoutez d'autres champs selon votre entité
+
             ];
         }
 
@@ -140,10 +145,9 @@ class DevisController extends AbstractController
 
 
 
-            // Recupere tout les produits
+
             $products = $devis->getProduits();
-            //Recupere tout les attribut de mon objet pour les mettre dans un tableau
-            // On effectue ce traitement car sinon, les element n'arrive pas a etre enregistrer dans la base de données
+
             $prod = [];
             foreach ($products as $product) {
                 $product->setName($productArray[$product->getName()]["name"]);
@@ -152,9 +156,7 @@ class DevisController extends AbstractController
 
                 $prod[] = $prodtemp;
             }
-            // on enregistre les produits dans l'objet devis
             $devis->setProduits($prod);
-            // calcul du prix total
             $totalPrice = 0;
             foreach ($products as $product) {
                 $totalPrice += $product->getPrixTotale();
@@ -194,6 +196,69 @@ class DevisController extends AbstractController
         return $this->redirectToRoute('front_app_devis_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{id}/download-pdf', name: 'app_devis_download_pdf', methods: ['GET'])]
+    public function downloadPdf(Devis $devis): Response
+    {
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        
+        $dompdf = new Dompdf($pdfOptions);
+        
+        $html = $this->renderView('front\devis\pdf_devis_template.html.twig', ['devis' => $devis]);
+    
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+    
+        $client = $devis->getClient();
+        $clientNameSafe = $client ? preg_replace('/[^A-Za-z0-9\-]/', '_', $client->getNom() . '_' . $client->getPrenom()) : 'Client_Inconnu';
+    
+        
+        $pdfFileName = "devis_" . $clientNameSafe . "_" . $devis->getId()->toRfc4122() . ".pdf";
+
+
+        return new Response($dompdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="'.$pdfFileName.'"',
+        ]);
+    }
+
+        #[Route('/{id}/send-devis-email', name: 'app_devis_send_email', methods: ['GET'])]
+    public function sendDevisEmail(Devis $devis, BrevoEmailService $emailService, UrlGeneratorInterface $urlGenerator): Response
+    {
+        $client = $devis->getClient();
+        if (!$client) {
+            $this->addFlash('error', 'Le client n\'est pas défini pour ce devis.');
+            return $this->redirectToRoute('front_app_devis_index');
+        }
+
+        $senderName = 'Plumbpay';
+        $senderEmail = 'team_plumbpay@outlook.com';
+        $recipientName = $client->getNom() . ' ' . $client->getPrenom();
+        $recipientEmail = $client->getEmail();
+        $subject = 'Votre devis de Plumbpay';
+
+        // Générer le contenu HTML du devis
+        $htmlContent = $this->renderView('front/devis/pdf_devis_template.html.twig', [
+            'devis' => $devis,
+        ]);
+
+        // Envoyer l'email
+        $emailService->sendEmail(
+            $senderName,
+            $senderEmail,
+            $recipientName,
+            $recipientEmail,
+            $subject,
+            $htmlContent
+        );
+
+        $this->addFlash('success', 'Le devis a été envoyé par email au client.');
+
+        return $this->redirectToRoute('front_app_devis_index');
+    }
+ 
+
     #[Route('/{id}/transform-devis', name: 'app_devis_transform_devis', methods: ['GET', 'POST'])]
     public function transform_devis(Request $request, Devis $devis, EntityManagerInterface $entityManager): Response
     {
@@ -220,3 +285,5 @@ class DevisController extends AbstractController
 
     }
 }
+
+

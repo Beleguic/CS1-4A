@@ -31,19 +31,22 @@
             <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
         </a>
         <a href="{{ path('front_app_category_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-            <i class="fas fa-sticky-note mr-3"></i>Category
+            <i class="fas fa-sticky-note mr-3"></i>Categorys
         </a>
         <a href="{{ path('front_app_product_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-            <i class="fas fa-table mr-3"></i>Product
+            <i class="fas fa-table mr-3"></i>Products
         </a>
         <a href="{{ path('front_app_devis_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
             <i class="fas fa-align-left mr-3"></i>Devis
         </a>
         <a href="{{ path('front_app_facture_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-            <i class="fas fa-tablet-alt mr-3"></i>Facture
+            <i class="fas fa-tablet-alt mr-3"></i>Factures
         </a>
         <a href="{{ path('front_default_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
             <i class="fas fa-calendar mr-3"></i>Gestions
+        </a>
+        <a href="{{ path('front_app_client_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-calendar mr-3"></i>Clients
         </a>
     </nav>
 </aside>
@@ -57,7 +60,7 @@
         <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
             <div class="w-1/2"></div>
             <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
-                <button @click="isOpen = !isOpen" class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
+                <button @click="isOpen = !isOpen" class="realtive z-10 w-12 h-12 rounded-full overflow-y-auto border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
                     <img src="\cool-user.png">
                 </button>
                 <button x-show="isOpen" @click="isOpen = false" class="h-full w-full fixed inset-0 cursor-default"></button>
@@ -122,7 +125,7 @@
 
 
     
-    <div class="flex flex-col min-h-screen overflow-hidden">
+    <div class="flex flex-col min-h-screen overflow-y-auto">
         <div class="flex-grow">
             <main class="p-6">
                 {% for type, flashMessages in app.flashes %}

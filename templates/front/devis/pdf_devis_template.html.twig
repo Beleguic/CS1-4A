@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Devis {{ devis.numDevis }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header, footer {
+            background-color: #134F63; 
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            font-size: 12px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .my-8 {
+            margin-top: 32px;
+            margin-bottom: 32px;
+        }
+        .mx-auto, .table-auto {
+            margin-left: auto;
+            margin-right: auto;
+            width: 90%;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .mt-4 {
+            margin-top: 16px;
+        }
+        .bg-gray-100 {
+            background-color: #f7f7f7;
+        }
+        .border, th, td {
+            border: 1px solid #cccccc;
+            padding: 8px;
+        }
+        th, td {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Devis N°{{ devis.numDevis }}</h1>
+    </header>
+    
+    <div class="text-center my-8">
+        <h2>Client : {{ devis.client.getNom() ~ " " ~ devis.client.getPrenom() }}</h2>
+        <h3>Date : {{ devis.createdAt|date('d/m/Y') }}</h3>
+        <p>Remarques : {{ devis.message | default('Pas de remarques') }}</p>
+    </div>
+
+    <div class="mx-auto">
+        <table class="table-auto w-full mt-4">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th>Produit</th>
+                    <th>Description</th>
+                    <th>Prix unitaire</th>
+                    <th>TVA</th>
+                    <th>Categorie</th>
+                    <th>Quantité</th>
+                    <th>Prix totale</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produit in devis.produits %}
+                <tr>
+                    <td>{{ produit.name }}</td>
+                    <td>{{ produit.description }}</td>
+                    <td>{{ produit.price }} €</td>
+                    <td>{{ produit.tva }} %</td>
+                    <td>{{ produit.category.name }}</td>
+                    <td>{{ produit.quantite }}</td>
+                    <td>{{ produit.prix_totale }} €</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3 class="text-right mr-4 mt-4">Prix Total : {{ devis.totalPrice }} €</h3>
+    </div>
+
+    <footer>
+        <div>© {{ "now"|date("Y") }} Plumbpay - Tous droits réservés</div>
+    </footer>
+</body>
+</html>
