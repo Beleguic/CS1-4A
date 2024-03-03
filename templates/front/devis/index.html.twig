@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Devis Index{% endblock %}
+
+{% block body %}
+<div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="py-3 px-6">ID</th>
+                <th scope="col" class="py-3 px-6">Client</th>
+                <th scope="col" class="py-3 px-6">Total</th>
+                <th scope="col" class="py-3 px-6">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for devi in devis %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="py-4 px-6">{{ devi.numDevis }}</td>
+                <td class="py-4 px-6">{{ devi.getClient().getNom() ~ " " ~ devi.getClient().getPrenom() }}</td>
+                <td class="py-4 px-6">{{ devi.getTotalPrice() }}</td>
+                <td class="py-4 px-6 flex space-x-2">
+                    <a href="{{ path('front_app_devis_show', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Show</a>
+                    <a href="{{ path('front_app_devis_edit', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-700">Edit</a>
+                    <a href="{{ path('front_app_devis_delete', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">Annulé la facture</a>
+                    <a href="{{ path('front_app_devis_download_pdf', {'id': devi.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-400 hover:bg-blue-700">PDF</a>
+                    <a href="{{ path('front_app_devis_send_email', {'id': devi.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-red-700 hover:bg-red-900">Email Client</a>
+                    <a href="{{ path('front_app_devis_transform_devis', {'id': devi.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-900">Transformer en facture</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td colspan="4" class="py-4 px-6">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<a href="{{ path('front_app_devis_new') }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Create New</a>
+
+
+{% endblock %}

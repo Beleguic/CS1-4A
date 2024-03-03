@@ -1,0 +1,11 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Edit {{ company.name }} - Admin - Plumbpay{% endblock %}
+
+{% block body %}
+    <h1>Edit {{ company.name }}</h1>
+
+    {{ include('back/company/_nav.html.twig') }}
+
+    {{ include('back/company/_form.html.twig', {'button_label': 'Edit'}) }}
+{% endblock %}

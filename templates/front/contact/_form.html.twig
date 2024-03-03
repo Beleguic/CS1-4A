@@ -1,0 +1,6 @@
+{{ form_start(form) }}
+<div class="flex flex-col gap-4">
+    {{ form_widget(form) }}
+    <button class="btn w-full">{{ button_label|default('Contact us') }}</button>
+</div>
+{{ form_end(form) }}

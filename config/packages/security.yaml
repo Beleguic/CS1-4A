@@ -17,7 +17,13 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                default_target_path: front_app_account
+            logout:
+                path: app_logout
+                target : app_login
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -26,10 +32,25 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
-    access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+    access_decision_manager:
+        strategy: unanimous
 
+    access_control:
+        - { path: '^/admin', roles: ROLE_SUPER_ADMIN }
+        - { path: '^/devis', roles: ROLE_PLUMBER }
+        - { path: '^/facture', roles: ROLE_PLUMBER }
+        - { path: '^/product', roles: ROLE_PLUMBER }
+        - { path: '^/category', roles: ROLE_PLUMBER }
+        - { path: '^/company', roles: [ROLE_PLUMBER, ROLE_ACCOUNTANT] }
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_PLUMBER, ROLE_ACCOUNTANT, ROLE_USER]
+        ROLE_ADMIN : [ROLE_PLUMBER, ROLE_ACCOUNTANT, ROLE_USER]
+        ROLE_PLUMBER : [ROLE_USER]
+        ROLE_ACCOUNTANT : [ROLE_USER]
+
+    access_denied_url : '/'
+    
 when@test:
     security:
         password_hashers:

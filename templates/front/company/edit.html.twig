@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit My Company - {{ company.name }} - PLumbpay{% endblock %}
+
+{% block body %}
+    <h1>Edit Company</h1>
+    {{ include('/front/company/_nav.html.twig') }}
+    {{ include('/front/company/_form.html.twig', {'button_label': 'Edit'}) }}
+{% endblock %}

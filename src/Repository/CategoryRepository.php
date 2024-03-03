@@ -21,6 +21,17 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    public function findByCompagny($value): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.company_id = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return Category[] Returns an array of Category objects
 //     */

@@ -1,0 +1,64 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <h1>User</h1>
+    {{ include('back/user/_nav.html.twig') }}
+    <div class="flex flex-col gap-12">
+        <section class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 py-2">
+                <div>ID</div>
+                <div>{{ user.id }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2">
+                <div>Email</div>
+                <div>{{ user.email }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2">
+                <div>Roles</div>
+                <div>
+                    {% for role in user.roles %}
+                        <span class="badge-role">{{ role|replace({'ROLE_': ''}) }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="grid grid-cols-1 py-2">
+                <div>Password</div>
+                <div>*****</div>
+            </div>
+            <div class="grid grid-cols-1 py-2">
+                <div>Company</div>
+                <div>
+                    {% if user.company is not null %}
+                        {{ user.company.name }}
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        <section class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 py-2">
+                <div>Lastname</div>
+                <div>{{ user.lastname }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2">
+                <div>Firstname</div>
+                <div>{{ user.firstname }}</div>
+            </div>
+        </section>
+        <section class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 py-2">
+                <div>Created at</div>
+                <div>{{ user.createdAt ? user.createdAt|date('d/m/Y H:i') : '' }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2">
+                <div>Verified at</div>
+                <div>{{ user.verifiedAt ? user.verifiedAt|date('d/m/Y H:i') : '' }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2">
+                <div>Updated at</div>
+                <div>{{ user.updatedAt ? user.updatedAt|date('d/m/Y H:i') : '' }}</div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

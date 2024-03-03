@@ -1,0 +1,20 @@
+{% if error %}
+    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+
+<form action="{{ path('app_login') }}" method="post">
+    <div class="flex flex-col gap-4">
+        <div>
+            <label for="username">Email:</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}">
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="_password">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <button type="submit" class="px-4 py-2 text-center rounded-lg bg-mainColor-400 text-TextColor-800 hover:bg-secondaryColor-400 focus:bg-secondaryColor-400">Sign in</button>
+            <a href="{{ path('app_register') }}" class="px-4 py-2 text-center rounded-lg bg-secondaryColor-400 text-TextColor-800 hover:bg-mainColor-400 focus:bg-mainColor-400">Register</a>
+        </div>
+    </div>
+</form>

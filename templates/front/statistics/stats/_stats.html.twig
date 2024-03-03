@@ -1,0 +1,44 @@
+<div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-auto w-full">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="py-3 px-6">Month</th>
+                <th scope="col" class="py-3 px-6">Customer Total</th>
+                <th scope="col" class="py-3 px-6">Customer Percent</th>
+                <th scope="col" class="py-3 px-6">Category Total</th>
+                <th scope="col" class="py-3 px-6">Category Percent</th>
+                <th scope="col" class="py-3 px-6">Product Total</th>
+                <th scope="col" class="py-3 px-6">Product Percent</th>
+                <th scope="col" class="py-3 px-6">Quotations Total</th>
+                <th scope="col" class="py-3 px-6">Quotations Total Price</th>
+                <th scope="col" class="py-3 px-6">Quotations Percent</th>
+                <th scope="col" class="py-3 px-6">Quotations Percent Total Price</th>
+                <th scope="col" class="py-3 px-6">Invoices Total</th>
+                <th scope="col" class="py-3 px-6">Invoices Total Price</th>
+                <th scope="col" class="py-3 px-6">Invoices Percent</th>
+                <th scope="col" class="py-3 px-6">Invoices Percent Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for key, item in stats %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="py-4 px-6">{{ item.month }}</td>
+                <td class="py-4 px-6">{{ item.customer.total }}</td>
+                <td class="py-4 px-6">{{ item.customer.percent|default('00.00') }}%</td>
+                <td class="py-4 px-6">{{ item.category.total }}</td>
+                <td class="py-4 px-6">{{ item.category.percent|default('00.00') }}%</td>
+                <td class="py-4 px-6">{{ item.product.total }}</td>
+                <td class="py-4 px-6">{{ item.product.percent|default('00.00') }}%</td>
+                <td class="py-4 px-6">{{ item.quotations.total }}</td>
+                <td class="py-4 px-6">{{ item.quotations.total_price }}</td>
+                <td class="py-4 px-6">{{ item.quotations.percent|default('00.00') }}%</td>
+                <td class="py-4 px-6">{{ item.quotations.percent_total_price|default('00.00') }}%</td>
+                <td class="py-4 px-6">{{ item.invoices.total }}</td>
+                <td class="py-4 px-6">{{ item.invoices.total_price }}</td>
+                <td class="py-4 px-6">{{ item.invoices.percent|default('00.00') }}%</td>
+                <td class="py-4 px-6">{{ item.invoices.percent_total_price|default('00.00') }}%</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

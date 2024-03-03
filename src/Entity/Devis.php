@@ -7,100 +7,129 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: DevisRepository::class)]
 class Devis
 {
+
+    use Traits\Timestampable;
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
+
+    #[ORM\ManyToOne(inversedBy: 'client')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Client $client = null;
+
+    // La variable Produits va contenir des objet produit
+
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $message = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $clientName = null;
+    private ?string $num_devis = null;
+    #[ORM\Column]
+    private ?float $total_price = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $totalPrice = null;
+    #[ORM\Column(nullable: true)]
+    private ?array $produits = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
-    private ?string $taxes = null;
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $company_id = null;
 
-    #[ORM\OneToMany(mappedBy: 'devis', targetEntity: Facture::class)]
-    private Collection $factures;
+
 
     public function __construct()
     {
-        $this->factures = new ArrayCollection();
+        // $this->produits = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): Uuid
     {
         return $this->id;
     }
 
-    public function getClientName(): ?string
+    public function getClient(): ?Client
     {
-        return $this->clientName;
+        return $this->client;
     }
 
-    public function setClientName(string $clientName): static
+    public function setClient(?Client $client): static
     {
-        $this->clientName = $clientName;
+        $this->client = $client;
 
         return $this;
     }
 
-    public function getTotalPrice(): ?string
+
+
+    public function getMessage(): ?string
     {
-        return $this->totalPrice;
+        return $this->message;
     }
 
-    public function setTotalPrice(string $totalPrice): static
+    public function setMessage(?string $message): static
     {
-        $this->totalPrice = $totalPrice;
+        $this->message = $message;
 
         return $this;
     }
 
-    public function getTaxes(): ?string
+    public function getNumDevis(): ?string
     {
-        return $this->taxes;
+        return $this->num_devis;
     }
 
-    public function setTaxes(string $taxes): static
+    public function setNumDevis(string $num_devis): static
     {
-        $this->taxes = $taxes;
+        $this->num_devis = $num_devis;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Facture>
-     */
-    public function getFactures(): Collection
+
+    public function getTotalPrice(): ?float
     {
-        return $this->factures;
+        return $this->total_price;
     }
 
-    public function addFacture(Facture $facture): static
+    public function setTotalPrice(float $total_price): static
     {
-        if (!$this->factures->contains($facture)) {
-            $this->factures->add($facture);
-            $facture->setDevis($this);
-        }
+        $this->total_price = $total_price;
 
         return $this;
     }
 
-    public function removeFacture(Facture $facture): static
+    public function getProduits(): ?array
     {
-        if ($this->factures->removeElement($facture)) {
-            // set the owning side to null (unless already changed)
-            if ($facture->getDevis() === $this) {
-                $facture->setDevis(null);
-            }
-        }
+        return $this->produits;
+    }
+
+    public function setProduits(?array $produits): static
+    {
+        $this->produits = $produits;
 
         return $this;
     }
+
+    public function getCompanyId(): ?Uuid
+    {
+        return $this->company_id;
+    }
+
+    public function setCompanyId(Uuid $company_id): static
+    {
+        $this->company_id = $company_id;
+
+        return $this;
+    }
+
+
+
+
 }

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Category{% endblock %}
+
+{% block body %}
+    <h1 class="text-3xl font-bold underline text-center my-8" style="color: #000000;">Create New Category</h1>
+
+    <div class="max-w-lg mx-auto">
+        {{ include('/front/category/_form.html.twig') }}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ path('front_app_category_index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; transition: background-color 0.2s ease-in-out;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Back to List</a>
+    </div>
+{% endblock %}

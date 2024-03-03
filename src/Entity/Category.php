@@ -7,17 +7,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
+    use Traits\Timestampable;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    protected ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -25,14 +28,31 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
     private Collection $products;
 
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $company_id = null;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
     }
 
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(string $id): static
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -85,6 +105,23 @@ class Category
                 $product->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars( $this );
+    }
+
+    public function getCompanyId(): ?Uuid
+    {
+        return $this->company_id;
+    }
+
+    public function setCompanyId(Uuid $company_id): static
+    {
+        $this->company_id = $company_id;
 
         return $this;
     }

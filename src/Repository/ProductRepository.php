@@ -21,6 +21,17 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    public function findByCompagny($value): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.company_id = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

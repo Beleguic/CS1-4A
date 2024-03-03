@@ -1,0 +1,70 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Company - {{ company.name }} - Admin - Plumbpay{% endblock %}
+
+{% block body %}
+    <h1>Show {{ company.name }}</h1>
+    {{ include('back/company/_nav.html.twig') }}
+    <div class="flex flex-col gap-12">
+        <section class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">ID</div>
+                <div>{{ company.id }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div>
+                    <span class="font-bold">Logo</span>
+                    {% if company.imageName is not same as('') %}
+                        <a href="{{ vich_uploader_asset(company, 'imageFile') }}" class="cursor-pointer" download="logo-{{ company.name }}">Download logo</a>
+                    {% endif %}
+                </div>
+                {% if company.imageName is not same as('') %}
+                    <div><img src="{{ vich_uploader_asset(company, 'imageFile') }}" class="w-40 h-40"></div>
+                {% endif %}
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Name</div>
+                <div>{{ company.name }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Email</div>
+                <div>{{ company.email }}</div>
+            </div>
+        </section>
+        <section class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Invoice Email</div>
+                <div>{{ company.InvoiceEmail }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Company Number</div>
+                <div>{{ company.CompanyNumber }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">IBAN</div>
+                <div>{{ company.iban }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">BIC</div>
+                <div>{{ company.bic }}</div>
+            </div>
+        </section>
+        <section class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Address</div>
+                <div>{{ company.AddressNumber }} {{ company.AddressType }} {{ company.AddressName }}</div>
+                <div>{{ company.AddressZipCode }} {{ company.AddressCity }} {{ company.AddressCountry }}</div>
+            </div>
+        </section>
+        <section class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Created at</div>
+                <div>{{ company.createdAt ? company.createdAt|date('d/m/Y H:i') : '' }}</div>
+            </div>
+            <div class="grid grid-cols-1 py-2 gap-2">
+                <div class="font-bold">Updated at</div>
+                <div>{{ company.updatedAt ? company.updatedAt|date('d/m/Y H:i') : '' }}</div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Devis{% endblock %}
+
+{% block body %}
+    {% set messages = devis.message | default('Pas de remarques') %}
+    <div class="container mx-auto">
+        <div class="text-center my-8">
+            <h1 class="text-3xl font-bold underline" style="color: #000000;">Devis {{ devis.numDevis }}</h1>
+            <h3>Date : {{ devis.createdAt|date('d/m/Y') }}</h3>
+            <p>Remarques : {{ messages }}</p>
+        </div>
+        <div class="text-right">
+            <h1 class="text-2xl font-bold underline" style="color: #000000;">Entreprise</h1>
+            {# <p>{{ devis.entreprise.getNom() }}</p>
+            <p>{{ devis.entreprise.getFullAddress() }}</p>
+            <p>{{ devis.entreprise.getEmail() }} </p>
+            <p>{{ devis.entreprise.getNumeroTelephone() }}</p>  #}
+        </div>
+        <div class="text-left">
+            <h1 class="text-2xl font-bold underline" style="color: #000000;">Client</h1>
+            <p>{{ devis.client.getNom() }} {{ devis.client.getPrenom() }}</p>
+            <p>{{ devis.client.getFullAddress() }}</p>
+            <p>{{ devis.client.getEmail() }} </p>
+            <p>{{ devis.client.getNumeroTelephone() }}</p>
+        </div>
+        <div class="mx-auto mt-4" style="max-width: 90%;">
+            {% for categorie, produits in categoriProduits %}
+                <div class="mt-4">
+                    <h2 class="text-2xl font-bold" style="color: #000000;">{{ categorie }}</h2>
+                    <table class="table-auto w-full mt-4">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="px-4 py-2">Produit</th>
+                                <th class="px-4 py-2">Description</th>
+                                <th class="px-4 py-2">Prix unitaire</th>
+                                <th class="px-4 py-2">TVA</th>
+                                <th class="px-4 py-2">Quantité</th>
+                                <th class="px-4 py-2">Prix totale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for produit in produits %}
+                            <tr>
+                                <td class="border px-4 py-2">{{ produit.name }}</td>
+                                <td class="border px-4 py-2">{{ produit.description }}</td>
+                                <td class="border px-4 py-2">{{ produit.price | number_format(2, ',', ' ') }} €</td>
+                                <td class="border px-4 py-2">{{ produit.tva | number_format(1, ',', ' ') }} %</td>
+                                <td class="border px-4 py-2">{{ produit.quantite }}</td>
+                                <td class="border px-4 py-2">{{ produit.prix_totale  | number_format(2, ',', ' ') }} €</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-right mt-4">
+            <h2 class="text-1xl" style="color: #000000;">Total HT : {{ total.ht | number_format(2, ',', ' ')}} €</h2>
+            {% for taux_tva, total_tva in total.tva %}
+                <h2 class="text-1xl" style="color: #000000;">TVA {{ taux_tva }}% : {{ total_tva | number_format(1, ',', ' ') | number_format(2, ',', ' ') }} €</h2>
+            {% endfor %}
+            <h2 class="text-2xl font-bold" style="color: #000000;">Total TTC : {{ total.ttc | number_format(2, ',', ' ') }} €</h2>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ path('front_app_devis_index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; transition: background-color 0.2s ease-in-out;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Back to List</a>
+        <a href="{{ path('front_app_devis_edit', {'id': devis.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white ml-2" style="background-color: #134F63; transition: background-color 0.2s ease-in-out;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Edit</a>
+    </div>
+
+    <div class="text-center mt-4">
+        {{ include('/front/devis/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

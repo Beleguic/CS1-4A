@@ -1,0 +1,76 @@
+{% extends 'default.html.twig' %}
+
+{% block title %}Design - Plumbpay{% endblock %}
+
+{% block body %}
+    <section class="px-2">
+        <h3 class="font-bold text-xl mb-2">Forms</h3>
+        <div class="flex flex-col gap-4">
+            <div class="input-container">
+                <label for="text">text</label>
+                <input type="text" name="text" id="text" placeholder="text">
+            </div>
+            <div class="input-container">
+                <label for="email">email</label>
+                <input type="email" name="email" id="email" placeholder="email@domain.fr">
+            </div>
+            <div class="input-container">
+                <label for="number">number</label>
+                <input type="number" name="number" id="number" placeholder="100,20">
+            </div>
+            <div class="input-container">
+                <label for="password">password</label>
+                <input type="password" name="password" id="password" placeholder="100,20">
+            </div>
+            <div class="input-container">
+                <label for="select">select</label>
+                <select name="select" id="select">
+                    <option value="1">option 1</option>
+                    <option value="2">option 2</option>
+                    <option value="3">option 3</option>
+                </select>
+            </div>
+        </div>
+    </section>
+    <section class="px-2">
+        <h3 class="font-bold text-xl mb-2">Accordéons</h3>
+        <div class="accordions-container">
+            <div class="accordion-container">
+                <div class="accordion-header">
+                    <span class="accordion-btn-text">Accordéon 1</span>
+                    <svg class="accordion-icon" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+                        <path class="fill-bgBody-800 dark:fill-bgBody-400" d="M9.06429 7.5L15 13.4357V15H13.4357L7.5 9.06429L1.56429 15H0V13.4357L5.93571 7.5L0 1.56429V0H1.56429L7.5 5.93571L13.4357 0H15V1.56429L9.06429 7.5Z"/>
+                    </svg>
+                </div>
+                <div class="accordion-content">
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore iste culpa dolore quisquam repellat, tenetur at quos maxime sunt facilis debitis veniam nulla nobis. Quos consequatur nisi consequuntur temporibus!
+                </div>
+            </div>
+
+            <div class="accordion-container">
+                <div class="accordion-header">
+                    <span class="accordion-btn-text">Accordéon 2</span>
+                    <svg class="accordion-icon" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+                        <path class="fill-bgBody-800 dark:fill-bgBody-400" d="M9.06429 7.5L15 13.4357V15H13.4357L7.5 9.06429L1.56429 15H0V13.4357L5.93571 7.5L0 1.56429V0H1.56429L7.5 5.93571L13.4357 0H15V1.56429L9.06429 7.5Z"/>
+                    </svg>
+                </div>
+                <div class="accordion-content">
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias delectus aspernatur ipsa hic voluptatum error totam animi officia vero, voluptas blanditiis. Minima explicabo ullam cupiditate tempore commodi? Quo, molestias.
+                </div>
+            </div>
+
+            <div class="accordion-container">
+                <div class="accordion-header">
+                    <span class="accordion-btn-text">Accordéon 3</span>
+                    <svg class="accordion-icon" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+                        <path class="fill-bgBody-800 dark:fill-bgBody-400" d="M9.06429 7.5L15 13.4357V15H13.4357L7.5 9.06429L1.56429 15H0V13.4357L5.93571 7.5L0 1.56429V0H1.56429L7.5 5.93571L13.4357 0H15V1.56429L9.06429 7.5Z"/>
+                    </svg>
+                </div>
+                <div class="accordion-content">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam facere, perferendis tempore soluta officiis excepturi quam nulla nemo incidunt unde saepe officia cum, tenetur cupiditate quisquam? Libero voluptates saepe quaerat?    
+                </div>
+            </div>
+            
+        </div>
+    </section>
+{% endblock %}
