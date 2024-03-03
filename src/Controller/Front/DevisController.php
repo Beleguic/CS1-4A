@@ -100,9 +100,37 @@ class DevisController extends AbstractController
     #[Route('/{id}', name: 'app_devis_show', methods: ['GET'])]
     public function show(Devis $devis): Response
     {
-        dump($devis);
+
+        $categoriProduits = [];
+        $tauxTVA = [];
+        $total['ht'] = 0;
+
+        foreach ($devis->getProduits() as $produit) {
+            $categoryTemp = $produit['category']['name'];
+            $categoriProduits[$categoryTemp][] = $produit;
+
+            if(!isset($tauxTVA[$produit['tva']])){
+                $tauxTVA[intval($produit['tva'])] = 0;
+            }
+
+            $tauxTVA[intval($produit['tva'])] += $produit['price'] * $produit['quantite'];
+            $total['ht'] += $produit['price'] * $produit['quantite'];
+
+            if(!isset($total['tva'][$produit['tva']])){
+                $total['tva'][$produit['tva']] = 0;
+            }
+            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
+        }
+
+        ksort($total['tva']);
+
+        $total['ttc'] = $devis->getTotalPrice();
+
         return $this->render('front/devis/show.html.twig', [
             'devis' => $devis,
+            'categoriProduits' => $categoriProduits,
+            'tauxTVA' => $tauxTVA,
+            'total' => $total,
         ]);
     }
 
@@ -142,9 +170,6 @@ class DevisController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
-
 
             $products = $devis->getProduits();
 
@@ -199,12 +224,42 @@ class DevisController extends AbstractController
     #[Route('/{id}/download-pdf', name: 'app_devis_download_pdf', methods: ['GET'])]
     public function downloadPdf(Devis $devis): Response
     {
+        $categoriProduits = [];
+        $tauxTVA = [];
+        $total['ht'] = 0;
+
+        foreach ($devis->getProduits() as $produit) {
+            $categoryTemp = $produit['category']['name'];
+            $categoriProduits[$categoryTemp][] = $produit;
+
+            if(!isset($tauxTVA[$produit['tva']])){
+                $tauxTVA[intval($produit['tva'])] = 0;
+            }
+
+            $tauxTVA[intval($produit['tva'])] += $produit['price'] * $produit['quantite'];
+            $total['ht'] += $produit['price'] * $produit['quantite'];
+
+            if(!isset($total['tva'][$produit['tva']])){
+                $total['tva'][$produit['tva']] = 0;
+            }
+            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
+        }
+
+        ksort($total['tva']);
+
+        $total['ttc'] = $devis->getTotalPrice();
+
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
         
         $dompdf = new Dompdf($pdfOptions);
-        
-        $html = $this->renderView('front\devis\pdf_devis_template.html.twig', ['devis' => $devis]);
+
+        $html = $this->renderView('front/devis/pdf_devis_template.html.twig', [
+            'devis' => $devis,
+            'categoriProduits' => $categoriProduits,
+            'tauxTVA' => $tauxTVA,
+            'total' => $total,
+        ]);
     
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
@@ -226,6 +281,32 @@ class DevisController extends AbstractController
         #[Route('/{id}/send-devis-email', name: 'app_devis_send_email', methods: ['GET'])]
     public function sendDevisEmail(Devis $devis, BrevoEmailService $emailService, UrlGeneratorInterface $urlGenerator): Response
     {
+
+        $categoriProduits = [];
+        $tauxTVA = [];
+        $total['ht'] = 0;
+
+        foreach ($devis->getProduits() as $produit) {
+            $categoryTemp = $produit['category']['name'];
+            $categoriProduits[$categoryTemp][] = $produit;
+
+            if(!isset($tauxTVA[$produit['tva']])){
+                $tauxTVA[intval($produit['tva'])] = 0;
+            }
+
+            $tauxTVA[intval($produit['tva'])] += $produit['price'] * $produit['quantite'];
+            $total['ht'] += $produit['price'] * $produit['quantite'];
+
+            if(!isset($total['tva'][$produit['tva']])){
+                $total['tva'][$produit['tva']] = 0;
+            }
+            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
+        }
+
+        ksort($total['tva']);
+
+        $total['ttc'] = $devis->getTotalPrice();
+
         $client = $devis->getClient();
         if (!$client) {
             $this->addFlash('error', 'Le client n\'est pas défini pour ce devis.');
@@ -239,8 +320,12 @@ class DevisController extends AbstractController
         $subject = 'Votre devis de Plumbpay';
 
         // Générer le contenu HTML du devis
+
         $htmlContent = $this->renderView('front/devis/pdf_devis_template.html.twig', [
             'devis' => $devis,
+            'categoriProduits' => $categoriProduits,
+            'tauxTVA' => $tauxTVA,
+            'total' => $total,
         ]);
 
         // Envoyer l'email

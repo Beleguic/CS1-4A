@@ -6,6 +6,7 @@ use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
@@ -13,9 +14,10 @@ class Client
     use Traits\Timestampable;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $Nom = null;
@@ -35,6 +37,24 @@ class Client
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Facture::class)]
     private Collection $factures;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $address_number = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $address_type = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $address_name = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $address_zip_code = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $address_city = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $address_country = null;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
@@ -46,7 +66,7 @@ class Client
         return $this->getNom();
     }
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
@@ -129,5 +149,82 @@ class Client
     public function getFactures(): Collection
     {
         return $this->factures;
+    }
+
+    public function getAddressNumber(): ?string
+    {
+        return $this->address_number;
+    }
+
+    public function setAddressNumber(?string $address_number): static
+    {
+        $this->address_number = $address_number;
+
+        return $this;
+    }
+
+    public function getAddressType(): ?string
+    {
+        return $this->address_type;
+    }
+
+    public function setAddressType(?string $address_type): static
+    {
+        $this->address_type = $address_type;
+
+        return $this;
+    }
+
+    public function getAddressName(): ?string
+    {
+        return $this->address_name;
+    }
+
+    public function setAddressName(?string $address_name): static
+    {
+        $this->address_name = $address_name;
+
+        return $this;
+    }
+
+    public function getAddressZipCode(): ?string
+    {
+        return $this->address_zip_code;
+    }
+
+    public function setAddressZipCode(?string $address_zip_code): static
+    {
+        $this->address_zip_code = $address_zip_code;
+
+        return $this;
+    }
+
+    public function getAddressCity(): ?string
+    {
+        return $this->address_city;
+    }
+
+    public function setAddressCity(?string $address_city): static
+    {
+        $this->address_city = $address_city;
+
+        return $this;
+    }
+
+    public function getAddressCountry(): ?string
+    {
+        return $this->address_country;
+    }
+
+    public function setAddressCountry(?string $address_country): static
+    {
+        $this->address_country = $address_country;
+
+        return $this;
+    }
+
+    public function getFullAddress(): string
+    {
+        return $this->address_number . ' ' . $this->address_type . ' ' . $this->address_name . ' ' . $this->address_zip_code . ' ' . $this->address_city . ' ' . $this->address_country;
     }
 }
