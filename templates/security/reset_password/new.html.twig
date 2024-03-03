@@ -1,0 +1,22 @@
+{% extends 'security.html.twig' %}
+
+{% block title %}Réinitialisation du mot de passe - Plumbpay{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col gap-4 lg:justify-between h-full">
+        <div>
+            <a href="{{ path('front_default_index') }}" class="text-TextColor-400 dark:text-TextColor-800">Go to home</a>
+        </div>
+        <div class="flex flex-col gap-4">
+            <h1 class="font-bold text-2xl">Réinitialisation du mot de passe</h1>
+            <p>Entrez votre nouveau mot de passe</p>
+        </div>
+        <form method="post">
+            {{ form_start(resetPasswordForm) }}
+            {{ form_row(resetPasswordForm.newPassword, {'attr': {'class': 'form-control'}}) }}
+            <br>
+            <button type="submit" class="btn btn-primary">Réinitialiser le mot de passe</button>
+            {{ form_end(resetPasswordForm) }}
+        </form>
+    </div>
+{% endblock %}
