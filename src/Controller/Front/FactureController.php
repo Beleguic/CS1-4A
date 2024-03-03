@@ -27,39 +27,14 @@ class FactureController extends AbstractController
     public function index(FactureRepository $factureRepository, EntityManagerInterface $entityManager): Response
     {
 
-        $factures = $factureRepository->findAll();
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
 
         return $this->render('front/facture/index.html.twig', [
-            'factures' => $factures,
+            'factures' => $factureRepository->findByCompagny($companyId),
         ]);
     }
 
-    #[Route('/new', name: 'app_facture_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $facture = new Facture();
-        $form = $this->createForm(FactureType::class, $facture);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $devis = $facture->getDevis();
-            $devis->addFacture($facture);
-
-            // Persistez l'entité Devis avant la facture
-            $entityManager->persist($devis);
-
-            // Persistez l'entité Facture
-            $entityManager->persist($facture);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('front_app_facture_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('front/facture/new.html.twig', [
-            'facture' => $facture,
-            'form' => $form->createView(),
-    ]);
-    }
 
     #[Route('/{id}', name: 'app_facture_show', methods: ['GET'])]
     public function show(Facture $facture, EntityManagerInterface $entityManager): Response

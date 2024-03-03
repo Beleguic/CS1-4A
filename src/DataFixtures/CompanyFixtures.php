@@ -46,8 +46,16 @@ class CompanyFixtures extends Fixture
                 ->setAddressCountry("France")
             ;
             $manager->persist($object);
+
+            $this->addReference('company_' . $i, $object);
         }
 
         $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        // Spécifiez l'ordre d'exécution de cette fixture
+        return 1;
     }
 }

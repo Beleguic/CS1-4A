@@ -58,6 +58,9 @@ class Facture
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $messages = null;
 
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $company_id = null;
+
 
 
 
@@ -213,6 +216,18 @@ class Facture
     public function setMessages(?string $messages): static
     {
         $this->messages = $messages;
+
+        return $this;
+    }
+
+    public function getCompanyId(): ?Uuid
+    {
+        return $this->company_id;
+    }
+
+    public function setCompanyId(Uuid $company_id): static
+    {
+        $this->company_id = $company_id;
 
         return $this;
     }

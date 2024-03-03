@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Company;
 use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -11,6 +12,8 @@ class ProductFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        $companies = $manager->getRepository(Company::class)->findAll();
+
         $faker = Factory::create('fr_FR');
         $iMax = 50;
 
@@ -27,6 +30,7 @@ class ProductFixtures extends Fixture
                 ->setPrice($randPrice)
                 ->setTva(0.20)
                 ->setPrixTotale($total)
+                ->setCompanyId($companies[array_rand($companies)]->getId())
             ;
 
             $manager->persist($object);
@@ -38,6 +42,7 @@ class ProductFixtures extends Fixture
     public function getDependencies() : array
     {
         return [
+            CompanyFixtures::class,
             CategoryFixtures::class,
         ];
     }

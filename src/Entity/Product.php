@@ -6,6 +6,7 @@ use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Category;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -38,6 +39,9 @@ class Product
 
     #[ORM\Column(nullable: true)]
     private ?float $prix_totale = null;
+
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $company_id = null;
 
 
     public function getId(): ?string
@@ -155,6 +159,18 @@ class Product
         $produit->setQuantite($array['quantite']);
         $produit->setPrixTotale($array['prix_totale']);
         return $produit;
+    }
+
+    public function getCompanyId(): ?Uuid
+    {
+        return $this->company_id;
+    }
+
+    public function setCompanyId(Uuid $company_id): static
+    {
+        $this->company_id = $company_id;
+
+        return $this;
     }
 
 

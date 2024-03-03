@@ -52,6 +52,7 @@ class QuotationFixtures extends Fixture
                     ->setProduits($arrProducts)
                     ->setEntreprise($company)
                     ->setTotalPrice($totalPrice)
+                    ->setCompanyId($companies[array_rand($companies)]->getId())
                 ;
 
                 $manager->persist($object);

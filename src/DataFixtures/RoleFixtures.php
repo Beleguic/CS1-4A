@@ -31,4 +31,11 @@ class RoleFixtures extends Fixture
         $manager->persist($object);
         $manager->flush();
     }
+
+    public function getDependencies() : array
+    {
+        return [
+            CompanyFixtures::class,
+        ];
+    }
 }

@@ -33,15 +33,14 @@ class Devis
 
     #[ORM\Column(length: 255)]
     private ?string $num_devis = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $entreprise = null;
-
     #[ORM\Column]
     private ?float $total_price = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $produits = null;
+
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $company_id = null;
 
 
 
@@ -94,18 +93,6 @@ class Devis
     }
 
 
-    public function getEntreprise(): ?string
-    {
-        return $this->entreprise;
-    }
-
-    public function setEntreprise(string $entreprise): static
-    {
-        $this->entreprise = $entreprise;
-
-        return $this;
-    }
-
     public function getTotalPrice(): ?float
     {
         return $this->total_price;
@@ -126,6 +113,18 @@ class Devis
     public function setProduits(?array $produits): static
     {
         $this->produits = $produits;
+
+        return $this;
+    }
+
+    public function getCompanyId(): ?Uuid
+    {
+        return $this->company_id;
+    }
+
+    public function setCompanyId(Uuid $company_id): static
+    {
+        $this->company_id = $company_id;
 
         return $this;
     }
