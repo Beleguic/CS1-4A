@@ -56,3 +56,4 @@
 - [Production](http://154.56.57.33)
 - [Figma](https://www.figma.com/file/4QC1nmwVNMRul5n9iwwCee/CS1-41?type=design&node-id=0%3A1&mode=design&t=1xb771ey1jM3YNur-1)
 - [Interview](https://github.com/Beleguic/CS1-4A/blob/main/INTERVIEW_DULIPECC.pdf)
+- [Personnas](https://github.com/Beleguic/CS1-4A/blob/main/personnas.pdf)
