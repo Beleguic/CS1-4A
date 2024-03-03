@@ -36,7 +36,7 @@ class ProductType extends AbstractType
             ->add('price', NumberType::class, [
                 'label' => 'Prix',
             ])
-            ->add('tva', PercentType::class, [
+            ->add('tva', NumberType::class, [
                 'label' => 'TVA',
             ])
             ->add('quantite', HiddenType::class, [
