@@ -16,7 +16,10 @@
 1. [BELGUIC Thibault - @Belguic](https://github.com/Beleguic)
    - Devis
    - Facture 
-   - Mail Facture
+   - Mail/PDF Facture
+   - Amélioration statistiques
+   - Séparation des entités (Produit, Categorie, Devis, Facture, Client) vis a vis de l'entreprise
+   
    
 2. [HAYEK Jean-Paul - @jphayek](https://github.com/jphayek)
    - Init Projet
