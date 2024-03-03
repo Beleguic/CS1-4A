@@ -1,0 +1,11 @@
+{% if app.flashes() is not empty %}
+    <section class="flashes">
+        {% for type, messages in app.flashes() %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </section>
+{% endif %}

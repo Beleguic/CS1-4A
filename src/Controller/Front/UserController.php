@@ -11,10 +11,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[Route('/account')]
 class UserController extends AbstractController
 {
-
-    #[Route('/account', name: 'app_account')]
+    #[Route('/', name: 'app_account')]
     public function index(): Response
     {
         if (!$this->getUser()) {
@@ -26,7 +26,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/account/edit', name:'app_account_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit', name:'app_account_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
         if (!$this->getUser()) {
