@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Company - {{ company.name }} - PLumbpay - Liste des employées{% endblock %}
+
+{% block body %}
+    {{ include('/front/company/_nav.html.twig') }}
+    <h1 class="text-3xl font-bold underline text-center my-8">List Employee</h1>
+
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-auto" style="max-width: 90%;">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="py-3 px-6">Nom</th>
+                <th scope="col" class="py-3 px-6">Prénom</th>
+                <th scope="col" class="py-3 px-6">Email</th>
+                <th scope="col" class="py-3 px-6">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td class="py-4 px-6">{{ user.getFirstname() }}</td>
+                    <td class="py-4 px-6">{{ user.getLastname() }}</td>
+                    <td class="py-4 px-6">{{ user.getEmail() }}</td>
+                    <td class="py-4 px-6 flex space-x-2">
+                        <a href="{{ path('front_app_company_edit_employee', {'id': user.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Edit</a>
+                        <form method="post" action="{{ path('front_app_company_delete_employee', {'id': user.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');" class="inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~user.id) }}">
+                            <button type="submit" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td colspan="6" class="py-4 px-6">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+   {#  <div class="text-center mt-4">
+        <a href="{{ path('app_company_add_employee') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition ease-in-out duration-150">Create new</a>
+    </div> #}
+{% endblock %}

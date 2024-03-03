@@ -3,5 +3,6 @@
     {% if 'ROLE_SUPER_ADMIN' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
         <a href="{{ path('front_app_company_edit') }}" class="btn btn-edit">Edit</a>
         <a href="{{ path('front_app_company_add_employee') }}" class="btn btn-add">Add Employee</a>
+        <a href="{{ path('front_app_company_list_employee') }}" class="btn btn-add">List Employee</a>
     {% endif %}
 </div>

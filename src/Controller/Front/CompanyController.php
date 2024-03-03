@@ -5,9 +5,11 @@ namespace App\Controller\Front;
 use App\Entity\Company;
 use App\Entity\RequestNewCompanyUser;
 use App\Entity\User;
+use App\Form\AccountType;
 use App\Form\Front\CompanyType;
 use App\Form\Front\RequestNewCompanyUserType;
 use App\Repository\CompanyRepository;
+use App\Repository\UserRepository;
 use App\Service\BrevoEmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -99,8 +102,8 @@ class CompanyController extends AbstractController
             $id = $newCompanyUser->getId();
 
             $employeeEmail = $newCompanyUser->getEmail();
-            $checkUser = $registry->getRepository(User::class)->findOneBy(["email"=>$employeeEmail]);
-            if($checkUser == null)
+            $checkUser = $registry->getRepository(User::class)->findOneBy(["email" => $employeeEmail]);
+            if ($checkUser == null)
                 $activationLink = $this->generateUrl('register_account', ['id' => $id], UrlGeneratorInterface::ABSOLUTE_URL);
             else {
                 $activationLink = $this->generateUrl('activate_employee_company', ['id' => $id], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -109,14 +112,14 @@ class CompanyController extends AbstractController
             $senderEmail = 'team_plumbpay@outlook.com';
             $recipientName = $this->getUser()->getUserIdentifier();
             $recipientEmail = $newCompanyUser->getEmail();
-            $subject = "Plumbpay - ".$companyName." vous a ajouté !";
-            $htmlContent = "<html><head></head><body><p> La société ". $companyName ." vous a ajouté!</p><p>Veuillez cliquer sur le lien suivant pour être ajouté à ".$companyName." : <a href='". $activationLink . "'>Etre ajouté</a></p></body></html>";
+            $subject = "Plumbpay - " . $companyName . " vous a ajouté !";
+            $htmlContent = "<html><head></head><body><p> La société " . $companyName . " vous a ajouté!</p><p>Veuillez cliquer sur le lien suivant pour être ajouté à " . $companyName . " : <a href='" . $activationLink . "'>Etre ajouté</a></p></body></html>";
 
             // Envoyer l'e-mail de confirmation
             $response = $emailService->sendEmail($senderName, $senderEmail, $recipientName, $recipientEmail, $subject, $htmlContent);
 
             if ($response['success']) {
-                $this->addFlash('success', "An email has been sent to ". $newCompanyUser->getEmail() . " !");
+                $this->addFlash('success', "An email has been sent to " . $newCompanyUser->getEmail() . " !");
             } else {
                 $this->addFlash('success', "An error has been occurred. Please retry !");
             }
@@ -127,4 +130,74 @@ class CompanyController extends AbstractController
             'company' => $company
         ]);
     }
+
+    #[Route('/list/employee', name: 'app_company_list_employee', methods: ['GET'])]
+    public function listEmployee(UserRepository $userRepository, ManagerRegistry $registry): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw $this->createNotFoundException('This page does not exist');
+        }
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createNotFoundException('This page does not exist');
+        }
+
+        $companyId = $user->getCompanyId();
+        $company = $registry->getRepository(Company::class)->find($companyId);
+
+        return $this->render('front/company/list.html.twig', [
+            'users' => $userRepository->findByCompagny($companyId),
+            'company' => $company
+        ]);
+    }
+
+    #[Route('/edit/employee', name:'app_company_edit_employee', methods: ['GET', 'POST'])]
+    public function editEmployee(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $user = $this->getUser();
+        $form = $this->createForm(AccountType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $oldPassword = $form->get('oldPassword')->getData();
+            $newPassword = $form->get('newPassword')->getData();
+
+            if(($oldPassword != null && $newPassword != null) || ($oldPassword != "" && $newPassword != "")){
+                if ($passwordHasher->isPasswordValid($user, $form->get('oldPassword')->getData())) {
+                    $newEncodedPassword = $passwordHasher->hashPassword($user, $form->get('newPassword')->getData());
+                    $user->setPassword($newEncodedPassword);
+                    $manager->flush();
+                    $this->addFlash('success', 'Mot de passe mis à jour avec succès');
+                } else {
+                    $this->addFlash('error', 'Ancien mot de passe incorrect.');
+                }
+            }
+
+            $manager->flush();
+            $this->addFlash('notice', 'Votre compte a été mis-à-jour !');
+
+        }
+
+        return $this->render('/front/company/edit_employee.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/delete/employee', name: 'app_company_delete_employee', methods: ['GET'])]
+    public function deleteEmployee(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('front_app_company_list_employee', [], Response::HTTP_SEE_OTHER);
+    }
+
 }
