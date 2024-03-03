@@ -17,6 +17,9 @@ use Dompdf\Options;
 use App\Service\BrevoEmailService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+use App\Entity\Facture;
+
+
 #[Route('/devis')]
 class DevisController extends AbstractController
 {
@@ -259,6 +262,32 @@ class DevisController extends AbstractController
         return $this->redirectToRoute('front_app_devis_index');
     }
  
+
+    #[Route('/{id}/transform-devis', name: 'app_devis_transform_devis', methods: ['GET', 'POST'])]
+    public function transform_devis(Request $request, Devis $devis, EntityManagerInterface $entityManager): Response
+    {
+
+        $facture = new Facture();
+        $facture->setNumFacture('F' . date('Ymd') . '-' . rand(1000, 9999));
+        $facture->setClient($devis->getClient());
+        $facture->setDateFacture(new \DateTime());
+        $facture->setNumDevis($devis->getNumDevis());
+        $facture->setPrixTotal($devis->getTotalPrice());
+        $facture->setProduits($devis->getProduits());
+        //$facture->setCompagny($devi->getEntreprise());
+        $facture->setPaid(false);
+        $facture->setPrixPaye(0);
+        $facture->setReduction(0);
+        $dateEcheance = new \DateTime();
+        $dateEcheance = $dateEcheance->modify('+1 month');
+        $facture->setDateEcheance($dateEcheance);
+
+        $entityManager->persist($facture);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('front_app_facture_index', [], Response::HTTP_SEE_OTHER);
+
+    }
 }
 
 

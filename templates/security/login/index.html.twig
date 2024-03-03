@@ -5,12 +5,20 @@
 {% block body %}
     <div class="flex flex-col gap-4 lg:justify-between h-full">
         <div>
-            <a href="{{ path('front_default_index') }}" class="text-TextColor-400 dark:text-TextColor-800">Go to home</a>
+            <a href="{{ path('front_default_index') }}" class="px-4 py-2 text-center rounded-lg bg-mainColor-400 text-TextColor-800 hover:bg-secondaryColor-400 focus:bg-secondaryColor-400">Go to home</a>
         </div>
         <div class="flex flex-col gap-4">
             <h1 class="font-bold text-2xl">Welcome back to plumbpay !</h1>
             <p>Let's generate some new invoices</p>
         </div>
+            {% if app.request.query.get('error') %}
+                
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Erreur!</strong>
+                    <span class="block sm:inline">{{ app.request.query.get('error') }}</span>
+                    
+                </div>
+            {% endif %}
         {% if error %}
             <section>
                 <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -18,7 +26,7 @@
         {% endif %}
         {{ include('security/login/_form.html.twig') }}
         <section>
-            <p>Forgot password ? <a href="#" class="font-semibold text-mainColor-400 hover:text-secondaryColor-400 focus:text-secondaryColor-400">Recover password</a></p>
+            <p>Forgot password ? <a href="{{ path('forgot_password') }}" class="font-semibold text-mainColor-400 hover:text-secondaryColor-400 focus:text-secondaryColor-400">Recover password</a></p>
         </section>
     </div>
 

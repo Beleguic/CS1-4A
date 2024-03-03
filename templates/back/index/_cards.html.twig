@@ -1,0 +1,19 @@
+<div class="grid gap-8">
+    {% for card in cards %}
+        <section class="grid sm:grid-cols-2 xl:grid-cols-4 gap-8">
+            {% for c in card %}
+                <a href="{{ c.link }}" class="p-4 shadow-2xl rounded-xl transition-all hover:scale-110 focus:scale-110 bg-bgBody-400 dark:bg-bgBody-800 border border-textColor-400 dark:border-textColor-800">
+                    <article>
+                        <div class="flex flex-row gap-4">
+                            <div class="w-1/4">{{ c.icon|raw }}</div>
+                            <div class="w-full flex flex-col gap-2">
+                                <h3 class="text-xl text-TextColor-400 dark:text-TextColor-800">Total {{ c.title }}</h3>
+                                <h1 class="text-4x font-bold text-TextColor-400 dark:text-TextColor-800">{{ c.nb }}</h1>
+                            </div>
+                        </div>
+                    </article>
+                </a>
+            {% endfor %}
+        </section>
+    {% endfor %}
+</div>
