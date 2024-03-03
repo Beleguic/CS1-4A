@@ -33,10 +33,6 @@ class Devis
 
     #[ORM\Column(length: 255)]
     private ?string $num_devis = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $entreprise = null;
-
     #[ORM\Column]
     private ?float $total_price = null;
 
@@ -96,18 +92,6 @@ class Devis
         return $this;
     }
 
-
-    public function getEntreprise(): ?string
-    {
-        return $this->entreprise;
-    }
-
-    public function setEntreprise(string $entreprise): static
-    {
-        $this->entreprise = $entreprise;
-
-        return $this;
-    }
 
     public function getTotalPrice(): ?float
     {

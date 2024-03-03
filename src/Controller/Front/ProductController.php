@@ -36,6 +36,8 @@ class ProductController extends AbstractController
         $companyId = $user->getCompanyId();
 
         $product = new Product();
+        $product->setCompanyId($companyId);
+        //dd($product);
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 

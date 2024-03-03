@@ -16,11 +16,14 @@ use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\EntityRepository;
+use App\Repository\CategoryRepository;
 
 class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom',
@@ -32,7 +35,18 @@ class ProductType extends AbstractType
                 'class' => Category::class,
                 'label' => 'Categorie',
                 'choice_label' => 'name',
+                'query_builder' => function (CategoryRepository $er) use ($options) {
+                    $company_id = $options['data']->getCompanyId() ?? null;
+                    // Récupérer le company_id depuis la requête ou d'où vous le tenez
+                    // Par exemple, si vous l'avez dans votre contrôleur, passez-le ici en option
+
+                    return $er->createQueryBuilder('c')
+                        ->where('c.company_id = :company_id')
+                        ->setParameter('company_id', $company_id)
+                        ->orderBy('c.name', 'ASC'); // Vous pouvez ajuster l'ordre de tri ici
+                },
             ])
+
             ->add('price', NumberType::class, [
                 'label' => 'Prix',
             ])
