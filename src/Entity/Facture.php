@@ -26,10 +26,6 @@ class Facture
     #[ORM\Column(length: 255)]
     private ?string $num_devis = null;
 
-    #[ORM\ManyToOne(inversedBy: 'client')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Client $client = null;
-
 
     #[ORM\Column]
     private ?bool $paid = null;
@@ -55,6 +51,12 @@ class Facture
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_echeance = null;
+
+    #[ORM\Column]
+    private array $client = [];
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $messages = null;
 
 
 
@@ -91,18 +93,6 @@ class Facture
     public function setNumDevis(string $num_devis): static
     {
         $this->num_devis = $num_devis;
-
-        return $this;
-    }
-
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    public function setClient(?Client $client): static
-    {
-        $this->client = $client;
 
         return $this;
     }
@@ -199,6 +189,30 @@ class Facture
     public function setDateEcheance(?\DateTimeInterface $date_echeance): static
     {
         $this->date_echeance = $date_echeance;
+
+        return $this;
+    }
+
+    public function getClient(): array
+    {
+        return $this->client;
+    }
+
+    public function setClient(array $client): static
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getMessages(): ?string
+    {
+        return $this->messages;
+    }
+
+    public function setMessages(?string $messages): static
+    {
+        $this->messages = $messages;
 
         return $this;
     }

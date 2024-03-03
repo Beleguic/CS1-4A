@@ -3,55 +3,68 @@
 {% block title %}Facture {{ facture.numFacture }}{% endblock %}
 
 {% block body %}
-
-    <div class="container mt-4">
-        <h1>Facture {{ facture.numFacture }}</h1>
-        <p>Créée le {{ facture.dateFacture|date('d/m/Y') }}</p>
-        <p>Échéance le {{ facture.dateEcheance|date('d/m/Y') }}</p>
-        <div class="row">
-           {# <div class="col-6">
-                <h2>Entreprise</h2>
-                <p>{{ facture.entreprise.Nom }}</p>
-                <p>{{ facture.entreprise.Adresse }}</p>
-                <p>{{ facture.entreprise.CodePostal ~ ' ' ~ facture.entreprise.Ville }}</p>
-                <p>{{ facture.entreprise.Telephone }}</p>
-                <p>{{ facture.entreprise.Email }}</p>
-            </div> #}
-            <div class="col-6">
-                <h2>Client</h2>
-                <p>{{ facture.client.Nom ~ ' ' ~ facture.client.Prenom }}</p>
-            </div>
-            <div class="col-6">
-                <h2>Produits</h2>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Produit</th>
-                            <th>Prix unitaire</th>
-                            <th>Quantité</th>
-                            <th>TVA</th>
-                            <th>Total</th>
+    {% set messages = facture.messages | default('Pas de remarques') %}.
+    <div class="container mx-auto">
+        <div class="text-center my-8">
+            <h1 class="text-3xl font-bold underline" style="color: #000000;">Facture {{ facture.numFacture }}</h1>
+            <h3>Date : {{ facture.createdAt|date('d/m/Y') }}</h3>
+            <h3>Date d'echeance: {{ facture.dateEcheance|date('d/m/Y') }}</h3>
+            <p>Remarques : {{ messages }}</p>
+        </div>
+        <div class="text-right">
+            <h1 class="text-2xl font-bold underline" style="color: #000000;">Entreprise</h1>
+            {# <p>{{ devis.entreprise.getNom() }}</p>
+            <p>{{ devis.entreprise.getFullAddress() }}</p>
+            <p>{{ devis.entreprise.getEmail() }} </p>
+            <p>{{ devis.entreprise.getNumeroTelephone() }}</p>  #}
+        </div>
+        <div class="text-left">
+            <h1 class="text-2xl font-bold underline" style="color: #000000;">Client</h1>
+            <p>{{ client.getNom() }} {{ client.getPrenom() }}</p>
+            <p>{{ client.getFullAddress() }}</p>
+            <p>{{ client.getEmail() }} </p>
+            <p>{{ client.getNumeroTelephone() }}</p>
+        </div>
+        <div class="mx-auto mt-4" style="max-width: 90%;">
+            {% for categorie, produits in categoriProduits %}
+                <div class="mt-4">
+                    <h2 class="text-2xl font-bold" style="color: #000000;">{{ categorie }}</h2>
+                    <table class="table-auto w-full mt-4">
+                        <thead>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-2">Produit</th>
+                            <th class="px-4 py-2">Description</th>
+                            <th class="px-4 py-2">Prix unitaire</th>
+                            <th class="px-4 py-2">TVA</th>
+                            <th class="px-4 py-2">Quantité</th>
+                            <th class="px-4 py-2">Prix totale</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {% for produit in facture.produits %}
+                        </thead>
+                        <tbody>
+                        {% for produit in produits %}
                             <tr>
-                                <td>{{ produit.name }}</td>
-                                <td>{{ produit.description }} </td>
-                                <td>{{ produit.price }} €</td>
-                                <td>{{ produit.quantite }}</td>
-                                <td>{{ produit.tva }}</td>
-                                <td>{{ produit.prix_totale }} €</td>
+                                <td class="border px-4 py-2">{{ produit.name }}</td>
+                                <td class="border px-4 py-2">{{ produit.description }}</td>
+                                <td class="border px-4 py-2">{{ produit.price | number_format(2, ',', ' ') }} €</td>
+                                <td class="border px-4 py-2">{{ produit.tva | number_format(1, ',', ' ') }} %</td>
+                                <td class="border px-4 py-2">{{ produit.quantite }}</td>
+                                <td class="border px-4 py-2">{{ produit.prix_totale  | number_format(2, ',', ' ') }} €</td>
                             </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-6">
-                <h2>Montant total</h2>
-                <p>{{ facture.prixTotal }} €</p>
-                {# p>{{ facture.statue }} € TTC</p> #}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-right mt-4">
+            <h2 class="text-1xl" style="color: #000000;">Total HT : {{ total.ht | number_format(2, ',', ' ')}} €</h2>
+            {% for taux_tva, total_tva in total.tva %}
+                <h2 class="text-1xl" style="color: #000000;">TVA {{ taux_tva }}% : {{ total_tva | number_format(1, ',', ' ') | number_format(2, ',', ' ') }} €</h2>
+            {% endfor %}
+            <h2 class="text-2xl font-bold" style="color: #000000;">Total TTC : {{ total.ttc | number_format(2, ',', ' ') }} €</h2>
         </div>
     </div>
+
+
     <a href="{{ path('front_app_facture_index') }}">back to list</a>
 {% endblock %}

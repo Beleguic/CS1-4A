@@ -2,11 +2,15 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\Devis;
 use App\Entity\Facture;
 use App\Entity\Client;
 use App\Form\FactureType;
 use App\Repository\FactureRepository;
+use App\Service\BrevoEmailService;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Stripe\StripeClient;
 use stripe\Stripe;
 use Doctrine\Common\Proxy\Proxy;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/facture')]
 class FactureController extends AbstractController
@@ -23,28 +28,6 @@ class FactureController extends AbstractController
     {
 
         $factures = $factureRepository->findAll();
-
-        foreach ($factures as $facture) {
-            $clientId = $facture->getClient()->getId();
-            $client = $entityManager->find(Client::class, $clientId);
-
-            if ($client instanceof Proxy) {
-                // Force le chargement complet du proxy s'il n'a pas encore été chargé
-                $entityManager->refresh($client);
-            }
-        }
-
-
-
-        /*$clientId = $factureRepository->getClient()->getId();
-        $client = $entityManager->find(Client::class, $clientId);
-
-        if ($client instanceof Proxy) {
-            // Force le chargement complet du proxy s'il n'a pas encore été chargé
-            $entityManager->refresh($client);
-        }*/
-
-        dump($factures);
 
         return $this->render('front/facture/index.html.twig', [
             'factures' => $factures,
@@ -78,52 +61,48 @@ class FactureController extends AbstractController
     ]);
     }
 
-    #[Route('/{id}/send', name: 'app_facture_send', methods: ['GET', 'POST'])]
-    public function send(Request $request, Facture $facture, EntityManagerInterface $entityManager): Response
-    {
-        // Genere un PDF avec les donnée de la facture
-        // Envoyer le PDF par mail au client via son adrsse mail
-        // Mettre a jour la facture pour dire qu'elle a été envoyé
-
-
-        return 0;
-    }
-
     #[Route('/{id}', name: 'app_facture_show', methods: ['GET'])]
     public function show(Facture $facture, EntityManagerInterface $entityManager): Response
     {
-        $clientId = $facture->getClient()->getId();
-        $client = $entityManager->find(Client::class, $clientId);
 
-        if ($client instanceof Proxy) {
-            // Force le chargement complet du proxy s'il n'a pas encore été chargé
-            $entityManager->refresh($client);
+        $categoriProduits = [];
+        $tauxTVA = [];
+        $total['ht'] = 0;
+
+        foreach ($facture->getProduits() as $produit) {
+            $categoryTemp = $produit['category']['name'];
+            $categoriProduits[$categoryTemp][] = $produit;
+
+            if(!isset($tauxTVA[$produit['tva']])){
+                $tauxTVA[intval($produit['tva'])] = 0;
+            }
+
+            $tauxTVA[intval($produit['tva'])] += $produit['price'] * $produit['quantite'];
+            $total['ht'] += $produit['price'] * $produit['quantite'];
+
+            if(!isset($total['tva'][$produit['tva']])){
+                $total['tva'][$produit['tva']] = 0;
+            }
+            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
         }
 
-        dump($facture);
+        ksort($total['tva']);
+
+        $total['ttc'] = $facture->getPrixTotal();
+
+        $client = Client::arrayToClient($facture->getClient());
 
         return $this->render('front/facture/show.html.twig', [
             'facture' => $facture,
+            'categoriProduits' => $categoriProduits,
+            'tauxTVA' => $tauxTVA,
+            'total' => $total,
+            'client' => $client,
         ]);
+
     }
 
-    #[Route('/{id}/edit', name: 'app_facture_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Facture $facture, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(FactureType::class, $facture);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('front_app_facture_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('front/facture/edit.html.twig', [
-            'facture' => $facture,
-            'form' => $form,
-        ]);
-    }
 
     #[Route('/{id}/paid', name: 'app_facture_paid', methods: ['GET', 'POST'])]
     public function paid(Request $request, Facture $facture, EntityManagerInterface $entityManager): Response
@@ -158,5 +137,128 @@ class FactureController extends AbstractController
         }
 
         return $this->redirectToRoute('app_facture_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/download-pdf', name: 'app_facture_download_pdf', methods: ['GET'])]
+    public function downloadPdf(Facture $facture): Response
+    {
+        $categoriProduits = [];
+        $tauxTVA = [];
+        $total['ht'] = 0;
+
+        foreach ($facture->getProduits() as $produit) {
+            $categoryTemp = $produit['category']['name'];
+            $categoriProduits[$categoryTemp][] = $produit;
+
+            if(!isset($tauxTVA[$produit['tva']])){
+                $tauxTVA[intval($produit['tva'])] = 0;
+            }
+
+            $tauxTVA[intval($produit['tva'])] += $produit['price'] * $produit['quantite'];
+            $total['ht'] += $produit['price'] * $produit['quantite'];
+
+            if(!isset($total['tva'][$produit['tva']])){
+                $total['tva'][$produit['tva']] = 0;
+            }
+            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
+        }
+
+        ksort($total['tva']);
+
+        $total['ttc'] = $facture->getPrixTotal();
+
+        $client = Client::arrayToClient($facture->getClient());
+
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        $dompdf = new Dompdf($pdfOptions);
+
+        $html = $this->renderView('front/facture/pdf_facture_template.html.twig', [
+            'facture' => $facture,
+            'categoriProduits' => $categoriProduits,
+            'tauxTVA' => $tauxTVA,
+            'total' => $total,
+            'client' => $client,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $client = Client::arrayToClient($facture->getClient());
+        $clientNameSafe = $client ? preg_replace('/[^A-Za-z0-9\-]/', '_', $client->getNom() . '_' . $client->getPrenom()) : 'Client_Inconnu';
+
+
+        $pdfFileName = "devis_" . $clientNameSafe . "_" . $facture->getId()->toRfc4122() . ".pdf";
+
+
+        return new Response($dompdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="'.$pdfFileName.'"',
+        ]);
+    }
+
+    #[Route('/{id}/send-facture-email', name: 'app_facture_send_email', methods: ['GET'])]
+    public function sendFactureEmail(Facture $facture, BrevoEmailService $emailService, UrlGeneratorInterface $urlGenerator): Response
+    {
+
+        $categoriProduits = [];
+        $tauxTVA = [];
+        $total['ht'] = 0;
+
+        foreach ($facture->getProduits() as $produit) {
+            $categoryTemp = $produit['category']['name'];
+            $categoriProduits[$categoryTemp][] = $produit;
+
+            if(!isset($tauxTVA[$produit['tva']])){
+                $tauxTVA[intval($produit['tva'])] = 0;
+            }
+
+            $tauxTVA[intval($produit['tva'])] += $produit['price'] * $produit['quantite'];
+            $total['ht'] += $produit['price'] * $produit['quantite'];
+
+            if(!isset($total['tva'][$produit['tva']])){
+                $total['tva'][$produit['tva']] = 0;
+            }
+            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
+        }
+
+        ksort($total['tva']);
+
+        $total['ttc'] = $facture->getPrixTotal();
+
+        $client = Client::arrayToClient($facture->getClient());
+
+        $senderName = 'Plumbpay';
+        $senderEmail = 'team_plumbpay@outlook.com';
+        $recipientName = $client->getNom() . ' ' . $client->getPrenom();
+        $recipientEmail = $client->getEmail();
+        $factureNum = $facture->getNumFacture();
+        $subject = 'Votre Facture ' . $factureNum . ' de Plumbpay';
+
+        // Générer le contenu HTML du devis
+
+        $htmlContent = $this->renderView('front/facture/pdf_facture_template.html.twig', [
+            'facture' => $facture,
+            'categoriProduits' => $categoriProduits,
+            'tauxTVA' => $tauxTVA,
+            'total' => $total,
+            'client' => $client,
+        ]);
+
+        // Envoyer l'email
+        $emailService->sendEmail(
+            $senderName,
+            $senderEmail,
+            $recipientName,
+            $recipientEmail,
+            $subject,
+            $htmlContent
+        );
+        $clientMail = $client->getEmail();
+        $this->addFlash('success', 'La facture a été envoyé par email au client ('.$clientMail.').');
+
+        return $this->redirectToRoute('front_app_facture_index');
     }
 }
