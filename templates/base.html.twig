@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,6 +67,11 @@
                     <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
                         <a href="{{ path('front_app_account') }}" class="block px-4 py-2 account-link hover:text-white">my company</a>
                         <a href="{{ path('front_app_account') }}" class="block px-4 py-2 account-link hover:text-white">My Account</a>
+                        {% if app.user %}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <a href="{{ path('back_app_index') }}" class="block px-4 py-2 account-link hover:text-white">Admin</a>
+                            {% endif %}
+                        {% endif %}
                         <a href="{{ path('app_logout') }}" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
                     </div>
             </div>
@@ -123,6 +128,15 @@
     <div class="flex flex-col min-h-screen overflow-y-auto">
         <div class="flex-grow">
             <main class="p-6">
+                {% for type, flashMessages in app.flashes %}
+                    <section class="flashs">
+                        {% for message in flashMessages %}
+                            <div class="flash" data-flash="{{ type }}">
+                                <p>{{ message }}</p>
+                            </div>
+                        {% endfor %}
+                    </section>
+                {% endfor %}
                 <h1 class="text-3xl text-black pb-6">{% block title %}{% endblock %}</h1>
                 {% block body %}
 
