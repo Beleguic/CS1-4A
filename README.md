@@ -1,97 +1,62 @@
-# Symfony Docker (PHP8 / Caddy / Postgresql)
+# Plumbpay
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.
+<hr>
 
-## Getting Started
+## Members 
 
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/)
-2. Run `docker compose build --pull --no-cache` to build fresh images
-3. Run `docker compose up` (the logs will be displayed in the current shell) or Run `docker compose up -d` to run in background
-4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-5. Run `docker compose down --remove-orphans` to stop the Docker containers.
-6. Run `docker compose logs -f` to display current logs, `docker compose logs -f [CONTAINER_NAME]` to display specific container's current logs
+1. [BELGUIC Thibault - @Belguic](https://github.com/Beleguic)
+2. [HAYEK Jean-Paul - @jphayek](https://github.com/jphayek)
+3. [PHANG Willy - @PHANGWilly](https://github.com/PHANGWilly)
+4. [YVARS Clément - @clement-Yvars](https://github.com/clement-Yvars)
 
-## Commandes utiles
+<hr>
 
-Lister l'ensemble des commandes existances `docker compose exec php bin/console`
+## Contributions
 
-#### Création de fichier vierge
+1. [BELGUIC Thibault - @Belguic](https://github.com/Beleguic)
+   - Devis
+   - Facture 
+   - Mail/PDF Facture
+   - Amélioration statistiques
+   - Séparation des entités (Produit, Categorie, Devis, Facture, Client) vis a vis de l'entreprise
+   
+   
+2. [HAYEK Jean-Paul - @jphayek](https://github.com/jphayek)
+   - Init Projet
+   - Devis et Facture
+   - Client
+   - Mailing
+   - Forgot Password
+   - Admin Charts
+   - Testing XSS 
 
-Controller `docker compose exec php bin/console make:controller`
+3. [PHANG Willy - @PHANGWilly](https://github.com/PHANGWilly)
+   - User
+   - Company
+   - Statistics
+   - Role
+   - BackOffice
+   - Contact
+   - Landing Page
+   - Design
+   - Legals
+   
+4. [YVARS Clément - @clement-Yvars](https://github.com/clement-Yvars)
+   - Dashboard back
+   - Dashboard front
+   - Styling CRUDs
+   - 404
+   - Mail Devis
+   - PDF Produit
+   - PDF Devis
+   - Interview / Personna
+   - Figma
+   
+<hr>
 
-FormType `docker compose exec php bin/console make:form`
+## Links
 
-CRUD `docker compose exec php bin/console make:crud`
-
-#### Debug
-
-Supprimer le cache du navigateur
-
-`docker compose exec php bin/console cache:clear`
-
-`docker compose exec php bin/console c:c`
-
-Voir les routes actives
-
-`docker compose exec php bin/console debug:router`
-
-## Gestion des routes
-
-[https://symfony.com/doc/current/routing.html](https://symfony.com/doc/current/routing.html)
-
-## Autowiring & ParamConverter
-
-Autowiring [https://symfony.com/doc/current/service_container/autowiring.html](https://symfony.com/doc/current/service_container/autowiring.html)
-
-ParamConverter [https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/converters.html](https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/converters.html)
-
-## Gestion de base de données
-
-#### Fix error duplicate table (en rapport avec le cours uniquement; quand vous faites un pull du git du cours)
-
-Supprimer l'ensemble de vos migrations et faire les commandes suivantes :
-
-`docker compose exec php bin/console d:d:d --force`
-`docker compose exec php bin/console d:d:c`
-`docker compose exec php bin/console make:migr`
-`docker compose exec php bin/console d:m:m`
-
-#### Commandes de création des fichiers entity/repository et d'ajout de champs
-
-`docker compose exec php bin/console make:entity`
-
-Documentation sur les relations entre les entités [https://symfony.com/doc/current/doctrine/associations.html](https://symfony.com/doc/current/doctrine/associations.html)
-
-#### Mise à jour de la base de données via migration
-
-Generation d'une migration
-
-`docker compose exec php bin/console make:migration`
-
-Jouer les migrations
-
-`docker compose exec php bin/console doctrine:migration:migrate`
-
-`docker compose exec php bin/console d:m:m`
-
-#### Mise à jour de la base de données via update de schema sans migration
-
-Voir les requètes interprétées (sans mise à jour de la DB)
-
-`docker compose exec php bin/console doctrine:schema:update --dump-sql`
-
-`docker compose exec php bin/console d:s:u --dump-sql`
-
-Executer les requètes en DB
-
-`docker compose exec php bin/console doctrine:schema:update --force`
-
-`docker compose exec php bin/console d:s:u --force`
-
-### Install and run Tailwindcss
-
-1. Install [https://tailwindcss.com/docs/guides/symfony](https://tailwindcss.com/docs/guides/symfony)
-
-2. Run `npm run watch` in a terminal
-
-3. Finish the build `ctrl + c` or `cmd + c`
+- [Production](http://154.56.57.33)
+- [Figma](https://www.figma.com/file/4QC1nmwVNMRul5n9iwwCee/CS1-41?type=design&node-id=0%3A1&mode=design&t=1xb771ey1jM3YNur-1)
+- [Interview](https://github.com/Beleguic/CS1-4A/blob/main/INTERVIEW_DULIPECC.pdf)
+- [Personnas](https://github.com/Beleguic/CS1-4A/blob/main/personnas.pdf)
