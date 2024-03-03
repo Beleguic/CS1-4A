@@ -8,6 +8,10 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
+        <style>
+            .account-link:hover { background: #05C1FA; }
+        </style>
+        <script src="https://unpkg.com/alpinejs" defer></script>
     </head>
     <body>
         <header class="top-0 fixed z-10 w-full bg-bgBody-400 dark:bg-bgBody-800 text-TextColor-400 dark:text-TextColor-800">
@@ -55,9 +59,17 @@
                                 <a href="{{ path('app_register') }}" class="bg-mainColor-400 hover:bg-secondaryColor-400 focus:bg-secondaryColor-400 px-6 py-4 rounded-full text-TextColor-800">Get Started</a>
                             </li>
                             {% else %}
-                            <li>
-                                <a href="{{ path('front_app_account') }}">Account</a>
-                            </li>
+                                <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
+                                    <button @click="isOpen = !isOpen" class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
+                                        <img src="\cool-user.png">
+                                    </button>
+                                    <button x-show="isOpen" @click="isOpen = false" class="h-full w-full fixed inset-0 cursor-default"></button>
+                                    <div x-show="isOpen" class="absolute w-32 rounded-lg shadow-lg py-2 mt-16 bg-bgBody-400 dark:bg-bgBody-800">
+                                        <a href="{{ path('front_app_account') }}" class="block px-4 py-2 account-link hover:text-white">Account</a>
+                                        <a href="{{ path('front_app_company') }}" class="block px-4 py-2 account-link hover:text-white">Company</a>
+                                        <a href="{{ path('app_logout') }}" class="block px-4 py-2 account-link hover:text-white">Logout</a>
+                                    </div>
+                                </div>
                             {% endif %}
                         </ul>
                     </nav>

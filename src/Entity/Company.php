@@ -264,4 +264,9 @@ class Company
     {
         return $this->imageSize;
     }
+
+    public function getUuid(): Uuid
+    {
+        return Uuid::fromString($this->getId());
+    }
 }

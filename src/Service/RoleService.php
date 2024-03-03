@@ -18,10 +18,9 @@ class RoleService
     {
         $roles = $this->entityManager->getRepository(Role::class)->findAll();
 
-        // Transformer les objets Role en un tableau de noms de rôle
         $roleNames = [];
         foreach ($roles as $role) {
-            $roleNames[] = $role->getValue();
+            $roleNames[$role->getName()] = $role->getValue();
         }
 
         return $roleNames;

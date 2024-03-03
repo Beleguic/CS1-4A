@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistics - Plumbpay{% endblock %}
+
+{% block body %}
+    <div class="grid gap-8">
+        {{ include('front/statistics/_form.html.twig')}}
+        {% if app.request.query.get('year') is not null %}
+            {% if hasStats == false %}
+                {{ include('front/statistics/_no_stats.html.twig')}}
+            {% else %}
+                {% include 'front/statistics/_statistics.html.twig' with {'year': app.request.query.get('year')}%}}
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}
