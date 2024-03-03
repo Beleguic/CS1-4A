@@ -26,4 +26,6 @@ services:
         arguments:
             $entityManager: '@doctrine.orm.entity_manager'
 
-
+    App\EventListener\AccessDeniedHttpExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

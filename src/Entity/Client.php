@@ -11,6 +11,8 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
 {
+    use Traits\Timestampable;
+
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
