@@ -26,6 +26,12 @@
         .text-center {
             text-align: center;
         }
+        .text-right {
+            text-align: right;
+        }
+        .text-left {
+            text-align: left;
+        }
         .my-8 {
             margin-top: 32px;
             margin-bottom: 32px;
@@ -51,49 +57,89 @@
         th, td {
             text-align: left;
         }
+        .font-bold {
+            font-weight: bold;
+        }
+        .text-2xl {
+            font-size: 1.5rem;
+        }
+        .text-1xl {
+            font-size: 1.25rem;
+        }
+        .underline {
+            text-decoration: underline;
+        }
+        .container {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 80%;
+        }
+
+
     </style>
 </head>
 <body>
     <header>
         <h1>Devis N°{{ devis.numDevis }}</h1>
     </header>
-    
     <div class="text-center my-8">
-        <h2>Client : {{ devis.client.getNom() ~ " " ~ devis.client.getPrenom() }}</h2>
         <h3>Date : {{ devis.createdAt|date('d/m/Y') }}</h3>
         <p>Remarques : {{ devis.message | default('Pas de remarques') }}</p>
     </div>
-
-    <div class="mx-auto">
-        <table class="table-auto w-full mt-4">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th>Produit</th>
-                    <th>Description</th>
-                    <th>Prix unitaire</th>
-                    <th>TVA</th>
-                    <th>Categorie</th>
-                    <th>Quantité</th>
-                    <th>Prix totale</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for produit in devis.produits %}
-                <tr>
-                    <td>{{ produit.name }}</td>
-                    <td>{{ produit.description }}</td>
-                    <td>{{ produit.price }} €</td>
-                    <td>{{ produit.tva }} %</td>
-                    <td>{{ produit.category.name }}</td>
-                    <td>{{ produit.quantite }}</td>
-                    <td>{{ produit.prix_totale }} €</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <h3 class="text-right mr-4 mt-4">Prix Total : {{ devis.totalPrice }} €</h3>
+    <div class="container mx-auto">
+        <div class="text-right">
+            <h1 class="text-2xl font-bold underline" style="color: #000000;">Entreprise</h1>
+            {# <p>{{ devis.entreprise.getNom() }}</p>
+                <p>{{ devis.entreprise.getFullAddress() }}</p>
+                <p>{{ devis.entreprise.getEmail() }} </p>
+                <p>{{ devis.entreprise.getNumeroTelephone() }}</p>  #}
+        </div>
+        <div class="text-left">
+            <h1 class="text-2xl font-bold underline" style="color: #000000;">Client</h1>
+            <p>{{ devis.client.getNom() }} {{ devis.client.getPrenom() }}</p>
+            <p>{{ devis.client.getFullAddress() }}</p>
+            <p>{{ devis.client.getEmail() }} </p>
+            <p>{{ devis.client.getNumeroTelephone() }}</p>
+        </div>
+        <div class="mx-auto mt-4" style="max-width: 90%;">
+            {% for categorie, produits in categoriProduits %}
+                <div class="mt-4">
+                    <h2 class="text-2xl font-bold" style="color: #000000;">{{ categorie }}</h2>
+                    <table class="table-auto w-full mt-4">
+                        <thead>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-2">Produit</th>
+                            <th class="px-4 py-2">Description</th>
+                            <th class="px-4 py-2">Prix unitaire</th>
+                            <th class="px-4 py-2">TVA</th>
+                            <th class="px-4 py-2">Quantité</th>
+                            <th class="px-4 py-2">Prix totale</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for produit in produits %}
+                            <tr>
+                                <td class="border px-4 py-2">{{ produit.name }}</td>
+                                <td class="border px-4 py-2">{{ produit.description }}</td>
+                                <td class="border px-4 py-2">{{ produit.price | number_format(2, ',', ' ') }} €</td>
+                                <td class="border px-4 py-2">{{ produit.tva | number_format(1, ',', ' ') }} %</td>
+                                <td class="border px-4 py-2">{{ produit.quantite }}</td>
+                                <td class="border px-4 py-2">{{ produit.prix_totale | number_format(2, ',', ' ') }} €</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-right mt-4">
+            <h2 class="text-1xl" style="color: #000000;">Total HT : {{ total.ht | number_format(2, ',', ' ')}} €</h2>
+            {% for taux_tva, total_tva in total.tva %}
+                <h2 class="text-1xl" style="color: #000000;">TVA {{ taux_tva | number_format(1, ',', ' ')}}% : {{ total_tva | number_format(2, ',', ' ')}} €</h2>
+            {% endfor %}
+            <h2 class="text-2xl font-bold" style="color: #000000;">Total TTC : {{ total.ttc | number_format(2, ',', ' ')}} €</h2>
+        </div>
     </div>
-
     <footer>
         <div>© {{ "now"|date("Y") }} Plumbpay - Tous droits réservés</div>
     </footer>
