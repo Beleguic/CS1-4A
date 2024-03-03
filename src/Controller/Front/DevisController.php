@@ -14,6 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Product;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Service\BrevoEmailService;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/devis')]
 class DevisController extends AbstractController
@@ -221,5 +223,42 @@ class DevisController extends AbstractController
             'Content-Disposition' => 'attachment; filename="'.$pdfFileName.'"',
         ]);
     }
-    
+
+        #[Route('/{id}/send-devis-email', name: 'app_devis_send_email', methods: ['GET'])]
+    public function sendDevisEmail(Devis $devis, BrevoEmailService $emailService, UrlGeneratorInterface $urlGenerator): Response
+    {
+        $client = $devis->getClient();
+        if (!$client) {
+            $this->addFlash('error', 'Le client n\'est pas défini pour ce devis.');
+            return $this->redirectToRoute('front_app_devis_index');
+        }
+
+        $senderName = 'Plumbpay';
+        $senderEmail = 'team_plumbpay@outlook.com';
+        $recipientName = $client->getNom() . ' ' . $client->getPrenom();
+        $recipientEmail = $client->getEmail();
+        $subject = 'Votre devis de Plumbpay';
+
+        // Générer le contenu HTML du devis
+        $htmlContent = $this->renderView('front/devis/pdf_devis_template.html.twig', [
+            'devis' => $devis,
+        ]);
+
+        // Envoyer l'email
+        $emailService->sendEmail(
+            $senderName,
+            $senderEmail,
+            $recipientName,
+            $recipientEmail,
+            $subject,
+            $htmlContent
+        );
+
+        $this->addFlash('success', 'Le devis a été envoyé par email au client.');
+
+        return $this->redirectToRoute('front_app_devis_index');
+    }
+ 
 }
+
+
