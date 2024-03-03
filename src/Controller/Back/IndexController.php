@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class IndexController extends AbstractController
 {
@@ -34,10 +35,12 @@ class IndexController extends AbstractController
         }
 
         $cards = $this->generatedCards();
+        $charts = $this->chartData();
 
         return $this->render('back/index/index.html.twig', [
             'controller_name' => 'IndexController',
-            "cards" => $cards
+            "cards" => $cards,
+            "charts" => $charts
         ]);
     }
 
@@ -116,5 +119,30 @@ class IndexController extends AbstractController
         ];
 
         return $cards;
+    }
+    
+    #[Route('/chart-data', name: 'chart_data')]
+    public function chartData(): JsonResponse
+    {
+        $productRepository = $this->entityManager->getRepository(Product::class);
+        $nbProducts = $productRepository->count([]);
+
+        $contactRepository = $this->entityManager->getRepository(Contact::class);
+        $nbContacts = $contactRepository->count([]);
+
+        $companyRepository = $this->entityManager->getRepository(Company::class);
+        $nbCompanies = $companyRepository->count([]);
+
+        $userRepository = $this->entityManager->getRepository(User::class);
+        $nbUsers = $userRepository->count([]);
+
+        $data = [
+            'products' => $nbProducts,
+            'contacts' => $nbContacts,
+            'companies' => $nbCompanies,
+            'users' => $nbUsers,
+        ];
+
+        return $this->json($data);
     }
 }

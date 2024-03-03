@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240301205727 extends AbstractMigration
+final class Version20240303103125 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -40,6 +40,10 @@ final class Version20240301205727 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN facture.devis_id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE product (id INT NOT NULL, category_id INT NOT NULL, name VARCHAR(255) NOT NULL, description TEXT NOT NULL, price INT NOT NULL, tva DOUBLE PRECISION NOT NULL, quantite INT DEFAULT NULL, prix_totale DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_D34A04AD12469DE2 ON product (category_id)');
+        $this->addSql('CREATE TABLE request_new_company_user (id UUID NOT NULL, company_id UUID NOT NULL, role VARCHAR(50) NOT NULL, email VARCHAR(255) NOT NULL, user_id UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN request_new_company_user.id IS \'(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN request_new_company_user.company_id IS \'(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN request_new_company_user.user_id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE role (id INT NOT NULL, name VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE "user" (id UUID NOT NULL, company_id UUID DEFAULT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) DEFAULT NULL, lastname VARCHAR(255) DEFAULT NULL, firstname VARCHAR(255) DEFAULT NULL, activation_token VARCHAR(255) DEFAULT NULL, enabled BOOLEAN DEFAULT NULL, verified_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON "user" (email)');
@@ -90,6 +94,7 @@ final class Version20240301205727 extends AbstractMigration
         $this->addSql('DROP TABLE devis');
         $this->addSql('DROP TABLE facture');
         $this->addSql('DROP TABLE product');
+        $this->addSql('DROP TABLE request_new_company_user');
         $this->addSql('DROP TABLE role');
         $this->addSql('DROP TABLE "user"');
         $this->addSql('DROP TABLE messenger_messages');

@@ -10,6 +10,10 @@
         <script src="https://unpkg.com/alpinejs" defer></script>
         <title>{% block title %}{% endblock %}</title>
         <link rel="icon" href="/plombier.png" type="image/png">
+        <!-- Inclure la bibliothèque Highcharts -->
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
         <style>
             @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
             .font-family-karla { font-family: karla; }
@@ -103,6 +107,7 @@
                 </nav>
             </header>
 
+            
 
             
             <div class="flex flex-col min-h-screen overflow-y-auto">
@@ -112,7 +117,15 @@
 
                         {% endblock %}
                     </main>
-                </div>
+                </div> 
+
+                <main class="flex p-6">
+                <!-- Section pour afficher le graphique -->
+                    <div id="container" style=" height: 400px"></div>
+
+                    <div id="container-pie" style="height: 400px"></div>
+
+                </main>
 
                 <footer class="w-full bg-white text-right p-4">
                 
@@ -120,5 +133,7 @@
             </div>
                 
             </div>
+
+       
     </body>
 </html>
