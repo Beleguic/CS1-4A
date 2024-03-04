@@ -23,4 +23,3 @@ class RegistrationConfirmationMailer
         $this->mailer->send($message);
     }
 }
-
