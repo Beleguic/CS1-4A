@@ -50,7 +50,6 @@ class QuotationFixtures extends Fixture
                     ->setClient($faker->randomElement($customers))
                     ->setNumDevis($numQuotation)
                     ->setProduits($arrProducts)
-                    ->setEntreprise($company)
                     ->setTotalPrice($totalPrice)
                     ->setCompanyId($companies[array_rand($companies)]->getId())
                 ;
