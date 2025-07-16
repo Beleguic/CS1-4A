@@ -9,14 +9,16 @@ use App\Entity\Category;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ORM\Table(name: 'products')]
 class Product
 {
     use Traits\Timestampable;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -44,14 +46,14 @@ class Product
     private ?Uuid $company_id = null;
 
 
-    public function getId(): ?string
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
 
-    public function setId(string $id): static
+    public function setId(Uuid $id): static
     {
-        $this->name = $id;
+        $this->id = $id;
 
         return $this;
     }

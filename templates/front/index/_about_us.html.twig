@@ -1,7 +1,182 @@
-<section id="about-us" class="h-screen w-full flex flex-col items-center bg-mainColor-400">
-    <div class="lg:max-w-10xl mx-auto w-full flex flex-col gap-4 mt-32">
-        <h1 class="uppercase text-center text-TextColor-800 font-black text-4xl">Why Plumbpay ?</h1>
-        <p class="text-center text-TextColor-800">Plumbpay allows you to generate quotes and invoices for your customers in just a few clicks!</p>
+<section id="about-us" class="relative py-24 bg-linear-to-br from-mainColor-400 via-mainColor-400 to-secondaryColor-400 overflow-hidden">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm font-semibold mb-6">
+                {% include '_composants/_lucide_icon.html.twig' with {
+                    icon: 'lightbulb',
+                    class: 'w-4 h-4 mr-2'
+                } %}
+                Pourquoi choisir PlumbPay ?
+            </div>
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+                Révolutionner les Entreprises de Plomberie
+            </h2>
+            <p class="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed">
+                Transformez votre entreprise de plomberie avec notre plateforme complète conçue spécifiquement pour les professionnels qui souhaitent rationaliser leurs opérations, impressionner leurs clients et accélérer leur croissance.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+            <div class="group bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-white/20">
+                <div class="w-16 h-16 bg-linear-to-r from-green-400 to-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {% include '_composants/_lucide_icon.html.twig' with {
+                        icon: 'zap',
+                        class: 'w-8 h-8 text-white'
+                    } %}
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Ultra Rapide</h3>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Générez des devis et factures professionnels en moins de 30 secondes. Notre interface intuitive élimine la paperasse et accélère considérablement votre flux de travail.</p>
+            </div>
+            <div class="group bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-white/20">
+                <div class="w-16 h-16 bg-linear-to-r from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {% include '_composants/_lucide_icon.html.twig' with {
+                        icon: 'dollar-sign',
+                        class: 'w-8 h-8 text-white'
+                    } %}
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Être Payé Plus Vite</h3>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Le traitement des paiements intégré et les rappels automatisés réduisent les retards de paiement jusqu'à 40%. Votre trésorerie s'améliore immédiatement.</p>
+            </div>
+            <div class="group bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-white/20">
+                <div class="w-16 h-16 bg-linear-to-r from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {% include '_composants/_lucide_icon.html.twig' with {
+                        icon: 'bar-chart-3',
+                        class: 'w-8 h-8 text-white'
+                    } %}
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Analytiques Intelligentes</h3>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Aperçus en temps réel de la performance de votre entreprise. Suivez les revenus, identifiez les tendances et prenez des décisions basées sur les données pour développer votre entreprise.</p>
+            </div>
+            <div class="group bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-white/20">
+                <div class="w-16 h-16 bg-linear-to-r from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {% include '_composants/_lucide_icon.html.twig' with {
+                        icon: 'users',
+                        class: 'w-8 h-8 text-white'
+                    } %}
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Gestion Client</h3>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Organisez les informations clients, suivez l'historique des projets et maintenez des relations professionnelles avec nos fonctionnalités CRM complètes.</p>
+            </div>
+            <div class="group bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-white/20">
+                <div class="w-16 h-16 bg-linear-to-r from-red-400 to-red-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {% include '_composants/_lucide_icon.html.twig' with {
+                        icon: 'shield-check',
+                        class: 'w-8 h-8 text-white'
+                    } %}
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Image Professionnelle</h3>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Impressionnez vos clients avec des documents magnifiquement conçus et personnalisés qui mettent en valeur votre professionnalisme et votre attention aux détails.</p>
+            </div>
+            <div class="group bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-white/20">
+                <div class="w-16 h-16 bg-linear-to-r from-indigo-400 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {% include '_composants/_lucide_icon.html.twig' with {
+                        icon: 'globe',
+                        class: 'w-8 h-8 text-white'
+                    } %}
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Toujours Disponible</h3>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Plateforme basée sur le cloud accessible de n'importe où, à tout moment. Travaillez depuis le chantier, le bureau ou la maison avec une synchronisation transparente.</p>
+            </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-12 mb-20 border border-white/20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    Approuvé par des Professionnels du Monde Entier
+                </h3>
+                <p class="text-xl text-white/90">
+                    Rejoignez des milliers de professionnels de la plomberie qui ont transformé leur entreprise
+                </p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-black text-white mb-2">5 000+</div>
+                    <div class="text-white/80 font-medium">Utilisateurs Actifs</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-black text-white mb-2">2M€+</div>
+                    <div class="text-white/80 font-medium">Factures Traitées</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-black text-white mb-2">40%</div>
+                    <div class="text-white/80 font-medium">Paiements Plus Rapides</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-black text-white mb-2">99.9%</div>
+                    <div class="text-white/80 font-medium">Fiabilité de Disponibilité</div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mb-16">
+            <h3 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                Comment ça marche
+            </h3>
+            <p class="text-xl text-white/90 mb-12">
+                Commencez en trois étapes simples
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="relative">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 h-full">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold text-mainColor-400">
+                            1
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-4">Créez Votre Devis</h4>
+                        <p class="text-white/80">Sélectionnez des services dans notre catalogue, ajoutez les détails client et personnalisez votre devis professionnel en quelques secondes.</p>
+                    </div>
+                    <div class="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-white/30">
+                        {% include '_composants/_lucide_icon.html.twig' with {
+                            icon: 'arrow-right',
+                            class: 'w-8 h-8'
+                        } %}
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 h-full">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold text-mainColor-400">
+                            2
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-4">Envoyer et Suivre</h4>
+                        <p class="text-white/80">Envoyez votre devis directement aux clients par e-mail et recevez des notifications en temps réel quand ils le consultent ou y répondent.</p>
+                    </div>
+                    <div class="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-white/30">
+                        {% include '_composants/_lucide_icon.html.twig' with {
+                            icon: 'arrow-right',
+                            class: 'w-8 h-8'
+                        } %}
+                    </div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 h-full">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold text-mainColor-400">
+                        3
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-4">Être Payé Rapidement</h4>
+                    <p class="text-white/80">Convertissez les devis approuvés en factures instantanément et recevez les paiements via des systèmes de traitement intégrés.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-12 border border-white/20">
+                <h3 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                    Prêt à Transformer Votre Entreprise ?
+                </h3>
+                <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                    Rejoignez des milliers de professionnels de la plomberie qui ont rationalisé leurs opérations et accéléré leur croissance avec PlumbPay.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{{ path('app_register') }}" class="inline-flex items-center px-8 py-4 bg-white text-mainColor-400 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                        {% include '_composants/_lucide_icon.html.twig' with {
+                            icon: 'zap',
+                            class: 'w-5 h-5 mr-2'
+                        } %}
+                        Commencer Votre Essai Gratuit
+                    </a>
+                    <a href="{{ path('front_app_contact') }}" class="inline-flex items-center px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-mainColor-400 transition-all duration-300">
+                        {% include '_composants/_lucide_icon.html.twig' with {
+                            icon: 'message-circle',
+                            class: 'w-5 h-5 mr-2'
+                        } %}
+                        Planifier une Démo
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-
 </section>

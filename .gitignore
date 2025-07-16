@@ -1,43 +1,47 @@
-
 ###> symfony/framework-bundle ###
-.env*
-config/secrets/prod/prod.decrypt.private.php
-public/bundles/
-var/
-vendor/
-node_modules/
-public/uploads/
-public/uploads/*
-public/build/*
-public/build/
-
+/.env*
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+/public/uploads/
+/public/build/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
-phpunit.xml
-.phpunit.result.cache
+/phpunit.xml
+/.phpunit.result.cache
 ###< phpunit/phpunit ###
 
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-phpunit.xml
-###< symfony/phpunit-bridge ###
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/npm-debug.log
+/yarn-error.log
+###< symfony/webpack-encore-bundle ###
 
-###> MacOs gitignore ###
+###> Environment files ###
+.env.local
+.env.local.php
+.env.*.local
+.env.test
+.env*
+###< Environment files ###
+
+###> MacOS ###
 .DS_Store
 .AppleDouble
 .LSOverride
-###< MacOs gitignore ###
+###< MacOS ###
 
-###> Windows gitignore ###
+###> Windows ###
 Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
-###< Windows gitignore ###
+###< Windows ###
 
-###> IDE gitignore ###
-# VS CODE
+###> IDE ###
+# VS Code
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -50,9 +54,22 @@ ehthumbs_vista.db
 # PHPStorm
 .idea/
 .idea_modules/
-###< IDE gitignore ###
-###> symfony/webpack-encore-bundle ###
-npm-debug.log
-yarn-error.log
-###< symfony/webpack-encore-bundle ###
+
+# General IDE
+.editorconfig
+###< IDE ###
+
+###> Docker ###
+docker-compose.override.yml
+###< Docker ###
+
+###> Application specific ###
 /config/packages/brevo.yml
+###< Application specific ###
+
+###> Temporary and cache files ###
+*.log
+*.cache
+*.tmp
+*~
+###< Temporary and cache files ###

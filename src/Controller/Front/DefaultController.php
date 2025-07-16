@@ -25,4 +25,10 @@ class DefaultController extends AbstractController
     {
         return $this->render('front/legals/index.html.twig');
     }
+
+    #[Route('/icons-demo', name: 'app_icons_demo')]
+    public function iconsDemo(): Response
+    {
+        return $this->render('front/icons_demo.html.twig');
+    }
 }

@@ -1,0 +1,31 @@
+# nelmio_security:
+#     clickjacking:
+#         paths:
+#             '^/.*': DENY
+
+#     content_type:
+#         nosniff: true
+
+#     referrer_policy:
+#         enabled: true
+#         policies:
+#             - 'no-referrer'
+#             - 'strict-origin-when-cross-origin'
+
+#     csp:
+#         enabled: true
+#         compat_headers: false
+#         content_types: ['text/html']
+#         hosts: []
+#         hash: []
+#         request_matcher: null
+#         enforce:
+#             default-src:
+#                 - 'self'
+#             script-src:
+#                 - 'self'
+#                 - 'https://unpkg.com'
+#                 - 'nonce'
+#             style-src:
+#                 - 'self'
+#                 - 'nonce'

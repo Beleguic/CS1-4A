@@ -1,0 +1,250 @@
+{% block header %}
+    <header class="w-full top-0 sticky bg-white/80 dark:bg-black/80 border-b border-b-gray-100 dark:border-b-gray-800 backdrop-blur z-50" x-data="{ mobileMenuOpen: false }">
+        <nav class="w-full mx-auto max-w-7xl flex items-center justify-between gap-4">
+            <div class="hidden lg:flex items-center justify-between w-full p-4">
+                <div class="flex items-center space-x-8">
+                    <a href="{{ path('front_default_index') }}" class="group flex items-center gap-3 transition-all duration-300 hover:scale-105">
+                        <div class="relative">
+                            <img src="{{ asset('plumbpaylogo-removebg-preview.png') }}" alt="PlumbPay Logo" class="w-12 h-12 transition-transform duration-300 group-hover:rotate-12">
+                            <div class="absolute inset-0 bg-linear-to-r from-mainColor-400 to-secondaryColor-400 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md"></div>
+                        </div>
+                        <div class="hidden lg:block">
+                            <span class="text-2xl font-bold bg-linear-to-r from-mainColor-400 to-secondaryColor-400 bg-clip-text text-transparent">PlumbPay</span>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 font-medium">Facturation Professionnelle</div>
+                        </div>
+                    </a>
+                    {% if app.user %}
+                        <nav class="hidden lg:flex items-center space-x-1">
+                            <a href="{{ path('front_app_devis_index') }}" class="nav-link">
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'file-text', class: 'w-4 h-4' }) }}
+                                Devis
+                            </a>
+                            <a href="{{ path('front_app_facture_index') }}" class="nav-link">
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'receipt', class: 'w-4 h-4' }) }}
+                                Factures
+                            </a>
+                            <a href="{{ path('front_app_client_index') }}" class="nav-link">
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'users', class: 'w-4 h-4' }) }}
+                                Clients
+                            </a>
+                            <a href="{{ path('front_app_statistics_index') }}" class="nav-link">
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'bar-chart-3', class: 'w-4 h-4' }) }}
+                                Analytiques
+                            </a>
+                        </nav>
+                    {% endif %}
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ path('front_app_contact') }}" class="nav-link">
+                        {{ include('_composants/_lucide_icon.html.twig', { name: 'mail', class: 'w-4 h-4' }) }}
+                        Contact
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    {% if not app.user %}
+                        <div class="flex items-center gap-3">
+                            <a href="{{ path('app_login') }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-md bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-mainColor-400 focus:ring-offset-2">
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'log-in', class: 'w-4 h-4 mr-2' }) }}
+                                Se connecter
+                            </a>
+                            <a href="{{ path('app_register') }}" class="inline-flex items-center px-6 py-2 bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'zap', class: 'w-4 h-4 mr-2' }) }}
+                                Commencer
+                            </a>
+                        </div>
+                    {% else %}
+                        <div x-data="{ isOpen: false }" class="relative">
+                            <button @click="isOpen = !isOpen" class="flex items-center gap-3 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 group">
+                                <div class="relative">
+                                    <img src="\cool-user.png" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-gray-600 group-hover:border-mainColor-400 transition-colors duration-200">
+                                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-900"></div>
+                                </div>
+                                <div class="hidden lg:block text-left">
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ app.user.firstname ?? 'User' }}</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ app.user.email|slice(0, 20) }}{% if app.user.email|length > 20 %}...{% endif %}</div>
+                                </div>
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'chevron-down', class: 'w-4 h-4 text-gray-400 transition-transform duration-200' }) }}
+                            </button>
+
+                            <div x-show="isOpen" @click="isOpen = false" class="fixed inset-0 z-10"></div>
+
+                            <div x-show="isOpen" 
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95 transform translate-y-1"
+                                 x-transition:enter-end="opacity-100 scale-100 transform translate-y-0"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100 transform translate-y-0"
+                                 x-transition:leave-end="opacity-0 scale-95 transform translate-y-1"
+                                 class="absolute right-0 top-14 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-20">
+                                
+                                <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                                    <div class="flex items-center gap-3">
+                                        <img src="\cool-user.png" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-gray-200 dark:border-gray-600">
+                                        <div>
+                                            <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ app.user.firstname ?? 'User' }} {{ app.user.lastname ?? '' }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">{{ app.user.email }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="py-2">
+                                    <a href="{{ path('front_app_account') }}" class="dropdown-item">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'user', class: 'w-4 h-4' }) }}
+                                        Paramètres du Compte
+                                    </a>
+                                    <a href="{{ path('front_app_company') }}" class="dropdown-item">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'building', class: 'w-4 h-4' }) }}
+                                        Profil d'Entreprise
+                                    </a>
+                                    <hr class="my-2 border-gray-200 dark:border-gray-700">
+                                    <a href="{{ path('app_logout') }}" class="dropdown-item text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'log-out', class: 'w-4 h-4' }) }}
+                                        Se déconnecter
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="flex items-center">
+                        {% include '_composants/_theme_toggle.html.twig' %}
+                    </div>
+                </div>
+            </div>
+            <div class="lg:hidden flex items-center justify-between p-4 w-full">
+                <a href="{{ path('front_default_index') }}">
+                    <img src="{{ asset('plumbpaylogo-removebg-preview.png') }}" alt="logo plumbpay" class="w-12 h-12">
+                </a>
+                <button
+                    @click="mobileMenuOpen = !mobileMenuOpen"
+                    :class="{ 'mobile-menu-open': mobileMenuOpen }"
+                    class="relative z-50 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-mainColor-400"
+                    aria-label="Toggle navigation menu"
+                >
+                    <div class="w-6 h-6 flex flex-col justify-center items-center">
+                        <span class="hamburger-line w-6 h-1 bg-gray-700 dark:bg-gray-200 transition-all duration-300 ease-in-out rounded-full"></span>
+                        <span class="hamburger-line w-6 h-1 bg-gray-700 dark:bg-gray-200 transition-all duration-300 ease-in-out mt-1 rounded-full"></span>
+                        <span class="hamburger-line w-6 h-1 bg-gray-700 dark:bg-gray-200 transition-all duration-300 ease-in-out mt-1 rounded-full"></span>
+                    </div>
+                </button>
+                <div 
+                    x-show="mobileMenuOpen"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform translate-x-full"
+                    x-transition:enter-end="opacity-100 transform translate-x-0"
+                    x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="opacity-100 transform translate-x-0"
+                    x-transition:leave-end="opacity-0 transform translate-x-full"
+                    @keydown.escape.window="mobileMenuOpen = false"
+                    class="fixed h-screen inset-0 z-40"
+                >
+                    <div 
+                        @click="mobileMenuOpen = false"
+                        x-show="mobileMenuOpen"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="transition ease-in duration-300"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        class="absolute inset-0 bg-black/50"
+                    >
+                    </div>
+                    <div 
+                        @click.stop
+                        x-show="mobileMenuOpen"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="translate-x-full"
+                        x-transition:enter-end="translate-x-0"
+                        x-transition:leave="transition ease-in duration-300 transform"
+                        x-transition:leave-start="translate-x-0"
+                        x-transition:leave-end="translate-x-full"
+                        class="absolute right-0 top-0 h-full w-3/4 max-w-full bg-white dark:bg-gray-900 shadow-xl flex flex-col justify-between"
+                    >
+                    <div class="flex flex-col items-center justify-between flex-1 border-b border-gray-200 dark:border-gray-700">
+                        <div class="w-full flex items-center space-x-4 py-6 px-4 border-b border-gray-200 dark:border-gray-700">
+                            <img src="{{ asset('plumbpaylogo-removebg-preview.png') }}" alt="PlumbPay Logo" class="w-8 h-8">
+                            <span class="text-lg font-semibold text-gray-900 dark:text-white">PlumbPay</span>
+                            {% include '_composants/_theme_toggle.html.twig' %}
+                        </div>
+                        <nav class="w-full flex-1 space-y-2 p-4">
+                            {% if app.user %}
+                                <div class="flex items-center gap-3 p-3 mb-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                    <img src="\cool-user.png" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-gray-300">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ app.user.firstname ?? 'User' }} {{ app.user.lastname ?? '' }}</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ app.user.email }}</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <h3 class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Services</h3>
+                                    <a href="{{ path('front_app_devis_index') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'file-text', class: 'w-5 h-5' }) }}
+                                        Quotes & Estimates
+                                    </a>
+                                    <a href="{{ path('front_app_facture_index') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'receipt', class: 'w-5 h-5' }) }}
+                                        Invoicing
+                                    </a>
+                                    <a href="{{ path('front_app_client_index') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'users', class: 'w-5 h-5' }) }}
+                                        Clients
+                                    </a>
+                                    <a href="{{ path('front_app_product_index') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'package', class: 'w-5 h-5' }) }}
+                                        Products
+                                    </a>
+                                    <a href="{{ path('front_app_statistics_index') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'bar-chart-3', class: 'w-5 h-5' }) }}
+                                        Analytics
+                                    </a>
+                                </div>
+                                <div class="space-y-1 pt-4">
+                                    <h3 class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Account</h3>
+                                    <a href="{{ path('front_app_account') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'user', class: 'w-5 h-5' }) }}
+                                        Account Settings
+                                    </a>
+                                    <a href="{{ path('front_app_company') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'building', class: 'w-5 h-5' }) }}
+                                        Company
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="space-y-1">
+                                    <a href="{{ path('front_default_index') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'home', class: 'w-5 h-5' }) }}
+                                        Home
+                                    </a>
+                                </div>
+                            {% endif %}
+                            <div class="space-y-1">
+                                <a href="{{ path('front_app_contact') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'mail', class: 'w-5 h-5' }) }}
+                                    Contact Us
+                                </a>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="border-t border-gray-200 dark:border-gray-700 p-4">
+                        {% if not app.user %}
+                            <div class="space-y-3">
+                                <a href="{{ path('app_login') }}" @click="mobileMenuOpen = false" class="text-center text-TextColor-800 block px-4 py-2 rounded-full bg-secondaryColor-400 hover:bg-mainColor-400 focus:bg-mainColor-400">
+                                    Login
+                                </a>
+                                <a href="{{ path('app_register') }}" @click="mobileMenuOpen = false" class="text-center text-TextColor-800 block px-4 py-2 rounded-full bg-mainColor-400 hover:bg-secondaryColor-400 focus:bg-secondaryColor-400">
+                                    Get Started
+                                </a>
+                            </div>
+                        {% else %}
+                            <a href="{{ path('app_logout') }}" @click="mobileMenuOpen = false" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg">
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'log-out', class: 'w-4 h-4 mr-2' }) }}
+                                Logout
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+{% endblock %}

@@ -1,13 +1,41 @@
 {% extends 'contact.html.twig' %}
 
-{% block title %}Plumbpay - Contact Us{% endblock %}
+{% block title %}Nous contacter - PlumbPay{% endblock %}
 
 {% block body %}
-    <div class="flex flex-col gap-4">
-        <div>
-            <a href="{{ path('front_default_index') }}" class="text-TextColor-400 dark:text-TextColor-800">Go to home</a>
+    <!-- Page Header -->
+    <div class="text-center space-y-2 mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Contactez-nous</h2>
+        <p class="text-gray-600 dark:text-gray-300 text-lg">Nous sommes là pour vous aider avec toutes vos questions</p>
+    </div>
+
+    <!-- Contact Form -->
+    {{ include('front/contact/_form.html.twig') }}
+
+    <!-- Contact Information -->
+    <div class="mt-8 space-y-4">
+        <h4 class="text-gray-700 dark:text-gray-200 font-medium text-center mb-4">Autres moyens de nous contacter :</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                {{ include('_composants/_lucide_icon.html.twig', { name: 'mail', class: 'w-4 h-4 text-mainColor-400 flex-shrink-0' }) }}
+                <div>
+                    <div class="font-medium">E-mail</div>
+                    <div>support@plumbpay.fr</div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                {{ include('_composants/_lucide_icon.html.twig', { name: 'phone', class: 'w-4 h-4 text-mainColor-400 flex-shrink-0' }) }}
+                <div>
+                    <div class="font-medium">Téléphone</div>
+                    <div>+33 1 23 45 67 89</div>
+                </div>
+            </div>
         </div>
-        <h1>Plumbpay - Contact Us</h1>
-        {{ include('front/contact/_form.html.twig') }}
+    </div>
+
+    <!-- Response Time -->
+    <div class="mt-8 flex items-center justify-center space-x-2 text-gray-600 dark:text-gray-300 text-xs">
+        {{ include('_composants/_lucide_icon.html.twig', { name: 'clock', class: 'w-4 h-4' }) }}
+        <span>Nous vous répondons sous 24h • Support en français</span>
     </div>
 {% endblock %}

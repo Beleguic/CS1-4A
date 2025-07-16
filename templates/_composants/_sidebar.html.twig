@@ -1,0 +1,246 @@
+{% set type = type|default('base') %}
+
+<aside class="w-64 hidden sm:flex flex-col fixed inset-y-0 z-50 bg-linear-to-b from-slate-800 to-slate-900 shadow-2xl border-r border-slate-700">
+    <div class="flex items-center justify-center p-6 border-b border-slate-700">
+        <a href="{{ path('front_default_index') }}"{% if type == 'admin' %} title="Go to front"{% endif %}>
+            <img src="{{ asset('img/logo-plumbpay-transparent.png') }}" 
+                 class="w-28 h-28 drop-shadow-lg hover:scale-105 transition-transform duration-300" 
+                 alt="PlumbPay Logo">
+        </a>
+    </div>
+    
+    {% if type == 'admin' %}
+        {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
+            <div class="px-6 py-4 border-b border-slate-700">
+                <h2 class="text-white text-xl font-bold text-center uppercase tracking-wider">
+                    Admin Panel
+                </h2>
+            </div>
+        {% endif %}
+    {% endif %}
+    
+    <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+        {% if type == 'admin' %}
+            {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
+                <a href="{{ path('back_app_index') }}" 
+                    class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                           {% if app.request.attributes.get('_route') starts with 'back_app_index' %}
+                               bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                           {% else %}
+                               text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                           {% endif %}">
+                    {{ include('_composants/_lucide_icon.html.twig', { 
+                        name: 'layout-dashboard', 
+                        class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                    }) }}
+                    <span>Dashboard</span>
+                </a>
+                
+                <div class="pt-6 pb-2">
+                    <div class="flex items-center px-4 mb-3">
+                        <div class="h-px bg-slate-600 flex-1"></div>
+                        <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Management</p>
+                        <div class="h-px bg-slate-600 flex-1"></div>
+                    </div>
+                </div>
+                
+                <a href="{{ path('back_app_contact') }}" 
+                    class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                           {% if app.request.attributes.get('_route') starts with 'back_app_contact' %}
+                               bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                           {% else %}
+                               text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                           {% endif %}">
+                    {{ include('_composants/_lucide_icon.html.twig', { 
+                        name: 'mail', 
+                        class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                    }) }}
+                    <span>Contact</span>
+                </a>
+                
+                <a href="{{ path('back_app_user') }}" 
+                    class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                           {% if app.request.attributes.get('_route') starts with 'back_app_user' %}
+                               bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                           {% else %}
+                               text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                           {% endif %}">
+                    {{ include('_composants/_lucide_icon.html.twig', { 
+                        name: 'users', 
+                        class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                    }) }}
+                    <span>User</span>
+                </a>
+                
+                <a href="{{ path('back_app_company') }}" 
+                    class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                           {% if app.request.attributes.get('_route') starts with 'back_app_company' %}
+                               bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                           {% else %}
+                               text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                           {% endif %}">
+                    {{ include('_composants/_lucide_icon.html.twig', { 
+                        name: 'building', 
+                        class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                    }) }}
+                    <span>Company</span>
+                </a>
+            {% endif %}
+        {% else %}
+            {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
+                <a href="{{ path('back_app_index') }}" 
+                    class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                           {% if app.request.attributes.get('_route') starts with 'back_' %}
+                               bg-linear-to-r from-red-500 to-red-600 text-white shadow-lg border-white/30
+                           {% else %}
+                               text-red-200 hover:text-white hover:bg-red-500/20 hover:border-red-400/30
+                           {% endif %}">
+                    {{ include('_composants/_lucide_icon.html.twig', { 
+                        name: 'shield-check', 
+                        class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                    }) }}
+                    <span>Admin Panel</span>
+                </a>
+            {% endif %}
+
+            <a href="{{ path('front_default_index') }}" 
+                class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                       {% if app.request.attributes.get('_route') == 'front_default_index' %}
+                           bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                       {% else %}
+                           text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                       {% endif %}">
+                {{ include('_composants/_lucide_icon.html.twig', { 
+                    name: 'home', 
+                    class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                }) }}
+                <span>Home</span>
+            </a>
+            
+            <a href="{{ path('front_app_company') }}" 
+                class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                       {% if app.request.attributes.get('_route') starts with 'front_app_company' %}
+                           bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                       {% else %}
+                           text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                       {% endif %}">
+                {{ include('_composants/_lucide_icon.html.twig', { 
+                    name: 'building', 
+                    class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                }) }}
+                <span>Company</span>
+            </a>
+            
+            <a href="{{ path('front_app_account') }}" 
+                class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                       {% if app.request.attributes.get('_route') starts with 'front_app_account' %}
+                           bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                       {% else %}
+                           text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                       {% endif %}">
+                {{ include('_composants/_lucide_icon.html.twig', { 
+                    name: 'user-circle', 
+                    class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                }) }}
+                <span>Account</span>
+            </a>
+            
+            {% if app.user and is_granted('ROLE_PLUMBER') %}
+                <div class="pt-6 pb-2">
+                    <div class="flex items-center px-4 mb-3">
+                        <div class="h-px bg-slate-600 flex-1"></div>
+                        <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Management</p>
+                        <div class="h-px bg-slate-600 flex-1"></div>
+                    </div>
+                </div>
+                
+                <a href="{{ path('front_app_category_index') }}" 
+                    class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                           {% if app.request.attributes.get('_route') starts with 'front_app_category_index' %}
+                               bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                           {% else %}
+                               text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                           {% endif %}">
+                    {{ include('_composants/_lucide_icon.html.twig', { 
+                        name: 'tags', 
+                        class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                    }) }}
+                    <span>Categories</span>
+                </a>
+                
+                <a href="{{ path('front_app_product_index') }}" 
+                    class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                           {% if app.request.attributes.get('_route') starts with 'front_app_product_index' %}
+                               bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                           {% else %}
+                               text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                           {% endif %}">
+                    {{ include('_composants/_lucide_icon.html.twig', { 
+                        name: 'package', 
+                        class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                    }) }}
+                    <span>Products</span>
+                </a>
+                
+                <a href="{{ path('front_app_devis_index') }}" 
+                    class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                           {% if app.request.attributes.get('_route') starts with 'front_app_devis_index' %}
+                               bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                           {% else %}
+                               text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                           {% endif %}">
+                    {{ include('_composants/_lucide_icon.html.twig', { 
+                        name: 'file-text', 
+                        class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                    }) }}
+                    <span>Quotes</span>
+                </a>
+                
+                <a href="{{ path('front_app_facture_index') }}" 
+                    class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                           {% if app.request.attributes.get('_route') starts with 'front_app_facture_index' %}
+                               bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                           {% else %}
+                               text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                           {% endif %}">
+                    {{ include('_composants/_lucide_icon.html.twig', { 
+                        name: 'receipt', 
+                        class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                    }) }}
+                    <span>Invoices</span>
+                </a>
+            {% endif %}
+            
+            {% if app.user and is_granted('ROLE_ACCOUNTANT') %}
+                <div class="pt-6 pb-2">
+                    <div class="flex items-center px-4 mb-3">
+                        <div class="h-px bg-slate-600 flex-1"></div>
+                        <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Analytics</p>
+                        <div class="h-px bg-slate-600 flex-1"></div>
+                    </div>
+                </div>
+                
+                <a href="{{ path('front_app_statistics_index') }}" 
+                    class="flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent
+                           {% if app.request.attributes.get('_route') starts with 'front_app_statistics_index' %}
+                               bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white shadow-lg border-white/30
+                           {% else %}
+                               text-white/90 hover:text-white hover:bg-white/10 hover:border-white/20
+                           {% endif %}">
+                    {{ include('_composants/_lucide_icon.html.twig', { 
+                        name: 'bar-chart-3', 
+                        class: 'mr-3 w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                    }) }}
+                    <span>Statistics</span>
+                </a>
+            {% endif %}
+        {% endif %}
+    </nav>
+    
+    <div class="p-4 border-t border-slate-600/50 bg-slate-900/50">
+        <div class="text-center text-xs text-slate-400 space-y-1">
+            <p class="font-medium">&copy; {{ "now"|date("Y") }} PlumbPay</p>
+            <p class="text-slate-500">Professional Plumbing Management</p>
+        </div>
+    </div>
+</aside> 

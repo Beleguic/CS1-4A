@@ -1,74 +1,144 @@
-<section id="faq" class="w-full flex flex-col gap-8 py-48 bg-mainColor-400">
-    <h1 class="uppercase text-center text-TextColor-800 font-black text-4xl">F.A.Q.</h1>
-    <div class="max-w-5xl mx-auto">
-        <div class="accordions-container">
-            <div class="accordion-container">
-                <div class="accordion-header">
-                    <span class="accordion-btn-text">1. How does Plumbpay simplify the creation of quotes and invoices?</span>
-                    <svg class="accordion-icon" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
-                        <path class="fill-bgBody-800 dark:fill-bgBody-400" d="M9.06429 7.5L15 13.4357V15H13.4357L7.5 9.06429L1.56429 15H0V13.4357L5.93571 7.5L0 1.56429V0H1.56429L7.5 5.93571L13.4357 0H15V1.56429L9.06429 7.5Z"/>
-                    </svg>
-                </div>
-                <div class="accordion-content">
-                     Plumbpay uses an intuitive interface that allows for quick generation of quotes and invoices. With just a few clicks, you can enter your service details,
-                      select clients, and customize the document to your needs. Our system automates calculations and formatting, saving you precious time.
-                </div>
-            </div>
+{# FAQ data object #}
+{% set faqs = [
+    {
+        id: 1,
+        question: 'Comment PlumbPay simplifie-t-il la création de devis et factures ?',
+        answer: 'PlumbPay dispose d\'une interface intuitive par glisser-déposer qui vous permet de créer des devis et factures professionnels en quelques minutes. Sélectionnez simplement vos services dans notre catalogue complet, ajoutez les détails client, et notre système intelligent calcule automatiquement les totaux, taxes et formatage. Vous pouvez également sauvegarder des modèles pour les services récurrents afin d\'accélérer les futurs devis.'
+    },
+    {
+        id: 2,
+        question: 'Puis-je envoyer des devis et factures directement aux clients depuis PlumbPay ?',
+        answer: 'Absolument ! Une fois votre document prêt, vous pouvez l\'envoyer instantanément par e-mail directement depuis la plateforme. Les clients reçoivent des PDF à l\'aspect professionnel avec votre marque, et vous recevez des notifications en temps réel quand ils consultent ou répondent à vos devis. Vous pouvez également configurer des rappels de paiement automatiques pour les factures en retard.'
+    },
+    {
+        id: 3,
+        question: 'PlumbPay intègre-t-il le suivi des paiements et l\'analytique ?',
+        answer: 'Oui, PlumbPay inclut un suivi complet des paiements avec des mises à jour de statut en temps réel. Surveillez d\'un coup d\'œil les factures payées, en attente et en retard. Notre tableau de bord analytique montre les tendances de trésorerie, les services les plus performants, les habitudes de paiement des clients, et vous aide à identifier les opportunités de croissance de votre entreprise.'
+    },
+    {
+        id: 4,
+        question: 'Comment PlumbPay gère-t-il les mises à jour et nouvelles fonctionnalités ?',
+        answer: 'Nous améliorons continuellement PlumbPay basé sur les retours utilisateurs et les besoins de l\'industrie. Toutes les mises à jour sont automatiquement déployées sans interruption de service, vous assurant d\'avoir toujours accès aux dernières fonctionnalités. Nous notifions les utilisateurs des nouvelles capacités via des annonces dans l\'application et des notes de version détaillées.'
+    },
+    {
+        id: 5,
+        question: 'Pourquoi choisir PlumbPay plutôt que les méthodes papier traditionnelles ?',
+        answer: 'PlumbPay transforme vos opérations commerciales en éliminant la paperasse, réduisant les erreurs et améliorant la trésorerie. Créez des documents professionnels qui renforcent votre image de marque, accédez à vos données métier de n\'importe où, et soyez payé plus rapidement avec les options de paiement intégrées. De plus, vous économiserez du temps, réduirez les coûts et contribuerez à la durabilité environnementale.'
+    },
+    {
+        id: 6,
+        question: 'Mes données métier sont-elles sécurisées avec PlumbPay ?',
+        answer: 'La sécurité est notre priorité absolue. PlumbPay utilise un chiffrement de niveau entreprise, un stockage cloud sécurisé et des audits de sécurité réguliers. Vos données sont sauvegardées automatiquement et protégées par une authentification multi-facteurs. Nous respectons les standards de l\'industrie et les réglementations de confidentialité pour garantir que vos informations métier restent sûres et confidentielles.'
+    }
+] %}
 
-            <div class="accordion-container">
-                <div class="accordion-header">
-                    <span class="accordion-btn-text">2. Is it possible to send quotes and invoices directly to clients from Plumbpay?</span>
-                    <svg class="accordion-icon" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
-                        <path class="fill-bgBody-800 dark:fill-bgBody-400" d="M9.06429 7.5L15 13.4357V15H13.4357L7.5 9.06429L1.56429 15H0V13.4357L5.93571 7.5L0 1.56429V0H1.56429L7.5 5.93571L13.4357 0H15V1.56429L9.06429 7.5Z"/>
-                    </svg>
-                </div>
-                <div class="accordion-content">
-                    Yes, absolutely. Once your quote or invoice is created, you can directly send it to your clients via their registered email address in Plumbpay.
-                     This facilitates tracking and ensures your important documents reach your clients without delay.
-                </div>
-            </div>
+<section id="faq" class="w-full py-24 bg-linear-to-br from-mainColor-400 via-mainColor-400 to-secondaryColor-400 relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: radial-gradient(circle at 25% 25%, white 2px, transparent 2px), radial-gradient(circle at 75% 75%, white 2px, transparent 2px); background-size: 50px 50px;"></div>
+    </div>
 
-            <div class="accordion-container">
-                <div class="accordion-header">
-                    <span class="accordion-btn-text">3. Does Plumbpay integrate payment tracking functions?</span>
-                    <svg class="accordion-icon" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
-                        <path class="fill-bgBody-800 dark:fill-bgBody-400" d="M9.06429 7.5L15 13.4357V15H13.4357L7.5 9.06429L1.56429 15H0V13.4357L5.93571 7.5L0 1.56429V0H1.56429L7.5 5.93571L13.4357 0H15V1.56429L9.06429 7.5Z"/>
-                    </svg>
-                </div>
-                <div class="accordion-content">
-                     Yes, Plumbpay integrates payment tracking features that allow you to see the payment status of your invoices in real-time.
-                     You can easily monitor paid, pending, or overdue invoices, helping you manage your cash flow more effectively.
-                </div>
-            </div>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                Questions Fréquemment Posées
+            </h2>
+            <p class="text-xl text-white/90 max-w-2xl mx-auto">
+                Obtenez des réponses aux questions courantes sur PlumbPay et découvrez comment notre plateforme peut transformer votre entreprise de plomberie.
+            </p>
+        </div>
 
-            <div class="accordion-container">
-                <div class="accordion-header">
-                    <span class="accordion-btn-text">4. How does Plumbpay handle updates and new features?</span>
-                    <svg class="accordion-icon" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
-                        <path class="fill-bgBody-800 dark:fill-bgBody-400" d="M9.06429 7.5L15 13.4357V15H13.4357L7.5 9.06429L1.56429 15H0V13.4357L5.93571 7.5L0 1.56429V0H1.56429L7.5 5.93571L13.4357 0H15V1.56429L9.06429 7.5Z"/>
-                    </svg>
-                </div>
-                <div class="accordion-content">
-                     We regularly update Plumbpay to introduce new features and improvements based on user feedback. All updates are automatically applied without service interruption,
-                    ensuring you always have access to the most recent and efficient version of our platform.
-                    We also communicate update details and how they can benefit from new features to our users.
-                </div>
-            </div>
+        <!-- FAQ Accordion -->
+        <div x-data="faqAccordion()" class="space-y-4">
+            {% for faq in faqs %}
+                <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20">
+                    <!-- Question Header -->
+                    <button 
+                        @click="toggle({{ faq.id }})"
+                        class="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-white/50 rounded-2xl transition-all duration-300"
+                        :class="{ 'bg-white/90 dark:bg-gray-700/90': activeId === {{ faq.id }} }"
+                    >
+                        <div class="flex items-center space-x-4">
+                            <!-- Question Number -->
+                            <div class="shrink-0 w-8 h-8 bg-linear-to-r from-mainColor-400 to-secondaryColor-400 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                {{ faq.id }}
+                            </div>
+                            <!-- Question Text -->
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white pr-4">
+                                {{ faq.question }}
+                            </h3>
+                        </div>
+                        
+                        <!-- Expand/Collapse Icon -->
+                        <div class="shrink-0">
+                            {% include '_composants/_lucide_icon.html.twig' with {
+                                name: 'chevron-down',
+                                class: 'w-6 h-6 text-gray-600 dark:text-gray-300 transform transition-transform duration-300',
+                                'x-bind:class': "{ 'rotate-180': activeId === " ~ faq.id ~ " }"
+                            } %}
+                        </div>
+                    </button>
 
-            <div class="accordion-container">
-                <div class="accordion-header">
-                    <span class="accordion-btn-text">5. Why should plumbers choose Plumbpay over continuing to use traditional paper methods for their quotes and invoices?</span>
-                    <svg class="accordion-icon" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
-                        <path class="fill-bgBody-800 dark:fill-bgBody-400" d="M9.06429 7.5L15 13.4357V15H13.4357L7.5 9.06429L1.56429 15H0V13.4357L5.93571 7.5L0 1.56429V0H1.56429L7.5 5.93571L13.4357 0H15V1.56429L9.06429 7.5Z"/>
-                    </svg>
+                    <!-- Answer Content -->
+                    <div 
+                        x-show="activeId === {{ faq.id }}"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 max-h-0"
+                        x-transition:enter-end="opacity-100 max-h-96"
+                        x-transition:leave="transition ease-in duration-200"
+                        x-transition:leave-start="opacity-100 max-h-96"
+                        x-transition:leave-end="opacity-0 max-h-0"
+                        class="overflow-hidden"
+                    >
+                        <div class="px-8 pb-6">
+                            <div class="pl-12"> <!-- Align with question text -->
+                                <div class="h-px bg-linear-to-r from-mainColor-400 to-secondaryColor-400 mb-4"></div>
+                                <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {{ faq.answer }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="accordion-content">
-                    Plumbpay offers a modern solution that saves you time and enhances your professionalism with sleek, customizable quotes and invoices. 
-                    Accessible from anywhere, it simplifies payment tracking and reduces the risks of loss or errors associated with paper. Additionally, 
-                    by choosing Plumbpay, you contribute to environmental protection by reducing your paper use. It's the ideal tool for plumbers who want
-                    to optimize their management and impress their clients.
+            {% endfor %}
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="text-center mt-16">
+            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-8 border border-white/30">
+                <h3 class="text-2xl font-bold text-white mb-4">Vous avez encore des questions ?</h3>
+                <p class="text-white/90 mb-6">Notre équipe d'assistance est là pour vous aider à tirer le meilleur parti de PlumbPay.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{{ path('front_app_contact') }}" class="inline-flex items-center px-6 py-3 bg-white text-mainColor-400 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                        {% include '_composants/_lucide_icon.html.twig' with {
+                            icon: 'mail',
+                            class: 'w-5 h-5 mr-2'
+                        } %}
+                        Contacter l'Assistance
+                    </a>
+                    <a href="#" class="inline-flex items-center px-6 py-3 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-mainColor-400 transition-all duration-300">
+                        {% include '_composants/_lucide_icon.html.twig' with {
+                            icon: 'file-text',
+                            class: 'w-5 h-5 mr-2'
+                        } %}
+                        Documentation
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function faqAccordion() {
+            return {
+                activeId: 1, // First FAQ open by default
+                
+                toggle(id) {
+                    // If clicking the active item, close it; otherwise open the new one
+                    this.activeId = this.activeId === id ? null : id;
+                }
+            }
+        }
+    </script>
 </section>

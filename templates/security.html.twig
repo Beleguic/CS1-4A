@@ -1,32 +1,102 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app.request.locale }}" class="h-full">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Welcome to Plumbpay{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <title>{% block title %}Bienvenue sur Plumbpay{% endblock %}</title>
+        <link rel="icon" href="/plombier.png" type="image/png">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
+        {% block javascripts %}
+            <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
     </head>
-    <body>
-        <main class="h-screen flex items-center relative">
-            <div class="absolute top-0 left-0 w-full flex flex-col lg:flex-row h-full">
-                <div class="w-full lg:w-1/3 bg-mainColor-400 h-full"></div>
-                <div class="bg-bgBody-400 dark:bg-bgBody-800 h-full"></div>
-            </div>
-            <div class="absolute w-full mx-auto">
-                <div class="grid lg:grid-cols-2 gap-12 lg:max-w-6xl mx-auto w-full px-4 lg:px-0">
-                    <div>
-                        <a href="{{ path('front_default_index') }}">
-                            <img src="{{ asset('img/logo-plumbpay.png') }}" alt="logo plumbpay">
-                        </a>
+    <body class="bg-bgBody-400 dark:bg-bgBody-800 text-TextColor-400 dark:text-TextColor-800 font-sans transition-colors duration-300 overflow-y-auto">
+        <main class="min-h-screen flex items-start justify-center p-4 sm:p-6 lg:p-8 py-8">
+            <div class="w-full max-w-6xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start lg:items-center">
+                    <div class="hidden lg:flex flex-col justify-center space-y-8 text-gray-900 dark:text-gray-100">
+                        <div class="space-y-6">
+                            <a href="{{ path('front_default_index') }}" class="inline-flex items-center group">
+                                <div class="relative mr-4">
+                                    <img src="{{ asset('img/logo-plumbpay-transparent.png') }}" alt="PlumbPay Logo" class="w-16 h-16 transition-transform duration-300 group-hover:scale-110 dark:hidden">
+                                    <img src="{{ asset('img/logo-plumbpay.png') }}" alt="PlumbPay Logo" class="w-16 h-16 transition-transform duration-300 group-hover:scale-110 hidden dark:block">
+                                    <div class="absolute inset-0 bg-mainColor-400/20 dark:bg-mainColor-400/15 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                </div>
+                                <div>
+                                    <h1 class="text-4xl font-bold tracking-tight">PlumbPay</h1>
+                                    <p class="text-gray-600 dark:text-gray-300 text-lg">Facturation Professionnelle</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="space-y-4">
+                                <h2 class="text-3xl font-bold leading-tight">
+                                    Transformez Votre 
+                                    <span class="bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 bg-clip-text text-transparent">
+                                        Entreprise de Plomberie
+                                    </span>
+                                </h2>
+                                <p class="text-xl text-gray-700 dark:text-gray-200 leading-relaxed">
+                                    Créez des devis et factures professionnels en quelques minutes. 
+                                    Soyez payé plus rapidement et développez votre entreprise avec nos outils puissants.
+                                </p>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3 text-gray-700 dark:text-gray-200">
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'w-5 h-5 text-green-500 dark:text-green-400' }) }}
+                                    <span>Factures et devis professionnels</span>
+                                </div>
+                                <div class="flex items-center space-x-3 text-gray-700 dark:text-gray-200">
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'w-5 h-5 text-green-500 dark:text-green-400' }) }}
+                                    <span>Suivi des paiements en temps réel</span>
+                                </div>
+                                <div class="flex items-center space-x-3 text-gray-700 dark:text-gray-200">
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'w-5 h-5 text-green-500 dark:text-green-400' }) }}
+                                    <span>Analytiques et insights métier</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        {% block body %}{% endblock %}
+                    <div class="w-full max-w-md mx-auto lg:mx-0">
+                        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 dark:border-gray-700/50 p-8 lg:p-10">
+                            <div class="lg:hidden text-center mb-8">
+                                <a href="{{ path('front_default_index') }}" class="inline-flex items-center justify-center group">
+                                    <img src="{{ asset('img/logo-plumbpay-transparent.png') }}" alt="PlumbPay Logo" class="w-12 h-12 mr-3 dark:hidden">
+                                    <img src="{{ asset('img/logo-plumbpay.png') }}" alt="PlumbPay Logo" class="w-12 h-12 mr-3 hidden dark:block">
+                                    <div class="text-gray-900 dark:text-gray-100">
+                                        <h1 class="text-2xl font-bold">PlumbPay</h1>
+                                        <p class="text-sm text-gray-600 dark:text-gray-300">Facturation Professionnelle</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="space-y-6">
+                                {% block body %}{% endblock %}
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center lg:hidden">
+                            <a href="{{ path('front_default_index') }}" class="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200">
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'arrow-left', class: 'w-4 h-4 mr-2' }) }}
+                                Retour à l'accueil
+                            </a>
+                        </div>
+                        <div class="mt-4 flex justify-center lg:hidden">
+                            {{ include('_composants/_theme_toggle.html.twig') }}
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
+        <div class="hidden lg:block fixed top-6 left-6 z-10">
+            <a href="{{ path('front_default_index') }}" class="group flex items-center px-4 py-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-900 dark:text-gray-200 rounded-2xl border border-white/20 dark:border-gray-700/50 hover:bg-white/90 dark:hover:bg-gray-800/90 transition-all duration-300 shadow-lg hover:shadow-xl">
+                {{ include('_composants/_lucide_icon.html.twig', { name: 'arrow-left', class: 'w-4 h-4 mr-2 transition-transform duration-300 group-hover:-translate-x-1' }) }}
+                <span class="font-medium">Retour à l'accueil</span>
+            </a>
+        </div>
+        <div class="fixed top-6 right-6 z-10">
+            {{ include('_composants/_theme_toggle.html.twig') }}
+        </div>
     </body>
 </html>

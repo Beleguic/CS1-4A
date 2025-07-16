@@ -1,0 +1,223 @@
+<div x-data="themeToggle()" class="relative">
+    <button 
+        @click="isOpen = !isOpen"
+        class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+        aria-label="Toggle theme"
+    >
+        <!-- Sun Icon (Light Mode) -->
+        <svg 
+            x-show="theme !== 'dark'" 
+            x-transition:enter="transition-all duration-300"
+            x-transition:enter-start="scale-0 rotate-90"
+            x-transition:enter-end="scale-100 rotate-0"
+            x-transition:leave="transition-all duration-300"
+            x-transition:leave-start="scale-100 rotate-0"
+            x-transition:leave-end="scale-0 -rotate-90"
+            class="w-5 h-5" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+        >
+            <circle cx="12" cy="12" r="5"></circle>
+            <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42m12.72-12.72l1.42-1.42"></path>
+        </svg>
+        
+        <!-- Moon Icon (Dark Mode) -->
+        <svg 
+            x-show="theme === 'dark'" 
+            x-transition:enter="transition-all duration-300"
+            x-transition:enter-start="scale-0 rotate-90"
+            x-transition:enter-end="scale-100 rotate-0"
+            x-transition:leave="transition-all duration-300"
+            x-transition:leave-start="scale-100 rotate-0"
+            x-transition:leave-end="scale-0 rotate-90"
+            class="w-5 h-5" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+        >
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+        </svg>
+    </button>
+
+    <!-- Dropdown Menu -->
+    <div 
+        x-show="isOpen"
+        @click.away="isOpen = false"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 scale-95 transform translate-y-1"
+        x-transition:enter-end="opacity-100 scale-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 scale-100 transform translate-y-0"
+        x-transition:leave-end="opacity-0 scale-95 transform translate-y-1"
+        class="absolute right-0 top-12 w-36 rounded-lg shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 py-1 z-50"
+    >
+        <button 
+            @click="setTheme('light')"
+            class="flex items-center w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+            :class="{ 'bg-gray-100 dark:bg-gray-700': theme === 'light' }"
+        >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5"></circle>
+                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42m12.72-12.72l1.42-1.42"></path>
+            </svg>
+            Light
+        </button>
+        <button 
+            @click="setTheme('dark')"
+            class="flex items-center w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+            :class="{ 'bg-gray-100 dark:bg-gray-700': theme === 'dark' }"
+        >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+            </svg>
+            Dark
+        </button>
+        <button 
+            @click="setTheme('system')"
+            class="flex items-center w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+            :class="{ 'bg-gray-100 dark:bg-gray-700': theme === 'system' }"
+        >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <path d="M2 8h20"></path>
+            </svg>
+            System
+        </button>
+    </div>
+</div>
+
+<script>
+    // Theme Toggle Alpine.js Component (with dropdown)
+    function themeToggle() {
+        return {
+            isOpen: false,
+            theme: 'system',
+            
+            init() {
+                // Get saved theme or default to system
+                this.theme = localStorage.getItem('theme') || 'system';
+                this.applyTheme();
+                
+                // Listen for system theme changes
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                    if (this.theme === 'system') {
+                        this.applyTheme();
+                    }
+                });
+            },
+            
+            setTheme(newTheme) {
+                this.theme = newTheme;
+                localStorage.setItem('theme', newTheme);
+                this.applyTheme();
+                this.isOpen = false;
+            },
+            
+            applyTheme() {
+                const root = document.documentElement;
+                
+                if (this.theme === 'dark') {
+                    root.classList.add('dark');
+                } else if (this.theme === 'light') {
+                    root.classList.remove('dark');
+                } else {
+                    // System preference
+                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        root.classList.add('dark');
+                    } else {
+                        root.classList.remove('dark');
+                    }
+                }
+            },
+            
+            get isDarkMode() {
+                if (this.theme === 'dark') return true;
+                if (this.theme === 'light') return false;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+        }
+    }
+
+    // Simple Theme Toggle Component (button only)
+    function themeButton() {
+        return {
+            theme: 'system',
+            
+            init() {
+                // Get saved theme or default to system
+                this.theme = localStorage.getItem('theme') || 'system';
+                this.applyTheme();
+                
+                // Listen for system theme changes
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                    if (this.theme === 'system') {
+                        this.applyTheme();
+                    }
+                });
+            },
+            
+            toggleTheme() {
+                // Cycle through themes: light -> dark -> system -> light...
+                const themes = ['light', 'dark', 'system'];
+                const currentIndex = themes.indexOf(this.theme);
+                const nextIndex = (currentIndex + 1) % themes.length;
+                this.setTheme(themes[nextIndex]);
+            },
+            
+            setTheme(newTheme) {
+                this.theme = newTheme;
+                localStorage.setItem('theme', newTheme);
+                this.applyTheme();
+            },
+            
+            applyTheme() {
+                const root = document.documentElement;
+                
+                if (this.theme === 'dark') {
+                    root.classList.add('dark');
+                } else if (this.theme === 'light') {
+                    root.classList.remove('dark');
+                } else {
+                    // System preference
+                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        root.classList.add('dark');
+                    } else {
+                        root.classList.remove('dark');
+                    }
+                }
+            },
+            
+            get currentIcon() {
+                if (this.theme === 'light') return 'sun';
+                if (this.theme === 'dark') return 'moon';
+                return 'system'; // computer icon for system
+            },
+            
+            get themeLabel() {
+                if (this.theme === 'light') return 'Switch to Dark Mode';
+                if (this.theme === 'dark') return 'Switch to System';
+                return 'Switch to Light Mode';
+            }
+        }
+    }
+    
+    // Initialize theme on page load (before Alpine loads)
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme') || 'system';
+        const root = document.documentElement;
+        
+        if (savedTheme === 'dark') {
+            root.classList.add('dark');
+        } else if (savedTheme === 'light') {
+            root.classList.remove('dark');
+        } else {
+            // System preference
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                root.classList.add('dark');
+            } else {
+                root.classList.remove('dark');
+            }
+        }
+    });
+</script>

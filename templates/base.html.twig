@@ -1,178 +1,127 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app.request.locale }}" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/alpinejs" defer></script>
-    <title>PlumbPay</title>
+    <title>{% block title %}PlumbPay{% endblock %} - Gestion Professionnelle de Plomberie</title>
     <link rel="icon" href="/plombier.png" type="image/png">
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
-        .font-family-karla { font-family: karla; }
-        .bg-sidebar { background: #134F63; }
-        .cta-btn { color: #0091C2; }
-        .upgrade-btn { background: #05C1FA; }
-        .active-nav-link { background: #05C1FA; }
-        .nav-item:hover { background: #05C1FA; }
-        .account-link:hover { background: #05C1FA; }
-    </style>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+    {% block javascripts %}
+            <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+        {{ encore_entry_script_tags('app') }}
+        <script>
+            // Simple navigation detection for icon refresh
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted && window.refreshIcons) {
+                    // Page was restored from cache (back/forward navigation)
+                    window.refreshIcons();
+                }
+            });
+        </script>
+    {% endblock %}
 </head>
-<body class="bg-gray-100 font-family-karla flex">
 
-
-<aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
-    <img src="/plumbpaylogo-removebg-preview.png" class="w-40 h-40 absolute top-0 -mt-6 left-1/2 transform -translate-x-1/2">
-
-    <div class="pt-32 p-8 flex justify-center">
-    </div>
-    <nav class="text-white text-base font-semibold pt-3">
-        <a href="{{ path('front_default_index') }}" class="flex items-center text-white py-4 pl-6 nav-item opacity-50">
-            <i class="fas fa-tachometer-alt mr-3"></i>Home
-        </a>
-        <a href="{{ path('front_app_company') }}" class="{% if app.request.attributes.get('_route') starts with 'front_app_company' %}active-nav-link{% else %}opacity-50{% endif %} flex items-center text-white py-4 pl-6 nav-item">
-            <i class="fas fa-tachometer-alt mr-3"></i>Company
-        </a>
-        <a href="{{ path('front_app_account') }}" class="{% if app.request.attributes.get('_route') starts with 'front_app_account' %}active-nav-link{% else %}opacity-50{% endif %} flex items-center text-white py-4 pl-6 nav-item">
-            <i class="fas fa-tachometer-alt mr-3"></i>Account
-        </a>
-        {% if app.user %}
-            {% if is_granted('ROLE_PLUMBER') %}
-                <a href="{{ path('front_app_category_index') }}" class="{% if app.request.attributes.get('_route') starts with 'front_app_category_index' %}active-nav-link{% else %}opacity-50{% endif %} flex items-center text-white hover:opacity-100 py-4 pl-6 nav-item">
-                    <i class="fas fa-sticky-note mr-3"></i>Category
-                </a>
-                <a href="{{ path('front_app_product_index') }}" class="{% if app.request.attributes.get('_route') starts with 'front_app_product_index' %}active-nav-link{% else %}opacity-50{% endif %} flex items-center text-white hover:opacity-100 py-4 pl-6 nav-item">
-                    <i class="fas fa-table mr-3"></i>Product
-                </a>
-                <a href="{{ path('front_app_devis_index') }}" class="{% if app.request.attributes.get('_route') starts with 'front_app_devis_index' %}active-nav-link{% else %}opacity-50{% endif %} flex items-center text-white hover:opacity-100 py-4 pl-6 nav-item">
-                    <i class="fas fa-align-left mr-3"></i>Devis
-                </a>
-                <a href="{{ path('front_app_facture_index') }}" class="{% if app.request.attributes.get('_route') starts with 'front_app_facture_index' %}active-nav-link{% else %}opacity-50{% endif %} flex items-center text-white hover:opacity-100 py-4 pl-6 nav-item">
-                    <i class="fas fa-tablet-alt mr-3"></i>Facture
-                </a>
-            {% endif %}
-        {% endif %}
-        {% if app.user %}
-            {% if is_granted('ROLE_ACCOUNTANT') %}
-                <a href="{{ path('front_app_statistics_index') }}" class="{% if app.request.attributes.get('_route') starts with 'front_app_statistics_index' %}active-nav-link{% else %}opacity-50{% endif %} flex items-center text-white hover:opacity-100 py-4 pl-6 nav-item">
-                    <i class="fas fa-calendar mr-3"></i>Statistics
-                </a>
-            {% endif %}
-        {% endif %}
-    </nav>
-</aside>
-
-
-
-<div class="w-full flex flex-col h-screen overflow-y-hidden">
-
-               
-        <!-- Desktop Header -->
-        <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
-            <div class="w-1/2"></div>
-            <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
-                <button @click="isOpen = !isOpen" class="realtive z-10 w-12 h-12 rounded-full overflow-y-auto border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
-                    <img src="\cool-user.png">
-                </button>
-                <button x-show="isOpen" @click="isOpen = false" class="h-full w-full fixed inset-0 cursor-default"></button>
-                    <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
-                        <a href="{{ path('front_app_company') }}" class="block px-4 py-2 account-link hover:text-white">Company</a>
-                        <a href="{{ path('front_app_account') }}" class="block px-4 py-2 account-link hover:text-white">Account</a>
-                        {% if app.user %}
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <a href="{{ path('back_app_index') }}" class="block px-4 py-2 account-link hover:text-white">Admin</a>
-                            {% endif %}
-                        {% endif %}
-                        <a href="{{ path('app_logout') }}" class="block px-4 py-2 account-link hover:text-white">Logout</a>
-                    </div>
-            </div>
-        </header>
-
-       <!-- Mobile Header & Nav -->
-<header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
-    <div class="flex items-center justify-between">
-        <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
-            <i x-show="!isOpen" class="fas fa-bars"></i>
-            <i x-show="isOpen" class="fas fa-times"></i>
-        </button>
-    </div>
-
-    <!-- Navigation mobile, s'affiche lorsque isOpen est true -->
-    <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
-        <a href="{{ path('front_default_index') }}" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
-            <i class="fas fa-tachometer-alt mr-3"></i>
-            Dashboard
-        </a>
-        {% if app.user %}
-            {% if is_granted('ROLE_PLUMBER') %}
-                <a href="{{ path('front_app_category_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-sticky-note mr-3"></i>
-                    Category
-                </a>
-                <a href="{{ path('front_app_product_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-table mr-3"></i>
-                    Product
-                </a>
-                <a href="{{ path('front_app_devis_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-align-left mr-3"></i>
-                    Devis
-                </a>
-                <a href="{{ path('front_app_facture_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-tablet-alt mr-3"></i>
-                    Facture
-                </a>
-            {% endif %}
-        {% endif %}
-        {% if app.user %}
-            {% if is_granted('ROLE_ACCOUNTANT') %}
-                <a href="{{ path('front_app_statistics_index') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-calendar mr-3"></i>
-                    Statistics
-                </a>
-            {% endif %}
-        {% endif %}
-        <a href="{{ path('front_app_company') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-            <i class="fas fa-user mr-3"></i>
-            Company
-        </a>
-        <a href="{{ path('front_app_account') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-            <i class="fas fa-user mr-3"></i>
-            Account
-        </a>
-        <a href="{{ path('app_logout') }}" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-            <i class="fas fa-sign-out-alt mr-3"></i>
-            Logout
-        </a>
-    </nav>
-</header>
-
-
-    
-    <div class="flex flex-col min-h-screen overflow-y-auto">
-        <div class="flex-grow">
-            <main class="p-6">
+<body class="h-full bg-bgBody-400 dark:bg-bgBody-800 text-TextColor-400 dark:text-TextColor-800 font-sans">
+    {% include '_composants/_sidebar.html.twig' with {'type': 'base'} %}
+    <div class="flex-1 sm:ml-64 relative">
+        {% include '_composants/_header.html.twig' with {'type': 'base'} %}
+        <main class="min-h-screen">
+            <div class="p-6 m-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 dark:border-gray-700/50">
                 {% for type, flashMessages in app.flashes %}
-                    <section class="flashs">
-                        {% for message in flashMessages %}
-                            <div class="flash" data-flash="{{ type }}">
-                                <p>{{ message }}</p>
+                    {% for message in flashMessages %}
+                        <div class="rounded-lg p-4 mb-4 border-l-4 backdrop-blur-sm 
+                                    {% if type == 'success' %}bg-green-50/90 dark:bg-green-900/20 border-l-green-500 text-green-800 dark:text-green-400
+                                    {% elseif type == 'error' %}bg-red-50/90 dark:bg-red-900/20 border-l-red-500 text-red-800 dark:text-red-400
+                                    {% elseif type == 'warning' %}bg-yellow-50/90 dark:bg-yellow-900/20 border-l-yellow-500 text-yellow-800 dark:text-yellow-400
+                                    {% else %}bg-blue-50/90 dark:bg-blue-900/20 border-l-blue-500 text-blue-800 dark:text-blue-400{% endif %}">
+                            <div class="flex items-center">
+                                {% if type == 'success' %}
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'mr-3 text-green-600 dark:text-green-400' }) }}
+                                {% elseif type == 'error' %}
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'alert-circle', class: 'mr-3 text-red-600 dark:text-red-400' }) }}
+                                {% elseif type == 'warning' %}
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'alert-triangle', class: 'mr-3 text-yellow-600 dark:text-yellow-400' }) }}
+                                {% else %}
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'info', class: 'mr-3 text-blue-600 dark:text-blue-400' }) }}
+                                {% endif %}
+                                <span class="font-medium">{{ message|raw }}</span>
                             </div>
-                        {% endfor %}
-                    </section>
+                        </div>
+                    {% endfor %}
                 {% endfor %}
-                <h1 class="text-3xl text-black pb-6">{% block title %}{% endblock %}</h1>
-                {% block body %}
 
-                {% endblock %}
-            </main>
-        </div>
-
-        <footer class="w-full bg-white text-right p-4">
-        
-        </footer>
-    </div>
-        
+                {% block body %}{% endblock %}
+            </div>
+        </main>
+        {% include '_composants/_footer.html.twig' with {'type': 'base'} %}
     </div>
 
+    <div x-data="{ sidebarOpen: false }" x-on:toggle-sidebar.window="sidebarOpen = !sidebarOpen" class="sm:hidden">
+        <!-- Mobile Sidebar Overlay -->
+        <div x-show="sidebarOpen" 
+             x-transition:enter="transition-opacity ease-linear duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-linear duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+             @click="sidebarOpen = false"></div>
+
+        <!-- Mobile Sidebar -->
+        <aside x-show="sidebarOpen"
+               x-transition:enter="transition ease-in-out duration-300 transform"
+               x-transition:enter-start="-translate-x-full"
+               x-transition:enter-end="translate-x-0"
+               x-transition:leave="transition ease-in-out duration-300 transform"
+               x-transition:leave-start="translate-x-0"
+               x-transition:leave-end="-translate-x-full"
+               class="fixed inset-y-0 left-0 w-64 z-50 flex flex-col bg-linear-to-b from-slate-800 to-slate-900 shadow-2xl border-r border-slate-700">
+            
+            <div class="flex items-center justify-between p-6 border-b border-slate-700">
+                <img src="/plumbpaylogo-removebg-preview.png" 
+                     class="w-20 h-20 drop-shadow-lg hover:scale-105 transition-transform duration-300" 
+                     alt="PlumbPay Logo">
+                <button @click="sidebarOpen = false" 
+                        class="text-white/80 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-all duration-200">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'x', class: 'w-5 h-5' }) }}
+                </button>
+            </div>
+            
+            <nav class="flex-1 px-4 py-6 space-y-1">
+                <a href="{{ path('front_default_index') }}" 
+                   @click="sidebarOpen = false"
+                   class="flex items-center px-4 py-3 text-white/90 hover:text-white font-medium rounded-xl transition-all duration-200 hover:bg-white/10 border border-transparent hover:border-white/20">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'home', class: 'mr-3 w-5 h-5' }) }}
+                    <span>Home</span>
+                </a>
+                
+                {% if app.user %}
+                    <a href="{{ path('front_app_devis_index') }}" 
+                       @click="sidebarOpen = false"
+                       class="flex items-center px-4 py-3 text-white/90 hover:text-white font-medium rounded-xl transition-all duration-200 hover:bg-white/10 border border-transparent hover:border-white/20">
+                        {{ include('_composants/_lucide_icon.html.twig', { name: 'file-text', class: 'mr-3 w-5 h-5' }) }}
+                        <span>Quotes</span>
+                    </a>
+                    
+                    <a href="{{ path('front_app_facture_index') }}" 
+                       @click="sidebarOpen = false"
+                       class="flex items-center px-4 py-3 text-white/90 hover:text-white font-medium rounded-xl transition-all duration-200 hover:bg-white/10 border border-transparent hover:border-white/20">
+                        {{ include('_composants/_lucide_icon.html.twig', { name: 'receipt', class: 'mr-3 w-5 h-5' }) }}
+                        <span>Invoices</span>
+                    </a>
+                    
+                    <a href="{{ path('front_app_category_index') }}" 
+                       @click="sidebarOpen = false"
+                       class="flex items-center px-4 py-3 text-white/90 hover:text-white font-medium rounded-xl transition-all duration-200 hover:bg-white/10 border border-transparent hover:border-white/20">
+                        {{ include('_composants/_lucide_icon.html.twig', { name: 'tags', class: 'mr-3 w-5 h-5' }) }}
+                        <span>Categories</span>
+                    </a>
+                {% endif %}
+            </nav>
+        </aside>
+    </div>
 </body>
 </html>

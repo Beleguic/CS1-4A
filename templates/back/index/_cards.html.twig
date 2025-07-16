@@ -1,19 +1,95 @@
-<div class="grid gap-8">
-    {% for card in cards %}
-        <section class="grid sm:grid-cols-2 xl:grid-cols-4 gap-8">
-            {% for c in card %}
-                <a href="{{ c.link }}" class="p-4 shadow-2xl rounded-xl transition-all hover:scale-110 focus:scale-110 bg-bgBody-400 dark:bg-bgBody-800 border border-textColor-400 dark:border-textColor-800">
-                    <article>
-                        <div class="flex flex-row gap-4">
-                            <div class="w-1/4">{{ c.icon|raw }}</div>
-                            <div class="w-full flex flex-col gap-2">
-                                <h3 class="text-xl text-TextColor-400 dark:text-TextColor-800">Total {{ c.title }}</h3>
-                                <h1 class="text-4x font-bold text-TextColor-400 dark:text-TextColor-800">{{ c.nb }}</h1>
+{% if not cards %}
+    <div class="text-center py-12">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+            {{ include('_composants/_lucide_icon.html.twig', { name: 'bar-chart-3', class: 'w-8 h-8 text-gray-400' }) }}
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No Data Available</h3>
+        <p class="text-gray-500 dark:text-gray-400">Dashboard statistics will appear here once data is available.</p>
+    </div>
+{% else %}
+    {% for section_name, card_section in cards %}
+        <div class="space-y-4">
+            <div class="flex items-center mb-4">
+                <div class="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent flex-1"></div>
+                <h2 class="px-6 text-lg font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                    {% if section_name == 'general' %}
+                        System Overview
+                    {% elseif section_name == 'product' %}
+                        Product Management
+                    {% elseif section_name == 'pdf' %}
+                        Document Generation
+                    {% else %}
+                        {{ section_name|title }}
+                    {% endif %}
+                </h2>
+                <div class="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent flex-1"></div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {% for card in card_section %}
+                    {% set icon_mapping = {
+                        'user': 'users',
+                        'company': 'building-2',
+                        'compan': 'building-2',
+                        'contact': 'mail',
+                        'product': 'package',
+                        'categor': 'tags',
+                        'devis': 'file-scan',
+                        'quote': 'file-scan',
+                        'quotations': 'file-scan',
+                        'facture': 'file-digit',
+                        'invoice': 'file-digit',
+                        'client': 'user-circle',
+                        'customer': 'user-circle',
+                        'admin': 'shield-check',
+                        'order': 'shopping-cart',
+                        'payment': 'credit-card',
+                        'revenue': 'trending-up',
+                        'sale': 'trending-up',
+                        'report': 'bar-chart-3',
+                        'pdf': 'file-down',
+                    } %}
+                    {% set icon_name = 'circle-question-mark' %}
+                    {% set icon_class = 'w-5 h-5' %}
+                    {% set card_title_lower = card.title|lower %}
+                    {% for keyword, icon in icon_mapping %}
+                        {% if keyword in card_title_lower %}
+                            {% set icon_name = icon %}
+                            {% set break = true %}
+                        {% endif %}
+                    {% endfor %}
+                    <a href="{{ card.link }}" id="{{ card.title|lower }}"
+                    class="group relative overflow-hidden rounded-2xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-white/20 dark:border-gray-700/50 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-mainColor-400/10 to-secondaryColor-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-mainColor-400 to-secondaryColor-400 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                    {{ include('_composants/_lucide_icon.html.twig', { 
+                                        name: icon_name, 
+                                        class: icon_class ~ ' text-white' 
+                                    }) }}
+                                </div>
+                                <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'arrow-up-right', class: 'w-5 h-5 text-gray-400' }) }}
+                                </div>
+                            </div>                                
+                            <h3 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wide">
+                                {{ card.title }}
+                            </h3>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-3xl font-bold text-gray-900 dark:text-white group-hover:text-mainColor-400 transition-colors duration-300">
+                                    {{ card.nb }}
+                                </span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">
+                                    total
+                                </span>
+                            </div>
+                            <div class="mt-4 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                             </div>
                         </div>
-                    </article>
-                </a>
-            {% endfor %}
-        </section>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
     {% endfor %}
-</div>
+{% endif %}
