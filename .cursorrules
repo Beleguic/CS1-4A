@@ -1,0 +1,186 @@
+# Règles Cursor pour le projet Symfony - Gestion de Devis et Factures
+
+## Contexte du Projet
+Ce projet est une plateforme de gestion de devis et de factures pour PME, développée en Symfony avec TailwindCSS/SASS et une approche UX/UI centrée sur l'utilisateur.
+
+## Architecture et Structure
+
+### Backend (Symfony)
+- **Panel d'administration complet** : Créer sans EasyAdmin ou équivalent
+- **Entités principales** : User, Company, Client, Product, Category, Devis, Facture, Contact
+- **Rôles utilisateurs** : ADMIN, COMPANY, COMPTABLE
+- **Sécurité** : Authentification et autorisation par rôles
+- **Services** : Email automatique, génération PDF, gestion des paiements
+
+### Frontend (TailwindCSS & SASS)
+- **Approche mobile-first** obligatoire
+- **Utility classes** : Privilégier les classes Tailwind, limiter @apply
+- **Composants requis** :
+  - Accordéon
+  - Barre de navigation
+  - Tableau
+  - 2 éléments de datavisualisation pour le dashboard
+  - VSCard avec QR Code
+- **Thèmes** : 2 thèmes custom + darkMode de Tailwind avec switch
+- **Design Guide** : Page HTML présentant tous les composants
+
+### UX/UI/Accessibilité
+- **Recherche utilisateur** : Entretiens avec propriétaires de PME
+- **Personas** : Définir pour chaque segment d'utilisateurs
+- **Architecture de l'information** : Structure de menu logique
+- **Accessibilité** : Respecter les standards WCAG
+
+## Fonctionnalités Principales (15 points)
+
+### 1. Gestion Devis et Factures
+- CRUD complet (Création, Modification, Suppression)
+- Détails client, produits, prix, taxes
+- Génération PDF automatique
+
+### 2. Gestion des Clients
+- CRUD complet des données clients
+- Historique des interactions
+
+### 3. Gestion des Produits et Catégories
+- CRUD produits avec catégorisation
+- Facilité de sélection pour devis/factures
+
+### 4. Emails Automatiques
+- Envoi automatique devis/factures
+- Emails personnalisés avec liens documents
+
+### 5. Suivi des Paiements
+- Statuts de paiement automatiques
+- Suivi paiements en attente/reçus
+
+### 6. Rapports Financiers
+- Rapports détaillés des performances
+- Personnalisation selon besoins utilisateur
+
+### 7. Gestion Utilisateurs et Rôles
+- Gestion utilisateurs et droits d'accès
+- Sécurité et confidentialité des données
+
+## Fonctionnalités Bonus (5 points)
+- Modèle Freemium
+- Relance automatique paiements
+- Gestion remises (ligne ou global)
+- Conversion devis → facture automatique
+
+## Rôles Utilisateurs
+
+### Administrateur
+- Gestion utilisateurs et entreprises
+- Accès total à toutes fonctionnalités
+- Rapports financiers globaux
+
+### Entreprise
+- CRUD devis et factures
+- Gestion clients et produits
+- Envoi automatisé
+- Suivi paiements
+
+### Comptable
+- Datavisualisation données financières
+- Suivi paiements et statuts
+- Génération rapports financiers
+
+## Contraintes Techniques
+
+### Symfony
+- Pas d'EasyAdmin pour le panel admin
+- Utiliser les composants Symfony natifs
+- Doctrine ORM pour la persistance
+- Services pour la logique métier
+
+### TailwindCSS/SASS
+- Mobile-first obligatoire
+- Utility classes prioritaires
+- Limiter l'usage de @apply
+- 2 thèmes custom + darkMode
+- Composants réutilisables
+
+### UX/UI
+- Entretiens utilisateurs obligatoires
+- Personas documentés
+- Architecture information claire
+- Accessibilité WCAG
+
+## Structure des Fichiers
+```
+src/
+├── Controller/
+│   ├── Back/          # Panel administration
+│   ├── Front/         # Interface utilisateur
+│   └── Security/      # Authentification
+├── Entity/            # Entités Doctrine
+├── Form/              # Formulaires Symfony
+├── Repository/        # Requêtes personnalisées
+├── Service/           # Logique métier
+└── Security/          # Voters et authentification
+
+templates/
+├── back/              # Templates administration
+├── front/             # Templates utilisateur
+├── _composants/       # Composants réutilisables
+└── email/             # Templates emails
+
+assets/
+├── styles/            # SASS/Tailwind
+├── js/                # JavaScript
+└── images/            # Images et assets
+```
+
+## Bonnes Pratiques
+
+### Code
+- PSR-12 pour le PHP
+- Nommage explicite des variables et méthodes
+- Documentation des services complexes
+- Tests unitaires pour la logique métier
+
+### Sécurité
+- Validation des données côté serveur
+- Protection CSRF sur tous les formulaires
+- Hachage sécurisé des mots de passe
+- Gestion des permissions par rôles
+
+### Performance
+- Pagination des listes
+- Optimisation des requêtes Doctrine
+- Cache pour les données statiques
+- Lazy loading des relations
+
+### Accessibilité
+- Alt text pour les images
+- Navigation au clavier
+- Contrastes suffisants
+- Structure HTML sémantique
+
+## Livrables Attendus
+
+### Repository GitHub
+- Commits auto-signés obligatoires
+- README.md complet avec :
+  - Noms et comptes GitHub
+  - Répartition des tâches
+  - Instructions d'installation
+  - Lien production
+
+### Production
+- Mise en production obligatoire
+- Données de test pour démonstration
+- Disponible 2 semaines minimum
+
+### Documentation
+- Design Guide HTML
+- Maquette Figma des composants
+- Document personas et entretiens
+- Architecture de l'information
+
+## Notes Importantes
+- Respecter les contraintes par matière
+- Privilégier la qualité du code
+- Documenter les choix techniques
+- Tester toutes les fonctionnalités
+- Préparer la démonstration en production 

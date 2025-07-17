@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -50,11 +51,11 @@ class CompanyController extends AbstractController
 
         $user = $this->getUser();
         if (!$user) {
-            throw $this->createNotFoundException('This page does not exist');
+            throw $this->createNotFoundException('Page non trouvée');
         }
 
         if (!$this->isGranted('ROLE_ADMIN')) {
-            throw $this->createNotFoundException('This page does not exist');
+            throw new AccessDeniedException('Accès refusé');
         }
 
         $companyId = $user->getCompanyId();
@@ -137,11 +138,11 @@ class CompanyController extends AbstractController
         $user = $this->getUser();
 
         if (!$user) {
-            throw $this->createNotFoundException('This page does not exist');
+            throw $this->createNotFoundException('Page non trouvée');
         }
 
         if (!$this->isGranted('ROLE_ADMIN')) {
-            throw $this->createNotFoundException('This page does not exist');
+            throw new AccessDeniedException('Accès refusé');
         }
 
         $companyId = $user->getCompanyId();

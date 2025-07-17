@@ -266,6 +266,8 @@ class DevisController extends AbstractController
             'total' => $total,
         ]);
     
+        // Sanitizer le contenu HTML pour éviter les XSS
+        $html = htmlspecialchars_decode($html, ENT_QUOTES);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();

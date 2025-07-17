@@ -17,18 +17,25 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Service\BrevoEmailService;
+use App\Service\SecurityLoggerService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 class SecurityController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
-    public function index(AuthenticationUtils $authenticationUtils): Response
+    public function index(AuthenticationUtils $authenticationUtils, SecurityLoggerService $securityLogger): Response
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
+        
+        // Logger la tentative de connexion
+        if ($error) {
+            $securityLogger->logLoginAttempt($lastUsername, false);
+        }
+        
         return $this->render('security/login/index.html.twig', [
             'controller_name' => 'LoginController',
             'last_username' => $lastUsername,
@@ -195,6 +202,14 @@ class SecurityController extends AbstractController
 
     if ($request->isMethod('POST')) {
         $email = $request->request->get('email');
+        
+        // Validation de l'email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->addFlash('error', 'Adresse email invalide.');
+            return $this->render('security/forgot_password.html.twig', [
+                'successMessage' => null,
+            ]);
+        }
 
         $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
@@ -238,8 +253,15 @@ class SecurityController extends AbstractController
         $user = $entityManager->getRepository(User::class)->findOneBy(['resetPasswordToken' => $token]);
         if (!$user instanceof UserInterface) {
             // Gérer le cas où le token est invalide
-            return $this->redirectToRoute('app_login', ['token' => $token, 'error' => 'Invalid or expired token']);
+            return $this->redirectToRoute('app_login', ['error' => 'Token invalide ou expiré']);
+        }
         
+        // Vérifier l'expiration du token
+        if ($user->isResetPasswordTokenExpired()) {
+            $user->setResetPasswordToken(null);
+            $user->setResetPasswordTokenExpiresAt(null);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_login', ['error' => 'Token expiré']);
         }
         $form = $this->createForm(ResetPasswordFormType::class);
         $form->handleRequest($request);
