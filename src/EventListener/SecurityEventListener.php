@@ -7,21 +7,21 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener(event: InteractiveLoginEvent::class)]
-#[AsEventListener(event: LogoutEvent::class)]
+#[AsEventListener(event: InteractiveLoginEvent::class, method: 'onSecurityInteractiveLogin')]
+#[AsEventListener(event: LogoutEvent::class, method: 'onSecurityLogout')]
 class SecurityEventListener
 {
     public function __construct(
         private SecurityLoggerService $securityLogger
     ) {}
 
-    public function onInteractiveLogin(InteractiveLoginEvent $event): void
+    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $user = $event->getAuthenticationToken()->getUser();
         $this->securityLogger->logLoginAttempt($user->getUserIdentifier(), true);
     }
 
-    public function onLogout(LogoutEvent $event): void
+    public function onSecurityLogout(LogoutEvent $event): void
     {
         $user = $event->getToken()?->getUser();
         if ($user) {

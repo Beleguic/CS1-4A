@@ -1,4 +1,41 @@
-# Plumbpay
+# PlumbPay - Gestion de Devis et Factures
+
+## Versions des Technologies
+
+### Backend
+- **Symfony** : 6.x (LTS)
+- **PHP** : 8.1+
+- **Composer** : 2.x
+- **PostgreSQL** : 13-alpine
+- **Doctrine ORM** : 2.*
+- **Doctrine Migrations** : 3.*
+
+### Frontend
+- **Node.js** : 18+ (via Docker)
+- **TailwindCSS** : 3.4.1
+- **SASS** : 1.69.5
+- **Webpack Encore** : 4.0.0
+- **PostCSS** : 8.4.33
+- **Autoprefixer** : 10.4.17
+
+### Outils de Développement
+- **Docker** : 20.x+
+- **Docker Compose** : 3.4
+- **Nginx** : alpine
+- **Adminer** : latest
+- **Mailcatcher** : latest (dev uniquement)
+
+### Dépendances Principales
+- **Highcharts** : 11.3.0 (datavisualisation)
+- **DomPDF** : 2.0+ (génération PDF)
+- **KNP Paginator** : 6.3
+- **Brevo Mailer** : 6.*
+- **Vich Uploader** : 2.3
+
+### Outils de Test
+- **PHPUnit** : 9.5+
+- **Faker** : latest
+- **Doctrine Fixtures** : 3.5
 
 <hr>
 
