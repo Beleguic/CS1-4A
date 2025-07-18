@@ -50,38 +50,49 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Générer et stocker un token unique pour l'activation du compte
-            $token = bin2hex(random_bytes(32)); // Génère un token unique
-            $user->setActivationToken($token);
-    
-            // Envoyer un e-mail de confirmation avec le lien d'activation
-            $activationLink = $this->generateUrl('activate_account', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
-    
-            $senderName = 'Plumbpay';
-            $senderEmail = 'team_plumbpay@outlook.com';
-            $recipientName = $user->getUserIdentifier();
-            $recipientEmail = $user->getEmail();
-            $subject = 'Confirmation d\'inscription';
-            $htmlContent = '<html><head></head><body><p>Bienvenue sur notre site !</p><p>Veuillez cliquer sur le lien suivant pour activer votre compte : <a href="' . $activationLink . '">Activer votre compte</a></p></body></html>';
-    
-            // Envoyer l'e-mail de confirmation
-            $response = $emailService->sendEmail($senderName, $senderEmail, $recipientName, $recipientEmail, $subject, $htmlContent);
-    
-            if ($response['success']) {
-                // L'e-mail de confirmation a été envoyé avec succès, on peut maintenant stocker l'utilisateur
+            try {
+                // Définir le rôle par défaut
+                $user->setRoles(['ROLE_PLUMBER']);
+                
+                // Générer et stocker un token unique pour l'activation du compte
+                $token = bin2hex(random_bytes(32));
+                $user->setActivationToken($token);
+        
+                // Hacher le mot de passe
                 $user->setPassword(
                     $userPasswordHasher->hashPassword(
                         $user,
                         $form->get('password')->getData()
                     )
                 );
-    
+        
+                // Sauvegarder l'utilisateur d'abord
                 $entityManager->persist($user);
                 $entityManager->flush();
-    
-                return $this->redirectToRoute('app_login');
-            } else {
-                // Une erreur s'est produite lors de l'envoi de l'e-mail
+        
+                // Envoyer un e-mail de confirmation avec le lien d'activation
+                $activationLink = $this->generateUrl('activate_account', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+        
+                $senderName = 'Plumbpay';
+                $senderEmail = 'team_plumbpay@outlook.com';
+                $recipientName = $user->getFirstname() . ' ' . $user->getLastname();
+                $recipientEmail = $user->getEmail();
+                $subject = 'Confirmation d\'inscription - PlumbPay';
+                $htmlContent = '<html><head></head><body><p>Bonjour ' . $user->getFirstname() . ',</p><p>Bienvenue sur PlumbPay !</p><p>Veuillez cliquer sur le lien suivant pour activer votre compte : <a href="' . $activationLink . '">Activer votre compte</a></p><p>Cordialement,<br>L\'équipe PlumbPay</p></body></html>';
+        
+                // Envoyer l'e-mail de confirmation
+                $response = $emailService->sendEmail($senderName, $senderEmail, $recipientName, $recipientEmail, $subject, $htmlContent);
+        
+                if ($response['success']) {
+                    $this->addFlash('success', 'Votre compte a été créé avec succès ! Veuillez vérifier votre email pour activer votre compte.');
+                    return $this->redirectToRoute('app_login');
+                } else {
+                    // L'email n'a pas pu être envoyé, mais l'utilisateur est créé
+                    $this->addFlash('warning', 'Votre compte a été créé, mais l\'email d\'activation n\'a pas pu être envoyé. Veuillez contacter le support.');
+                    return $this->redirectToRoute('app_login');
+                }
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Une erreur s\'est produite lors de la création de votre compte. Veuillez réessayer.');
                 return $this->redirectToRoute('app_register');
             }
         }

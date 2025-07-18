@@ -15,16 +15,50 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Email;
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('password', repeatedType::class, [
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer votre adresse email',
+                    ]),
+                    new Email([
+                        'message' => 'Veuillez entrer une adresse email valide',
+                    ]),
+                ],
+            ])
+            ->add('firstname', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer votre prénom',
+                    ]),
+                    new Length([
+                        'min' => 2,
+                        'max' => 50,
+                        'minMessage' => 'Votre prénom doit contenir au moins {{ limit }} caractères',
+                        'maxMessage' => 'Votre prénom ne peut pas dépasser {{ limit }} caractères',
+                    ]),
+                ],
+            ])
+            ->add('lastname', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer votre nom',
+                    ]),
+                    new Length([
+                        'min' => 2,
+                        'max' => 50,
+                        'minMessage' => 'Votre nom doit contenir au moins {{ limit }} caractères',
+                        'maxMessage' => 'Votre nom ne peut pas dépasser {{ limit }} caractères',
+                    ]),
+                ],
+            ])
+            ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
                     'label' => 'Password',

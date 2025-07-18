@@ -1,0 +1,205 @@
+# Cursor Rules - Projet Symfony Gestion Devis/Factures PME
+
+## Contexte du Projet
+Ce projet est une plateforme de gestion de devis et de factures sur mesure pour les PME, développée en Symfony avec TailwindCSS et SASS. Le projet doit respecter les contraintes UX/UI et d'accessibilité.
+
+## Technologies et Framework
+- **Backend**: Symfony 6+ (sans EasyAdmin)
+- **Frontend**: TailwindCSS + SASS (utility-first, éviter @apply)
+- **Base de données**: Doctrine ORM
+- **Email**: Service d'envoi automatique
+- **PDF**: Génération de devis/factures
+- **Docker**: Containerisation
+
+## Versions Applicatives
+
+### Backend (PHP/Symfony)
+- **PHP**: >=8.2
+- **Symfony**: 6.4.* (LTS)
+- **Doctrine ORM**: ^2.17
+- **Doctrine Migrations**: ^3.3
+- **Doctrine Annotations**: ^2.0
+- **Stof Doctrine Extensions**: *
+- **KNP Paginator**: ^6.3
+- **KNP Snappy**: *
+- **Nelmio Security**: ^3.5
+- **Vich Uploader**: ^2.3
+- **DomPDF**: ^2.0
+- **Guzzle HTTP**: ^7.8
+
+### Frontend (JavaScript/CSS)
+- **Node.js**: Compatible avec les dépendances
+- **TailwindCSS**: ^4.1.11
+- **SASS**: ^1.71.0
+- **PostCSS**: ^8.5.6
+- **Webpack**: ^5.90.0
+- **Webpack Encore**: ^5.1.0
+- **Stimulus**: ^3.0.0
+- **Turbo**: ^7.1.1 || ^8.0
+- **Highcharts**: ^11.3.0
+- **Lucide Icons**: ^0.525.0
+
+### Base de Données
+- **PostgreSQL**: 13-alpine
+- **Adminer**: Latest (pour l'administration DB)
+
+### Serveur Web
+- **Nginx**: alpine
+- **PHP-FPM**: Basé sur l'image officielle PHP
+
+### Outils de Développement
+- **Composer**: ^2 (Flex)
+- **PHPUnit**: ^10.0
+- **Faker**: *
+- **Doctrine Fixtures**: ^3.5
+- **Symfony Maker**: ^1.0
+- **Webpack Notifier**: ^1.15.0
+
+## Architecture et Conventions
+
+### Structure Symfony
+- Utiliser les bonnes pratiques Symfony 6+
+- Créer un panel d'administration complet sans EasyAdmin
+- Respecter la structure MVC
+- Utiliser les annotations/attributs Doctrine
+- Implémenter la sécurité avec les voters et authenticators
+
+### Entités Principales
+- User (utilisateurs avec rôles)
+- Company (entreprises)
+- Client (clients)
+- Product (produits)
+- Category (catégories)
+- Devis (devis)
+- Facture (factures)
+- Contact (contacts)
+
+### Rôles Utilisateurs
+- **Administrateur**: Gestion complète, rapports globaux
+- **Entreprise**: CRUD devis/factures, gestion clients/produits
+- **Comptable**: Datavisualisation, rapports financiers
+
+## Frontend et Design
+
+### TailwindCSS
+- Approche utility-first obligatoire
+- Limiter l'usage de @apply
+- Créer des composants réutilisables
+- Support mobile-first
+- 2 thèmes custom + dark mode
+
+### Composants Requis
+- Accordéon
+- Barre de navigation
+- Tableau
+- 2 éléments de datavisualisation
+- VSCard avec QR Code
+
+### Design System
+- Créer un design guide complet
+- Maquettes Figma pour les composants
+- Respecter l'accessibilité WCAG
+- Interface intuitive pour PME
+
+## Fonctionnalités Principales
+
+### Core Features (15 points)
+1. CRUD Devis et Factures
+2. Gestion des Clients
+3. Gestion des Produits et Catégories
+4. Envoi d'emails automatiques
+5. Suivi des paiements et statuts
+6. Rapports financiers
+7. Gestion des utilisateurs et rôles
+
+### Bonus Features (5 points)
+- Modèle Freemium
+- Relance automatique des paiements
+- Gestion des remises
+- Conversion devis → facture
+
+## UX/UI et Accessibilité
+
+### Recherche Utilisateur
+- Entretiens avec propriétaires de PME
+- Création de personas détaillés
+- Architecture de l'information
+- Structure de menu logique
+
+### Accessibilité
+- Respect des standards WCAG
+- Navigation au clavier
+- Contraste suffisant
+- Textes alternatifs
+
+## Code Quality
+
+### PHP/Symfony
+- PSR-12 coding standards
+- Documentation des méthodes
+- Gestion d'erreurs appropriée
+- Tests unitaires
+- Validation des données
+
+### JavaScript
+- ES6+ syntax
+- Modules ES6
+- Gestion des événements
+- Validation côté client
+
+### CSS/Tailwind
+- Classes utilitaires
+- Composants modulaires
+- Responsive design
+- Performance optimisée
+
+## Sécurité
+- Validation des données
+- Protection CSRF
+- Gestion des permissions
+- Chiffrement des données sensibles
+- Logs de sécurité
+
+## Performance
+- Optimisation des requêtes Doctrine
+- Cache Symfony
+- Minification des assets
+- Lazy loading
+- Optimisation des images
+
+## Déploiement
+- Configuration Docker
+- Variables d'environnement
+- Base de données de production
+- Données de test/seeders
+- Monitoring
+
+## Documentation
+- README.md complet
+- Documentation technique
+- Guide d'installation
+- API documentation
+- Changelog
+
+## Git et Collaboration
+- Commits auto-signés obligatoires
+- Messages de commit explicites
+- Branches feature
+- Code review
+- Historique des contributions
+
+## Contraintes Spécifiques
+- Pas d'EasyAdmin pour l'admin
+- Utility-first TailwindCSS
+- Mobile-first design
+- 2 thèmes custom minimum
+- Composants réutilisables
+- Accessibilité WCAG
+
+## Bonnes Pratiques Générales
+- Code propre et maintenable
+- Documentation à jour
+- Tests automatisés
+- Performance optimisée
+- Sécurité renforcée
+- Expérience utilisateur intuitive 

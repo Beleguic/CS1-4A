@@ -1,31 +1,40 @@
-# nelmio_security:
-#     clickjacking:
-#         paths:
-#             '^/.*': DENY
+nelmio_security:
+    clickjacking:
+        paths:
+            '^/.*': DENY
 
-#     content_type:
-#         nosniff: true
+    content_type:
+        nosniff: true
 
-#     referrer_policy:
-#         enabled: true
-#         policies:
-#             - 'no-referrer'
-#             - 'strict-origin-when-cross-origin'
+    referrer_policy:
+        enabled: true
+        policies:
+            - 'no-referrer'
+            - 'strict-origin-when-cross-origin'
 
-#     csp:
-#         enabled: true
-#         compat_headers: false
-#         content_types: ['text/html']
-#         hosts: []
-#         hash: []
-#         request_matcher: null
-#         enforce:
-#             default-src:
-#                 - 'self'
-#             script-src:
-#                 - 'self'
-#                 - 'https://unpkg.com'
-#                 - 'nonce'
-#             style-src:
-#                 - 'self'
-#                 - 'nonce'
+    csp:
+        enabled: true
+        compat_headers: false
+        content_types: ['text/html']
+        hosts: []
+        hash: []
+        request_matcher: null
+        enforce:
+            default-src:
+                - 'self'
+            script-src:
+                - 'self'
+                - 'https://unpkg.com'
+                - 'https://js.stripe.com'
+                - 'nonce'
+            style-src:
+                - 'self'
+                - 'https://fonts.googleapis.com'
+                - 'nonce'
+            img-src:
+                - 'self'
+                - 'data:'
+                - 'https:'
+            font-src:
+                - 'self'
+                - 'https://fonts.gstatic.com'

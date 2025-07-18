@@ -5,6 +5,7 @@ namespace App\EventListener;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AccessDeniedHttpExceptionListener
 {
@@ -13,8 +14,8 @@ class AccessDeniedHttpExceptionListener
         $exception = $event->getThrowable();
 
         if ($exception instanceof AccessDeniedHttpException) {
-            // Change the response to 404
-            $response = new Response('Not Found', Response::HTTP_NOT_FOUND);
+            // Rediriger vers la page de connexion au lieu de révéler l'existence de ressources
+            $response = new RedirectResponse('/login');
             $event->setResponse($response);
         }
     }

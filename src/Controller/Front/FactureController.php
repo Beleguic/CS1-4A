@@ -14,6 +14,7 @@ use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Stripe\StripeClient;
 use stripe\Stripe;
@@ -82,25 +83,24 @@ class FactureController extends AbstractController
     #[Route('/{id}/paid', name: 'app_facture_paid', methods: ['GET', 'POST'])]
     public function paid(Request $request, Facture $facture, EntityManagerInterface $entityManager): Response
     {
-        $stripe = new StripeClient('pk_test_51Oh8R5Cl4sk51Mu5Gd3FJCty3MICA3ZLW4HajUes3WoTbx0wgjgHoziMOWStmJlyV2AZAEIP8zugif9IFyNyXVrL00BK7EuAfr');
-        header('Content-Type: application/json');
-
-        $YOUR_DOMAIN = 'http://localhost:4242';
-
+        // Utiliser les variables d'environnement pour les clés Stripe
+        $stripePublicKey = $this->getParameter('app.stripe.public_key');
+        $stripe = new StripeClient($stripePublicKey);
+        
+        // Utiliser une variable d'environnement pour le domaine
+        $domain = $this->getParameter('app.domain');
+        
         $checkout_session = $stripe->checkout->sessions->create([
-        'ui_mode' => 'embedded',
-        'line_items' => [[
-            'price' => '{{PRICE_ID}}',
-            'quantity' => 1,
-        ]],
-        'mode' => 'payment',
-        'return_url' => $YOUR_DOMAIN . '/return.html?session_id={CHECKOUT_SESSION_ID}',
+            'ui_mode' => 'embedded',
+            'line_items' => [[
+                'price' => '{{PRICE_ID}}',
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'return_url' => $domain . '/return.html?session_id={CHECKOUT_SESSION_ID}',
         ]);
 
-        echo json_encode(array('clientSecret' => $checkout_session->client_secret));
-        return $this->render('front/facture/paid.html.twig', [
-            'facture' => $facture,
-        ]);
+        return new JsonResponse(['clientSecret' => $checkout_session->client_secret]);
     }
 
     #[Route('/{id}', name: 'app_facture_delete', methods: ['POST'])]

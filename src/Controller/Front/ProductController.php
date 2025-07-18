@@ -66,6 +66,12 @@ class ProductController extends AbstractController
     #[Route('/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
+        // Vérifier que l'utilisateur a accès à ce produit
+        $user = $this->getUser();
+        if ($product->getCompanyId() !== $user->getCompanyId()) {
+            throw $this->createAccessDeniedException('Vous n\'avez pas accès à ce produit.');
+        }
+
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 

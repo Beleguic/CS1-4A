@@ -14,7 +14,11 @@
                 {{ include('_composants/_lucide_icon.html.twig', { name: 'user', class: 'w-4 h-4 text-gray-400 dark:text-gray-500' }) }}
             </div>
         </div>
-        {{ form_errors(registrationForm.firstname) }}
+        {% if form_errors(registrationForm.firstname) %}
+            <div class="text-red-500 text-sm mt-1">
+                {{ form_errors(registrationForm.firstname) }}
+            </div>
+        {% endif %}
     </div>
 
     <!-- Last Name -->
@@ -31,7 +35,11 @@
                 {{ include('_composants/_lucide_icon.html.twig', { name: 'user', class: 'w-4 h-4 text-gray-400 dark:text-gray-500' }) }}
             </div>
         </div>
-        {{ form_errors(registrationForm.lastname) }}
+        {% if form_errors(registrationForm.lastname) %}
+            <div class="text-red-500 text-sm mt-1">
+                {{ form_errors(registrationForm.lastname) }}
+            </div>
+        {% endif %}
     </div>
 
     <!-- Email -->
@@ -48,65 +56,57 @@
                 {{ include('_composants/_lucide_icon.html.twig', { name: 'at-sign', class: 'w-4 h-4 text-gray-400 dark:text-gray-500' }) }}
             </div>
         </div>
-        {{ form_errors(registrationForm.email) }}
+        {% if form_errors(registrationForm.email) %}
+            <div class="text-red-500 text-sm mt-1">
+                {{ form_errors(registrationForm.email) }}
+            </div>
+        {% endif %}
     </div>
 
     <!-- Password -->
-    <div class="space-y-2" x-data="{ showPassword: false }">
+    <div class="space-y-2">
         {{ form_label(registrationForm.password.first, 'Mot de passe', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
         <div class="relative">
             {{ form_widget(registrationForm.password.first, {
                 'attr': {
-                    'x-bind:type': 'showPassword ? "text" : "password"',
-                    'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200 pr-12',
+                    'type': 'password',
+                    'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200',
                     'placeholder': 'Créez un mot de passe fort',
                     'autocomplete': 'new-password'
                 }
             }) }}
-            <button 
-                type="button" 
-                @click="showPassword = !showPassword"
-                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
-                tabindex="-1"
-            >
-                <span x-show="!showPassword">
-                    {{ include('_composants/_lucide_icon.html.twig', { name: 'eye', class: 'w-4 h-4' }) }}
-                </span>
-                <span x-show="showPassword">
-                    {{ include('_composants/_lucide_icon.html.twig', { name: 'eye-off', class: 'w-4 h-4' }) }}
-                </span>
-            </button>
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                {{ include('_composants/_lucide_icon.html.twig', { name: 'lock', class: 'w-4 h-4 text-gray-400 dark:text-gray-500' }) }}
+            </div>
         </div>
-        {{ form_errors(registrationForm.password.first) }}
+        {% if form_errors(registrationForm.password.first) %}
+            <div class="text-red-500 text-sm mt-1">
+                {{ form_errors(registrationForm.password.first) }}
+            </div>
+        {% endif %}
     </div>
 
     <!-- Confirm Password -->
-    <div class="space-y-2" x-data="{ showConfirmPassword: false }">
+    <div class="space-y-2">
         {{ form_label(registrationForm.password.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
         <div class="relative">
             {{ form_widget(registrationForm.password.second, {
                 'attr': {
-                    'x-bind:type': 'showConfirmPassword ? "text" : "password"',
-                    'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200 pr-12',
+                    'type': 'password',
+                    'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200',
                     'placeholder': 'Confirmez votre mot de passe',
                     'autocomplete': 'new-password'
                 }
             }) }}
-            <button 
-                type="button" 
-                @click="showConfirmPassword = !showConfirmPassword"
-                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
-                tabindex="-1"
-            >
-                <span x-show="!showConfirmPassword">
-                    {{ include('_composants/_lucide_icon.html.twig', { name: 'eye', class: 'w-4 h-4' }) }}
-                </span>
-                <span x-show="showConfirmPassword">
-                    {{ include('_composants/_lucide_icon.html.twig', { name: 'eye-off', class: 'w-4 h-4' }) }}
-                </span>
-            </button>
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                {{ include('_composants/_lucide_icon.html.twig', { name: 'lock', class: 'w-4 h-4 text-gray-400 dark:text-gray-500' }) }}
+            </div>
         </div>
-        {{ form_errors(registrationForm.password.second) }}
+        {% if form_errors(registrationForm.password.second) %}
+            <div class="text-red-500 text-sm mt-1">
+                {{ form_errors(registrationForm.password.second) }}
+            </div>
+        {% endif %}
     </div>
 
     <!-- Terms Agreement -->
@@ -120,7 +120,11 @@
             {{ form_label(registrationForm.agreeTerms, 'J\'accepte les Conditions d\'utilisation et la Politique de confidentialité', {'label_attr': {'class': 'cursor-pointer'}}) }}
         </div>
     </div>
-    {{ form_errors(registrationForm.agreeTerms) }}
+    {% if form_errors(registrationForm.agreeTerms) %}
+        <div class="text-red-500 text-sm mt-1">
+            {{ form_errors(registrationForm.agreeTerms) }}
+        </div>
+    {% endif %}
 
     <!-- Submit Button -->
     <div class="space-y-4">
