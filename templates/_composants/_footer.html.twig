@@ -1,0 +1,249 @@
+{% set type = type|default('base') %}
+
+<footer class="bg-linear-to-r from-slate-800 via-gray-800 to-slate-900 text-white mt-8 border-t border-slate-700">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        {% if type == 'admin' %}
+            <!-- Admin Footer Content -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 group">
+                        <img src="/plumbpaylogo-removebg-preview.png" 
+                             alt="PlumbPay" 
+                             class="w-10 h-10 drop-shadow-lg group-hover:scale-110 transition-transform duration-300">
+                        <span class="text-xl font-bold bg-linear-to-r from-mainColor-400 to-secondaryColor-400 bg-clip-text text-transparent">
+                            PlumbPay
+                        </span>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed max-w-sm">
+                        Solution de gestion de plomberie professionnelle. Simplifiez la facturation, gérez vos clients et développez votre entreprise avec des outils puissants.
+                    </p>
+                    <div class="flex gap-3 pt-2">
+                        <div class="w-8 h-8 bg-slate-700 hover:bg-mainColor-400 rounded-lg flex items-center justify-center transition-all duration-300 cursor-pointer group">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'facebook', 
+                                class: 'w-4 h-4 text-slate-400 group-hover:text-white transition-colors duration-300' 
+                            }) }}
+                        </div>
+                        <div class="w-8 h-8 bg-slate-700 hover:bg-mainColor-400 rounded-lg flex items-center justify-center transition-all duration-300 cursor-pointer group">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'twitter', 
+                                class: 'w-4 h-4 text-slate-400 group-hover:text-white transition-colors duration-300' 
+                            }) }}
+                        </div>
+                        <div class="w-8 h-8 bg-slate-700 hover:bg-mainColor-400 rounded-lg flex items-center justify-center transition-all duration-300 cursor-pointer group">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'linkedin', 
+                                class: 'w-4 h-4 text-slate-400 group-hover:text-white transition-colors duration-300' 
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-lg text-white flex items-center">
+                        {{ include('_composants/_lucide_icon.html.twig', { 
+                            name: 'settings', 
+                            class: 'w-5 h-5 mr-2 text-mainColor-400' 
+                        }) }}
+                        Services Admin
+                    </h3>
+                    <ul class="space-y-3 text-sm">
+                        {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
+                            <li>
+                                <a href="{{ path('back_app_index') }}" 
+                                    class="text-slate-300 hover:text-white transition-all duration-200 flex items-center group">
+                                    {{ include('_composants/_lucide_icon.html.twig', { 
+                                        name: 'layout-dashboard', 
+                                        class: 'w-4 h-4 mr-2 text-slate-400 group-hover:text-mainColor-400 transition-colors duration-200' 
+                                    }) }}
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('back_app_user') }}" 
+                                    class="text-slate-300 hover:text-white transition-all duration-200 flex items-center group">
+                                    {{ include('_composants/_lucide_icon.html.twig', { 
+                                        name: 'users', 
+                                        class: 'w-4 h-4 mr-2 text-slate-400 group-hover:text-mainColor-400 transition-colors duration-200' 
+                                    }) }}
+                                    Users
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('back_app_company') }}" 
+                                    class="text-slate-300 hover:text-white transition-all duration-200 flex items-center group">
+                                    {{ include('_composants/_lucide_icon.html.twig', { 
+                                        name: 'building', 
+                                        class: 'w-4 h-4 mr-2 text-slate-400 group-hover:text-mainColor-400 transition-colors duration-200' 
+                                    }) }}
+                                    Companies
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-lg text-white flex items-center">
+                        {{ include('_composants/_lucide_icon.html.twig', { 
+                            name: 'shield-check', 
+                            class: 'w-5 h-5 mr-2 text-mainColor-400' 
+                        }) }}
+                        Admin Tools
+                    </h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Manage your PlumbPay platform with comprehensive admin tools and analytics.
+                    </p>
+                </div>
+            </div>
+        {% else %}
+            <!-- Base Footer Content -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 group">
+                        <img src="{{ asset('img/logo-plumbpay-transparent.png') }}" 
+                             alt="PlumbPay" 
+                             class="w-10 h-10 drop-shadow-lg group-hover:scale-110 transition-transform duration-300">
+                        <span class="text-xl font-bold bg-linear-to-r from-mainColor-400 to-secondaryColor-400 bg-clip-text text-transparent">
+                            PlumbPay
+                        </span>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed max-w-sm">
+                        Solution de gestion de plomberie professionnelle. Simplifiez la facturation, gérez vos clients et développez votre entreprise avec des outils puissants.
+                    </p>
+                    <div class="flex gap-3 pt-2">
+                        <div class="w-8 h-8 bg-slate-700 hover:bg-mainColor-400 rounded-lg flex items-center justify-center transition-all duration-300 cursor-pointer group">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'facebook', 
+                                class: 'w-4 h-4 text-slate-400 group-hover:text-white transition-colors duration-300' 
+                            }) }}
+                        </div>
+                        <div class="w-8 h-8 bg-slate-700 hover:bg-mainColor-400 rounded-lg flex items-center justify-center transition-all duration-300 cursor-pointer group">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'twitter', 
+                                class: 'w-4 h-4 text-slate-400 group-hover:text-white transition-colors duration-300' 
+                            }) }}
+                        </div>
+                        <div class="w-8 h-8 bg-slate-700 hover:bg-mainColor-400 rounded-lg flex items-center justify-center transition-all duration-300 cursor-pointer group">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'linkedin', 
+                                class: 'w-4 h-4 text-slate-400 group-hover:text-white transition-colors duration-300' 
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-lg text-white flex items-center">
+                        {{ include('_composants/_lucide_icon.html.twig', { 
+                            name: 'wrench', 
+                            class: 'w-5 h-5 mr-2 text-mainColor-400' 
+                        }) }}
+                        Services
+                    </h3>
+                    <ul class="space-y-3 text-sm">
+                        {% if app.user and is_granted('ROLE_PLUMBER') %}
+                            <li>
+                                <a href="{{ path('front_app_devis_index') }}" 
+                                    class="text-slate-300 hover:text-white transition-all duration-200 flex items-center group">
+                                    {{ include('_composants/_lucide_icon.html.twig', { 
+                                        name: 'file-text', 
+                                        class: 'w-4 h-4 mr-2 text-slate-400 group-hover:text-mainColor-400 transition-colors duration-200' 
+                                    }) }}
+                                    Quotes
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('front_app_facture_index') }}" 
+                                    class="text-slate-300 hover:text-white transition-all duration-200 flex items-center group">
+                                    {{ include('_composants/_lucide_icon.html.twig', { 
+                                        name: 'receipt', 
+                                        class: 'w-4 h-4 mr-2 text-slate-400 group-hover:text-mainColor-400 transition-colors duration-200' 
+                                    }) }}
+                                    Invoices
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('front_app_category_index') }}" 
+                                    class="text-slate-300 hover:text-white transition-all duration-200 flex items-center group">
+                                    {{ include('_composants/_lucide_icon.html.twig', { 
+                                        name: 'tags', 
+                                        class: 'w-4 h-4 mr-2 text-slate-400 group-hover:text-mainColor-400 transition-colors duration-200' 
+                                    }) }}
+                                    Categories
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-lg text-white flex items-center">
+                        {{ include('_composants/_lucide_icon.html.twig', { 
+                            name: 'phone', 
+                            class: 'w-5 h-5 mr-2 text-mainColor-400' 
+                        }) }}
+                        Assistance
+                    </h3>
+                    <ul class="space-y-3 text-sm">
+                        <li>
+                            <a href="{{ path('front_app_contact') }}" 
+                                class="text-slate-300 hover:text-white transition-all duration-200 flex items-center group">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'mail', 
+                                    class: 'w-4 h-4 mr-2 text-slate-400 group-hover:text-mainColor-400 transition-colors duration-200' 
+                                }) }}
+                                Nous contacter
+                            </a>
+                        </li>
+                        <li>
+                            <span class="text-slate-300 flex items-center">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'help-circle', 
+                                    class: 'w-4 h-4 mr-2 text-slate-400' 
+                                }) }}
+                                Help Center
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Bottom Section (Common) -->
+        <div class="border-t border-slate-700 pt-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-center md:text-left">
+                    <p class="text-slate-400 text-sm">
+                        &copy; {{ "now"|date("Y") }} PlumbPay. Tous droits réservés.
+                    </p>
+                    <p class="text-slate-500 text-xs mt-1">
+                        Solution de Gestion de Plomberie Professionnelle
+                    </p>
+                </div>
+                
+                <div class="flex items-center gap-6 text-sm">
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors duration-200">
+                        Politique de confidentialité
+                    </a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors duration-200">
+                        Conditions d'utilisation
+                    </a>
+                    {% if type == 'base' %}
+                        <span class="text-slate-500 flex items-center gap-2">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'heart', 
+                                class: 'w-4 h-4 text-red-400' 
+                            }) }}
+                            Made for Plumbers
+                        </span>
+                    {% else %}
+                        <span class="text-slate-500 flex items-center gap-2">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'shield-check', 
+                                class: 'w-4 h-4 text-mainColor-400' 
+                            }) }}
+                            Admin Panel
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</footer> 

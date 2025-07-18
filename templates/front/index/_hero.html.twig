@@ -1,9 +1,145 @@
-<section id="hero" class="h-screen flex flex-col items-center justify-center">
-    <div class="text-center mx-auto w-full lg:max-w-10xl p-4">
-        <h4 class="uppercase mb-4 text-4xl font-semibold">Just in <span class="text-mainColor-400">one click</span> with plumbpay</h4>
-        <h1 class="uppercase text-mainColor-400 font-black text-8xl">Generate Invoices</h1>
-        <div class="mt-8">
-            <a href="#about-us" class="px-8 py-4 bg-mainColor-400 text-TextColor-800 hover:bg-secondaryColor-400 focus:bg-secondaryColor-400 rounded-full ">See how !</a>
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-linear-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="text-center lg:text-left space-y-8">
+                <div class="inline-flex items-center px-4 py-2 bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white rounded-full text-sm font-semibold shadow-lg animate-fade-in">
+                    {% include '_composants/_lucide_icon.html.twig' with {
+                        icon: 'zap',
+                        class: 'w-4 h-4 mr-2'
+                    } %}
+                    Solution N°1 pour Entreprises de Plomberie
+                </div>
+                <div class="space-y-4">
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 dark:text-white leading-tight">
+                        Générez des 
+                        <span class="bg-linear-to-r from-mainColor-400 to-secondaryColor-400 bg-clip-text text-transparent">
+                            Factures
+                        </span>
+                        <br>
+                        Professionnelles en 
+                        <span class="bg-linear-to-r from-mainColor-400 to-secondaryColor-400 bg-clip-text text-transparent">Secondes</span>
+                    </h1>
+                </div>
+                <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl">
+                    Transformez votre entreprise de plomberie avec notre plateforme tout-en-un. Créez des devis, gérez vos clients, suivez les paiements et augmentez vos revenus – tout en un seul clic.
+                </p>
+                <div class="flex flex-wrap gap-6 justify-center lg:justify-start">
+                    <div class="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                        {% include '_composants/_lucide_icon.html.twig' with {
+                            icon: 'check',
+                            class: 'w-5 h-5 text-green-500'
+                        } %}
+                        <span class="font-medium">Factures en 30 secondes</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                        {% include '_composants/_lucide_icon.html.twig' with {
+                            icon: 'check',
+                            class: 'w-5 h-5 text-green-500'
+                        } %}
+                        <span class="font-medium">Paiements automatisés</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                        {% include '_composants/_lucide_icon.html.twig' with {
+                            icon: 'check',
+                            class: 'w-5 h-5 text-green-500'
+                        } %}
+                        <span class="font-medium">Analytiques en temps réel</span>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="{{ path('app_register') }}" class="group relative inline-flex items-center justify-center px-8 py-4 bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white font-semibold rounded-full shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden">
+                        <span class="relative z-10 flex items-center">
+                            {% include '_composants/_lucide_icon.html.twig' with {
+                                icon: 'zap',
+                                class: 'w-5 h-5 mr-2'
+                            } %}
+                            Commencer l'Essai Gratuit
+                        </span>
+                        <div class="absolute inset-0 bg-linear-to-r from-secondaryColor-400 to-mainColor-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                    </a>
+                    
+                    <a href="#about-us" class="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-full hover:border-mainColor-400 hover:text-mainColor-400 transition-all duration-300">
+                        {% include '_composants/_lucide_icon.html.twig' with {
+                            icon: 'eye',
+                            class: 'w-5 h-5 mr-2'
+                        } %}
+                        Voir Comment ça Marche
+                    </a>
+                </div>
+                <div class="pt-8 border-t border-gray-200 dark:border-gray-700">
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-8">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex -space-x-1">
+                                {% for i in 1..5 %}
+                                    <div class="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-linear-to-r from-mainColor-400 to-secondaryColor-400"></div>
+                                {% endfor %}
+                            </div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">
+                                <span class="font-semibold text-gray-900 dark:text-white">5 000+</span> plombiers nous font confiance
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            {% for i in 1..5 %}
+                                {% include '_composants/_lucide_icon.html.twig' with {
+                                    icon: 'star',
+                                    class: 'w-4 h-4 text-yellow-400 fill-current'
+                                } %}
+                            {% endfor %}
+                            <span class="text-sm text-gray-600 dark:text-gray-400 ml-2">Note 4.9/5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="relative mx-auto max-w-lg">
+                    <div class="absolute inset-0 bg-linear-to-r from-mainColor-400 to-secondaryColor-400 rounded-3xl opacity-20 blur-3xl transform scale-110"></div>
+                    <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-100 dark:border-gray-700 transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-10 h-10 bg-linear-to-r from-mainColor-400 to-secondaryColor-400 rounded-lg flex items-center justify-center">
+                                    {% include '_composants/_lucide_icon.html.twig' with {
+                                        icon: 'file-text',
+                                        class: 'w-6 h-6 text-white'
+                                    } %}
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900 dark:text-white">FACTURE</h3>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">#FAC-2024-001</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Date d'échéance</p>
+                                <p class="font-semibold text-gray-900 dark:text-white">15 Jan 2024</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
+                                <span class="text-gray-700 dark:text-gray-300">Réparation d'évier de cuisine</span>
+                                <span class="font-semibold text-gray-900 dark:text-white">150,00 €</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
+                                <span class="text-gray-700 dark:text-gray-300">Installation de tuyaux</span>
+                                <span class="font-semibold text-gray-900 dark:text-white">280,00 €</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
+                                <span class="text-gray-700 dark:text-gray-300">Frais d'intervention d'urgence</span>
+                                <span class="font-semibold text-gray-900 dark:text-white">75,00 €</span>
+                            </div>
+                        </div>
+                        <div class="bg-linear-to-r from-mainColor-400 to-secondaryColor-400 rounded-lg p-4 text-white">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold">Montant total</span>
+                                <span class="text-2xl font-bold">505,00 €</span>
+                            </div>
+                        </div>
+                        <div class="absolute -top-3 -right-3">
+                            <div class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
+                                PAYÉ
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

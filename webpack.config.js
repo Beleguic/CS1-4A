@@ -8,6 +8,10 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
+    // =============================================================================
+    // OUTPUT CONFIGURATION
+    // =============================================================================
+    
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
@@ -15,35 +19,72 @@ Encore
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
 
+    // =============================================================================
+    // ENTRY CONFIGURATION
+    // =============================================================================
+    
     /*
-     * ENTRY CONFIG
-     *
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addStyleEntry('login', './assets/styles/login.scss')
 
+    // =============================================================================
+    // OPTIMIZATION CONFIGURATION
+    // =============================================================================
+    
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
 
+    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
+    .enableStimulusBridge('./assets/controllers.json')
+    
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
 
-    /*
-     * FEATURE CONFIG
-     *
-     * Enable & configure other features below. For a full
-     * list of features, see:
-     * https://symfony.com/doc/current/frontend.html#adding-more-features
-     */
+    // =============================================================================
+    // BUILD CONFIGURATION
+    // =============================================================================
+    
     .cleanupOutputBeforeBuild()
-    .enableBuildNotifications()
+    // Disabled to avoid Windows notification spam
+    // .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
-    // enables hashed filenames (e.g. app.abc123.css)
+    // enables hashed filenames (e.g. app.abc123.css) for cache busting
     .enableVersioning(Encore.isProduction())
 
+    // =============================================================================
+    // FRAMEWORK INTEGRATION
+    // =============================================================================
+    
+    // =============================================================================
+    // CSS/SASS PROCESSING
+    // =============================================================================
+    
+    // Enable Sass/SCSS support
+    .enableSassLoader()
+    
+    // Enable PostCSS processing (required for Tailwind CSS v4)
+    .enablePostCssLoader((options) => {
+        // Optimize PostCSS for production
+        if (Encore.isProduction()) {
+            options.postcssOptions = {
+                ...options.postcssOptions,
+                plugins: [
+                    ...(options.postcssOptions?.plugins || []),
+                    require('cssnano')({
+                        preset: 'default'
+                    })
+                ]
+            };
+        }
+    })
+
+    // =============================================================================
+    // BABEL CONFIGURATION
+    // =============================================================================
+    
     // configure Babel
     // .configureBabel((config) => {
     //     config.plugins.push('@babel/a-babel-plugin');
@@ -55,17 +96,49 @@ Encore
         config.corejs = '3.23';
     })
 
-    // enables Sass/SCSS support
-    .enableSassLoader()
-    .enablePostCssLoader()
+    // =============================================================================
+    // WATCH CONFIGURATION
+    // =============================================================================
+    
+    // Watch only specific files that affect CSS classes (more selective to avoid spam)
     .addPlugin(new WatchExternalFilesPlugin({
         files: [
-            './templates/**/*.html.twig',
+            './templates/base.html.twig',
+            './templates/_composants/**/*.html.twig',
+            './assets/**/*.js',
+            './assets/**/*.scss',
+            './assets/**/*.css',
+            './assets/controllers.json',
         ],
-        verbose: true
+        verbose: false // Disable verbose output to reduce noise
     }))
-
-    .enablePostCssLoader()
 ;
 
-module.exports = Encore.getWebpackConfig();
+// =============================================================================
+// WEBPACK CONFIGURATION EXPORT
+// =============================================================================
+
+const config = Encore.getWebpackConfig();
+
+// Additional optimizations for Tailwind v4
+if (Encore.isProduction()) {
+    // Ensure proper tree-shaking for CSS
+    config.optimization = {
+        ...config.optimization,
+        usedExports: true,
+        sideEffects: false,
+    };
+}
+
+config.watchOptions = {
+    ...config.watchOptions,
+    ignored: [
+        '**/public/build/**',
+        '**/node_modules/**'
+    ],
+    poll: false,
+    followSymlinks: false,
+};
+
+
+module.exports = config;

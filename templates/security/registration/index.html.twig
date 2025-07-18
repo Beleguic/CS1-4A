@@ -1,16 +1,57 @@
 {% extends 'security.html.twig' %}
 
-{% block title %}Register - Plumbpay{% endblock %}
+{% block title %}PlumbPay - Créer un compte{% endblock %}
 
 {% block body %}
-<div class="flex flex-col gap-4 lg:justify-between h-full">
-    <div>
-        <a href="{{ path('front_default_index') }}" class="text-TextColor-400 dark:text-TextColor-800">Go to home</a>
+    <!-- Page Header -->
+    <div class="text-center space-y-2 mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Rejoignez PlumbPay</h2>
+        <p class="text-gray-600 dark:text-gray-300 text-lg">Commencez à gérer votre entreprise de plomberie de manière professionnelle</p>
     </div>
-    <div class="flex flex-col gap-4">
-        <h1 class="font-bold text-2xl">Welcome to plumbpay !</h1>
-        <p>Let's generate some new invoices</p>
-    </div>
+
+    <!-- Registration Form -->
     {{ include('security/registration/_form.html.twig') }}
-</div>
+
+    <!-- Divider -->
+    <div class="relative my-8">
+        <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-200 dark:border-gray-600"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+            <span class="px-4 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">Vous avez déjà un compte ?</span>
+        </div>
+    </div>
+
+    <!-- Login Link -->
+    <div class="text-center">
+        <a href="{{ path('app_login') }}" class="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-medium bg-gray-100 dark:bg-gray-700 backdrop-blur-sm text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-600 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 focus:bg-gray-200 dark:focus:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-mainColor-400 dark:focus:ring-mainColor-400 transition-all duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { name: 'log-in', class: 'w-4 h-4 mr-2' }) }}
+            Se connecter plutôt
+        </a>
+    </div>
+
+    <!-- Benefits Preview -->
+    <div class="mt-8 space-y-3">
+        <h4 class="text-gray-700 dark:text-gray-200 font-medium text-center mb-4">Ce que vous obtiendrez avec PlumbPay :</h4>
+        <div class="space-y-2">
+            <div class="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300">
+                {{ include('_composants/_lucide_icon.html.twig', { name: 'check', class: 'w-4 h-4 text-green-500 dark:text-green-400 flex-shrink-0' }) }}
+                <span>Factures et devis professionnels</span>
+            </div>
+            <div class="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300">
+                {{ include('_composants/_lucide_icon.html.twig', { name: 'check', class: 'w-4 h-4 text-green-500 dark:text-green-400 flex-shrink-0' }) }}
+                <span>Suivi des clients et paiements</span>
+            </div>
+            <div class="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300">
+                {{ include('_composants/_lucide_icon.html.twig', { name: 'check', class: 'w-4 h-4 text-green-500 dark:text-green-400 flex-shrink-0' }) }}
+                <span>Analytiques et insights métier</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Badge -->
+    <div class="mt-8 flex items-center justify-center space-x-2 text-gray-600 dark:text-gray-300 text-xs">
+        {{ include('_composants/_lucide_icon.html.twig', { name: 'shield-check', class: 'w-4 h-4' }) }}
+        <span>Essai gratuit de 30 jours • Aucune carte bancaire requise</span>
+    </div>
 {% endblock %}

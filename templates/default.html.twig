@@ -1,82 +1,21 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app.request.locale }}" class="h-full">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Welcome to Plumbpay{% endblock %}</title>
+        <title>{% block title %}PlumbPay - Gestion de factures et paiements pour les entreprises de plomberie{% endblock %}</title>
         <link rel="icon" href="/plombier.png" type="image/png">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
-        <style>
-            .account-link:hover { background: #05C1FA; }
-        </style>
-        <script src="https://unpkg.com/alpinejs" defer></script>
+        {% block javascripts %}
+            <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
     </head>
-    <body>
-        <header class="top-0 fixed z-10 w-full bg-bgBody-400 dark:bg-bgBody-800 text-TextColor-400 dark:text-TextColor-800">
-            {% if app.user %}
-                {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    <aside class="border-b border-b-TextColor-400 dark:border-b-TextColor-800">
-                        <div class="lg:max-w-10xl mx-auto w-full py-2 px-4">
-                            <nav class="flex flex-col lg:flex-row gap-4">
-                                <ul class="flex flex-col lg:w-8/12 lg:flex-row gap-8">
-                                </ul>
-                                <ul class="flex flex-col lg:w-4/12 lg:flex-row gap-8 lg:justify-end">
-                                    <li>
-                                        <a href="{{ path('back_app_index') }}" class="border-b border-b-transparent hover:border-b-TextColor-400 focus:border-b-TextColor-400 dark:hover:border-b-TextColor-800 dark:focus:border-b-TextColor-800">Administration</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </aside>
-                {% endif %}
-            {% endif %}
-            <div class="lg:max-w-10xl mx-auto w-full p-4">
-                {% block header %}
-                    <nav class="flex flex-col lg:flex-row gap-4">
-                        <ul class="flex flex-col lg:w-8/12 lg:flex-row gap-4 items-center">
-                            <li>
-                                <a href="{{ path('front_default_index') }}">
-                                    <img src="{{ asset('plumbpaylogo-removebg-preview.png') }}" alt="logo plumbpay" class="w-14 h-14">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('front_app_contact') }}" class="border-b border-b-transparent hover:border-b-TextColor-400 focus:border-b-TextColor-400 dark:hover:border-b-TextColor-800 dark:focus:border-b-TextColor-800">Contact Us</a>
-                            </li>
-                        </ul>
-                        <ul class="flex flex-col lg:w-4/12 lg:flex-row gap-4 lg:justify-end items-center">
-                            {% if not app.user %}
-                            <li>
-                                <a href="{{ path('app_login') }}" class="text-TextColor-800 flex flex-row gap-4 items-center px-6 py-3 rounded-full bg-secondaryColor-400 hover:bg-mainColor-400 focus:bg-mainColor-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                        <path fill="currentColor" d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/>
-                                    </svg>
-                                    <span>Login</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('app_register') }}" class="bg-mainColor-400 hover:bg-secondaryColor-400 focus:bg-secondaryColor-400 px-6 py-4 rounded-full text-TextColor-800">Get Started</a>
-                            </li>
-                            {% else %}
-                                <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
-                                    <button @click="isOpen = !isOpen" class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
-                                        <img src="\cool-user.png">
-                                    </button>
-                                    <button x-show="isOpen" @click="isOpen = false" class="h-full w-full fixed inset-0 cursor-default"></button>
-                                    <div x-show="isOpen" class="absolute w-32 rounded-lg shadow-lg py-2 mt-16 bg-bgBody-400 dark:bg-bgBody-800">
-                                        <a href="{{ path('front_app_account') }}" class="block px-4 py-2 account-link hover:text-white">Account</a>
-                                        <a href="{{ path('front_app_company') }}" class="block px-4 py-2 account-link hover:text-white">Company</a>
-                                        <a href="{{ path('app_logout') }}" class="block px-4 py-2 account-link hover:text-white">Logout</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                {% endblock %}
-            </div>
-        </header>
-        <main class="sticky flex flex-col grow mx-auto w-full">
+    <body class="min-h-screen flex flex-col relative" x-data="{ mobileMenuOpen: false }" :class="{ 'overflow-hidden': mobileMenuOpen }">
+        {% include '_composants/_default_header.html.twig' %}
+        <main class="flex flex-col grow mx-auto w-full">
             {% for type, flashMessages in app.flashes %}
                 <section class="flashs">
                     {% for message in flashMessages %}
@@ -88,33 +27,6 @@
             {% endfor %}
             {% block body %}{% endblock %}
         </main>
-    {% block footer %}
-        <footer>
-            <div class="px-4 py-8 lg:max-w-10xl mx-auto w-full flex flex-col gap-8">
-                <section>
-                    <nav class="flex flex-col lg:flex-row gap-4">
-                        <ul class="flex flex-col gap-4">
-                            <li>
-                                <a href="{{ path('front_design_index') }}" class="border-b border-b-transparent hover:border-b-TextColor-400 focus:border-b-TextColor-400 dark:hover:border-b-TextColor-800 dark:focus:border-b-TextColor-800">Design</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </section>
-                <hr class="w-3/4 mx-auto">
-                <section>
-                    <nav class="flex flex-col lg:flex-row gap-4">
-                        <ul class="flex flex-col gap-4">
-                            <li>
-                                <a href="{{ path('front_legals_index') }}" class="border-b border-b-transparent hover:border-b-TextColor-400 focus:border-b-TextColor-400 dark:hover:border-b-TextColor-800 dark:focus:border-b-TextColor-800">Legals</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </section>
-            </div>
-        </footer>
-    {% endblock %}
-    {% block javascripts %}
-            <script src="{{ asset('js/script.js') }}"></script>
-        {% endblock %}
+        {% include '_composants/_default_footer.html.twig' %}
     </body>
 </html>

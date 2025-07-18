@@ -1,177 +1,138 @@
-<section id="they-trust-us" class="w-full flex flex-col gap-8 py-48">
-    <h1 class="uppercase text-TextColor-400 dark:text-TextColor-800 font-black text-4xl text-center">They trust us !</h1>
-    <div class="flex flex-col gap-8 items-center">
-        <div class="flex flex-col lg:flex-row gap-8">
-            <article class="w-72 h-72 bg-mainColor-400 rounded-sm p-4 transition-all hover:scale-110">
-                <figure class="flex flex-col justify-between h-full">
-                    <img src="{{ asset('img/user-trusts-plumbpay.jpg') }}" alt="user love plumbpay" class="w-32 h-32 mx-auto">
-                    <figcaption class="text-TextColor-800 text-center">Irina, Co-Founder of Aquaflow</figcaption>
-                    <blockquote class="italic text-TextColor-800 text-center">"It changed my life"</blockquote>
-                    <footer class="grid grid-cols-5 gap-4 mx-auto">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
+{% set testimonials = [
+    {
+        name: 'Irina Wilson',
+        position: 'Co-Fondatrice d\'Aquaflow',
+        company: 'Aquaflow',
+        image: 'img/user-trusts-plumbpay.jpg',
+        quote: 'PlumbPay a complètement transformé notre gestion de facturation. L\'intégration fluide et l\'interface conviviale rendent la facturation très facile.',
+        rating: 5
+    },
+    {
+        name: 'Seth Rodriguez',
+        position: 'Comptable en Chef',
+        company: 'ProPlumbing Solutions',
+        image: 'img/seth-proplumbing-plumbpay.jpg',
+        quote: 'Nos clients adorent les factures professionnelles et les options de paiement simples. Cela a considérablement amélioré notre trésorerie.',
+        rating: 4.5
+    },
+    {
+        name: 'Jane Thompson',
+        position: 'Directrice des Opérations',
+        company: 'Aquaflow Services',
+        image: 'img/jane-aquaflow-plumbpay.jpg',
+        quote: 'Les fonctionnalités d\'analyse et de reporting nous aident à prendre des décisions basées sur les données. PlumbPay a simplifié tout notre workflow.',
+        rating: 5
+    },
+    {
+        name: 'Ethan Mitchell',
+        position: 'PDG et Fondateur',
+        company: 'BlueWave Plumbing',
+        image: 'img/ethan-bluewave-plumbpay.jpg',
+        quote: 'Depuis l\'implémentation de PlumbPay, nous avons observé une réduction de 40% des retards de paiement. Notre équipe et nos clients adorent la plateforme.',
+        rating: 5
+    },
+    {
+        name: 'Ester Garcia',
+        position: 'Contrôleuse Financière',
+        company: 'MasterPipe Inc.',
+        image: 'img/ester-masterpipe-plumbpay.png',
+        quote: 'Les fonctionnalités d\'automatisation nous font économiser des heures chaque semaine. PlumbPay est un outil essentiel pour toute entreprise de plomberie moderne.',
+        rating: 4.5
+    }
+] %}
+
+<section id="they-trust-us" class="w-full py-24 bg-linear-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                Approuvé par les Professionnels
+            </h2>
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                Rejoignez des milliers de professionnels de la plomberie qui ont transformé leur entreprise avec PlumbPay
+            </p>
+            <div class="mt-8 flex items-center justify-center space-x-2">
+                <div class="flex -space-x-2">
+                    {% for i in 1..5 %}
+                        <div class="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800 bg-linear-to-r from-mainColor-400 to-secondaryColor-400 flex items-center justify-center text-white text-sm font-semibold">
+                            {{ i }}
                         </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
+                    {% endfor %}
+                </div>
+                <span class="text-gray-600 dark:text-gray-300 ml-4">5 000+ Clients Satisfaits</span>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {% for testimonial in testimonials %}
+                <article class="group relative bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-gray-700">
+                    <div class="absolute top-6 right-6 opacity-10 group-hover:opacity-20 transition-opacity duration-300">
+                        {% include '_composants/_lucide_icon.html.twig' with {
+                            icon: 'quote',
+                            class: 'w-12 h-12 text-mainColor-400 dark:text-cyan-100'
+                        } %}
+                    </div>
+                    <div class="relative z-10 flex flex-col justify-between gap-6 h-full">
+                        <div class="flex items-center">
+                            <div class="relative">
+                                <img src="{{ asset(testimonial.image) }}" 
+                                     alt="{{ testimonial.name }}" 
+                                     class="w-16 h-16 rounded-full object-cover border-4 border-gray-100 dark:border-gray-600">
+                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white dark:border-gray-800 flex items-center justify-center">
+                                    {% include '_composants/_lucide_icon.html.twig' with {
+                                        icon: 'check',
+                                        class: 'w-3 h-3 text-white'
+                                    } %}
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ testimonial.name }}</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ testimonial.position }}</p>
+                                <p class="text-sm font-medium text-mainColor-400 dark:text-cyan-100">{{ testimonial.company }}</p>
+                            </div>
                         </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
+                        <blockquote class="text-gray-700 dark:text-gray-300 leading-relaxed italic">
+                            "{{ testimonial.quote }}"
+                        </blockquote>
+                        <div class="flex items-center justify-between">
+                            <div class="grid grid-cols-5 gap-1">
+                                {% for i in 1..5 %}
+                                    {% set rating_floor = testimonial.rating|round(0, 'floor') %}
+                                    {% set has_half = testimonial.rating - rating_floor >= 0.5 %}
+                                    
+                                    {% if i <= rating_floor %}
+                                        {% include '_composants/_lucide_icon.html.twig' with {
+                                            icon: 'star',
+                                            class: 'w-5 h-5 text-yellow-400 fill-current'
+                                        } %}
+                                    {% elseif i == rating_floor + 1 and has_half %}
+                                        <div class="relative w-5 h-5">
+                                             <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
+                                                 {% include '_composants/_lucide_icon.html.twig' with {
+                                                     icon: 'star',
+                                                     class: 'absolute top-0 left-0 w-5 h-5 text-gray-300 dark:text-gray-600 fill-current'
+                                                 } %}
+                                             </div>
+                                            <div class="absolute top-0 left-0 w-1/2 h-full overflow-hidden">
+                                                {% include '_composants/_lucide_icon.html.twig' with {
+                                                    icon: 'star',
+                                                    class: 'absolute top-0 left-0 w-5 h-5 text-yellow-400 fill-current'
+                                                } %}
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        {% include '_composants/_lucide_icon.html.twig' with {
+                                            icon: 'star',
+                                            class: 'w-5 h-5 text-gray-300 dark:text-gray-600 fill-current'
+                                        } %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                {{ testimonial.rating }}/5
+                            </span>
                         </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                    </footer>
-                </figure>
-            </article>
-            <article class="w-72 h-72 bg-mainColor-400 rounded-sm p-4 transition-all hover:scale-110">
-                <figure class="flex flex-col justify-between h-full">
-                    <img src="{{ asset('img/seth-proplumbing-plumbpay.jpg') }}" alt="user love plumbpay" class="w-32 h-32 mx-auto">
-                    <figcaption class="text-TextColor-800 text-center">Seth, Accountant of ProPlumbing</figcaption>
-                    <blockquote class="italic text-TextColor-800 text-center">"Our customers love it"</blockquote>
-                    <footer class="grid grid-cols-5 gap-4 mx-auto">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-gray-400" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                    </footer>
-                </figure>
-            </article>
-            <article class="w-72 h-72 bg-mainColor-400 rounded-sm p-4 transition-all hover:scale-110">
-                <figure class="flex flex-col justify-between h-full">
-                    <img src="{{ asset('img/jane-aquaflow-plumbpay.jpg') }}" alt="user love plumbpay" class="w-32 h-32 mx-auto">
-                    <figcaption class="text-TextColor-800 text-center">Jane, Co-Founder of Aquaflow</figcaption>
-                    <blockquote class="italic text-TextColor-800 text-center">"It simplifies Aquaflow"</blockquote>
-                    <footer class="grid grid-cols-5 gap-4 mx-auto">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                    </footer>
-                </figure>
-            </article>
-            <article class="w-72 h-72 bg-mainColor-400 rounded-sm p-4 transition-all hover:scale-110">
-                <figure class="flex flex-col justify-between h-full">
-                    <img src="{{ asset('img/ethan-bluewave-plumbpay.jpg') }}" alt="user love plumbpay" class="w-32 h-32 mx-auto">
-                    <figcaption class="text-TextColor-800 text-center">Ethan, Director of BlueWave</figcaption>
-                    <blockquote class="italic text-TextColor-800 text-center">"BlueWave and its customers love it"</blockquote>
-                    <footer class="grid grid-cols-5 gap-4 mx-auto">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                    </footer>
-                </figure>
-            </article>
-            <article class="w-72 h-72 bg-mainColor-400 rounded-sm p-4 transition-all hover:scale-110">
-                <figure class="flex flex-col gap-4">
-                    <img src="{{ asset('img/ester-masterpipe-plumbpay.png') }}" alt="user love plumbpay" class="w-32 h-32 mx-auto">
-                    <figcaption class="text-TextColor-800 text-center">Ester, Accountant in MasterPipe</figcaption>
-                    <blockquote class="italic text-TextColor-800 text-center">"Just thank you, Plumbpay !"</blockquote>
-                    <footer class="grid grid-cols-5 gap-4 mx-auto">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-amber-300" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path class="fill-gray-400" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08z"/>
-                            </svg>
-                        </div>
-                    </footer>
-                </figure>
-            </article>
+                    </div>
+                </article>
+            {% endfor %}
         </div>
     </div>
 </section>

@@ -10,6 +10,7 @@ use Symfony\Component\Uid\Uuid;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: FactureRepository::class)]
+#[ORM\Table(name: 'invoices')]
 class Facture
 {
     use Traits\Timestampable;

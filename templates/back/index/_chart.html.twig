@@ -1,75 +1,269 @@
+<!-- Chart Cards -->
+<div class="col-span-1">
+    <!-- Column Chart Card -->
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 dark:border-gray-700/50 overflow-hidden">
+        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">System Statistics</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Users, Companies & Contacts Overview</p>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'bar-chart-3', class: 'w-5 h-5 text-white' }) }}
+                </div>
+            </div>
+        </div>
+        <div class="p-6">
+            <div id="container" class="w-full h-80"></div>
+        </div>
+    </div>
+</div>
 
-    <div id="chart-container"></div> 
+<div class="col-span-1">
+    <!-- Pie Chart Card -->
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 dark:border-gray-700/50 overflow-hidden">
+        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Business Distribution</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Products, Categories, Quotes & Invoices</p>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'pie-chart', class: 'w-5 h-5 text-white' }) }}
+                </div>
+            </div>
+        </div>
+        <div class="p-6">
+            <div id="container-pie" class="w-full h-80"></div>
+        </div>
+    </div>
+</div>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    
-
-     <script>
-
-           //Premier Graph
-            document.addEventListener('DOMContentLoaded', function () {
-                // Utiliser les données récupérées pour configurer le graphique
-                Highcharts.chart('container', {
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: 'Nombre d\'utilisateurs, d\'entreprises et de contacts'
-                    },
-                    xAxis: {
-                        categories: [
-                            'Utilisateurs',
-                            'Entreprises',
-                            'Contacts'
-                        ]
-                    },
-                    yAxis: {
-                        title: {
-                            text: 'Nombre'
-                        }
-                    },
-                    series: [{
-                        name: 'Nombre',
-                        data: [
-                            {{ cards.general[1].nb }},
-                            {{ cards.general[2].nb }},
-                            {{ cards.general[3].nb }}
-                        ]
-                    }]
-                });
-            });
-
-            //Deuxieme graph
-
-            document.addEventListener('DOMContentLoaded', function () {
-            // Utiliser les données récupérées pour configurer le graphique
-            Highcharts.chart('container-pie', {
-                chart: {
-                    type: 'pie'
+<!-- Chart Scripts -->
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Configure Highcharts theme for dark mode support
+        const isDarkMode = document.documentElement.classList.contains('dark');
+        
+        const chartTheme = {
+            accessibility: {
+                enabled: true,
+                keyboardNavigation: {
+                    enabled: true
+                },
+                screenReaderSection: {
+                    beforeChartFormat: '<h3>Chart: {chartTitle}</h3><div>{chartSubtitle}</div><div>{chartLongdesc}</div>'
+                }
+            },
+            colors: ['#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444', '#06B6D4'],
+            chart: {
+                backgroundColor: 'transparent',
+                style: {
+                    fontFamily: 'Inter, system-ui, sans-serif'
+                }
+            },
+            title: {
+                style: {
+                    color: isDarkMode ? '#F9FAFB' : '#111827',
+                    fontSize: '16px',
+                    fontWeight: '600'
+                }
+            },
+            xAxis: {
+                gridLineColor: isDarkMode ? '#374151' : '#E5E7EB',
+                lineColor: isDarkMode ? '#374151' : '#E5E7EB',
+                tickColor: isDarkMode ? '#374151' : '#E5E7EB',
+                labels: {
+                    style: {
+                        color: isDarkMode ? '#D1D5DB' : '#6B7280'
+                    }
+                }
+            },
+            yAxis: {
+                gridLineColor: isDarkMode ? '#374151' : '#E5E7EB',
+                lineColor: isDarkMode ? '#374151' : '#E5E7EB',
+                tickColor: isDarkMode ? '#374151' : '#E5E7EB',
+                labels: {
+                    style: {
+                        color: isDarkMode ? '#D1D5DB' : '#6B7280'
+                    }
                 },
                 title: {
-                    text: 'Répartition du nombre de produits, catégories, devis et factures'
+                    style: {
+                        color: isDarkMode ? '#D1D5DB' : '#6B7280'
+                    }
+                }
+            },
+            legend: {
+                itemStyle: {
+                    color: isDarkMode ? '#D1D5DB' : '#6B7280'
+                }
+            }
+        };
+
+        // Apply theme
+        Highcharts.setOptions(chartTheme);
+
+        // Column Chart
+        {% if cards is defined and cards.general is defined %}
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column',
+                height: 320,
+                borderRadius: 8
+            },
+            accessibility: {
+                description: 'A column chart showing the count of users, companies and contacts in the system.'
+            },
+            title: {
+                text: 'System Statistics'
+            },
+            subtitle: {
+                text: 'Overview of Users, Companies and Contacts'
+            },
+            xAxis: {
+                categories: ['Users', 'Companies', 'Contacts'],
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Count',
+                    align: 'high'
+                }
+            },
+            tooltip: {
+                backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF',
+                borderColor: isDarkMode ? '#374151' : '#E5E7EB',
+                style: {
+                    color: isDarkMode ? '#F9FAFB' : '#111827'
                 },
-                tooltip: {
-                    pointFormat: '<b>{point.percentage:.1f}%</b>'
+                formatter: function() {
+                    return '<b>' + this.x + '</b><br/>' +
+                           'Total: <b>' + this.y + '</b>';
+                }
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0,
+                    borderRadius: 4,
+                    dataLabels: {
+                        enabled: true,
+                        style: {
+                            color: isDarkMode ? '#F9FAFB' : '#111827',
+                            textOutline: 'none'
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Count',
+                showInLegend: false,
+                accessibility: {
+                    description: 'Total count of each entity type in the system'
                 },
-                series: [{
-                    name: 'Nombre',
-                    colorByPoint: true,
-                    data: [{
-                        name: 'Produits',
-                        y: {{ cards.product[1].nb }}
-                    }, {
-                        name: 'Catégories',
-                        y: {{ cards.product[2].nb }}
-                    }, {
-                        name: 'Devis',
-                        y: {{ cards.pdf[1].nb }}
-                    }, {
-                        name: 'Factures',
-                        y: {{ cards.pdf[2].nb }}
-                    }]
-                }]
-            });
+                data: [
+                    {
+                        name: 'Users',
+                        y: {% if cards.general[1] is defined %}{{ cards.general[1].nb }}{% else %}0{% endif %},
+                        description: 'Total number of registered users'
+                    },
+                    {
+                        name: 'Companies',
+                        y: {% if cards.general[2] is defined %}{{ cards.general[2].nb }}{% else %}0{% endif %},
+                        description: 'Total number of registered companies'
+                    },
+                    {
+                        name: 'Contacts',
+                        y: {% if cards.general[3] is defined %}{{ cards.general[3].nb }}{% else %}0{% endif %},
+                        description: 'Total number of contact entries'
+                    }
+                ]
+            }],
+            credits: {
+                enabled: false
+            }
         });
-    </script>
+        {% endif %}
+
+        // Pie Chart
+        {% if cards is defined and cards.product is defined and cards.pdf is defined %}
+        Highcharts.chart('container-pie', {
+            chart: {
+                type: 'pie',
+                height: 320
+            },
+            accessibility: {
+                description: 'A pie chart showing the distribution of products, categories, quotes and invoices in the business.'
+            },
+            title: {
+                text: 'Business Distribution'
+            },
+            subtitle: {
+                text: 'Products, Categories, Quotes and Invoices'
+            },
+            tooltip: {
+                backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF',
+                borderColor: isDarkMode ? '#374151' : '#E5E7EB',
+                style: {
+                    color: isDarkMode ? '#F9FAFB' : '#111827'
+                },
+                pointFormat: '<b>{point.percentage:.1f}%</b><br/>Count: <b>{point.y}</b>'
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    borderWidth: 2,
+                    borderColor: isDarkMode ? '#1F2937' : '#FFFFFF',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: isDarkMode ? '#F9FAFB' : '#111827',
+                            textOutline: 'none'
+                        }
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: 'Distribution',
+                colorByPoint: true,
+                accessibility: {
+                    description: 'Percentage distribution of business elements'
+                },
+                data: [{
+                    name: 'Products',
+                    y: {% if cards.product[1] is defined %}{{ cards.product[1].nb }}{% else %}0{% endif %},
+                    description: 'Total number of products in inventory'
+                }, {
+                    name: 'Categories',
+                    y: {% if cards.product[2] is defined %}{{ cards.product[2].nb }}{% else %}0{% endif %},
+                    description: 'Total number of product categories'
+                }, {
+                    name: 'Quotes',
+                    y: {% if cards.pdf[1] is defined %}{{ cards.pdf[1].nb }}{% else %}0{% endif %},
+                    description: 'Total number of generated quotes'
+                }, {
+                    name: 'Invoices',
+                    y: {% if cards.pdf[2] is defined %}{{ cards.pdf[2].nb }}{% else %}0{% endif %},
+                    description: 'Total number of generated invoices'
+                }]
+            }],
+            credits: {
+                enabled: false
+            }
+        });
+        {% endif %}
+    });
+</script>

@@ -1,0 +1,71 @@
+{% block footer %}
+    <footer class="w-full bg-gray-900 dark:bg-gray-950 text-white mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <img src="{{ asset('plumbpaylogo-removebg-preview.png') }}" alt="PlumbPay Logo" class="w-10 h-10">
+                        <span class="text-xl font-bold text-white">PlumbPay</span>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        La solution de paiement moderne pour les professionnels de la plomberie. Rationalisez votre facturation, gérez vos clients et soyez payé plus rapidement.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-mainColor-400 transition-colors duration-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'facebook', class: 'w-5 h-5' }) }}
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-mainColor-400 transition-colors duration-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'twitter', class: 'w-5 h-5' }) }}
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-mainColor-400 transition-colors duration-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'linkedin', class: 'w-5 h-5' }) }}
+                        </a>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-white">Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ path('front_app_devis_index') }}" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Devis et Estimations</a></li>
+                        <li><a href="{{ path('front_app_facture_index') }}" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Facturation</a></li>
+                        <li><a href="{{ path('front_app_client_index') }}" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Gestion Client</a></li>
+                        <li><a href="{{ path('front_app_product_index') }}" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Catalogue Produits</a></li>
+                        <li><a href="{{ path('front_app_statistics_index') }}" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Analytiques</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-white">Assistance</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ path('front_app_contact') }}" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Nous contacter</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Centre d'aide</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Documentation</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">FAQ</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Communauté</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-white">Entreprise</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">À propos</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Carrières</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Blog</a></li>
+                        <li><a href="{{ path('front_legals_index') }}" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Politique de confidentialité</a></li>
+                        <li><a href="{{ path('front_legals_index') }}" class="text-gray-300 hover:text-mainColor-400 transition-colors duration-200 text-sm">Conditions d'utilisation</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
+                    <div class="text-gray-400 text-sm">
+                        © {{ "now"|date("Y") }} PlumbPay. Tous droits réservés.
+                    </div>
+                    <div class="flex flex-wrap gap-6 items-center">
+                        <a href="{{ path('front_legals_index') }}" class="text-gray-400 hover:text-mainColor-400 transition-colors duration-200 text-sm">Confidentialité</a>
+                        <a href="{{ path('front_legals_index') }}" class="text-gray-400 hover:text-mainColor-400 transition-colors duration-200 text-sm">Conditions</a>
+                        <a href="#" class="text-gray-400 hover:text-mainColor-400 transition-colors duration-200 text-sm">Cookies</a>
+                        <a href="{{ path('front_design_index') }}" class="text-gray-400 hover:text-mainColor-400 transition-colors duration-200 text-sm">Design System</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}

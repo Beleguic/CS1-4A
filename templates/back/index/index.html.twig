@@ -1,6 +1,32 @@
 {% extends 'admin.html.twig' %}
-{% block title %}Admin - Plumbpay{% endblock title%}
+{% block title %}PlumbPay - Admin - Dashboard{% endblock title%}
 {% block body %}
-    {{ include('back/index/_cards.html.twig') }}
-    {{ include('back/index/_chart.html.twig') }}
+    <div class="grid grid-cols-1 gap-8">
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+                        Dashboard Overview
+                    </h1>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">
+                        Welcome back! Here's what's happening with your business today.
+                    </p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="px-4 py-2 bg-linear-to-r from-mainColor-400 to-secondaryColor-400 text-white rounded-lg shadow-lg">
+                        {{ include('_composants/_lucide_icon.html.twig', { name: 'calendar', class: 'w-4 h-4 mr-2' }) }}
+                        {{ "now"|date("M d, Y") }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8">
+            {{ include('back/index/_cards.html.twig') }}
+        </div>
+
+        <div class="grid grid-cols-1 gap-8">
+            {{ include('back/index/_chart.html.twig') }}
+        </div>
+    </div>
 {% endblock body %}

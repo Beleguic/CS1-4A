@@ -1,0 +1,27 @@
+{#
+    Lucide Icon Component
+    
+    Usage examples:
+    {{ include('_composants/_lucide_icon.html.twig', { name: 'home', size: 'md' }) }}
+    {{ include('_composants/_lucide_icon.html.twig', { icon: 'home', size: 'md' }) }}
+    {{ include('_composants/_lucide_icon.html.twig', { name: 'user', class: 'text-blue-500 w-6 h-6' }) }}
+    {{ include('_composants/_lucide_icon.html.twig', { name: 'menu', size: 'lg', variant: 'primary' }) }}
+#}
+
+{% set icon_name = name|default(icon|default('help-circle')) %}
+{% set icon_size = size|default('md') %}
+{% set icon_variant = variant|default('') %}
+{% set custom_class = class|default('') %}
+
+{# Build CSS classes #}
+{% set classes = ['lucide'] %}
+{% if not custom_class %}
+    {% set classes = classes|merge(['icon-' ~ icon_size]) %}
+    {% if icon_variant %}
+        {% set classes = classes|merge(['icon-' ~ icon_variant]) %}
+    {% endif %}
+{% else %}
+    {% set classes = classes|merge([custom_class]) %}
+{% endif %}
+
+<i data-lucide="{{ icon_name }}" class="{{ classes|join(' ') }}"{{ attributes|default('')|raw }}></i> 

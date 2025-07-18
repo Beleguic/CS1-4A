@@ -1,0 +1,150 @@
+{% set type = type|default('base') %}
+{% set page_title = page_title|default('PlumbPay') %}
+
+<header class="w-full top-0 sticky bg-white/95 dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-700 backdrop-blur-md z-50 shadow-sm">
+    <div class="flex items-center justify-between p-4 w-full">
+        <!-- Page Title -->
+        <div class="flex items-center gap-4">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                {% if type == 'admin' %}
+                    {{ page_title|default('Admin Panel') }}
+                {% else %}
+                    {{ page_title|default('PlumbPay') }}
+                {% endif %}
+            </h1>
+        </div>
+        
+        <!-- User Menu -->
+        <div x-data="{ isOpen: false }" class="relative">
+            <div class="flex items-center gap-3">
+                <!-- User Avatar Button -->
+                <button @click="isOpen = !isOpen" 
+                        class="flex items-center gap-2 p-2 rounded-full bg-linear-to-br from-mainColor-400 to-secondaryColor-400 hover:scale-105 hover:shadow-xl hover:shadow-mainColor-400/30 transition-all duration-300 group">
+                    <img src="/cool-user.png" 
+                         class="w-8 h-8 rounded-full border-2 border-white/50 group-hover:border-white transition-colors duration-300" 
+                         alt="User Avatar">
+                    {{ include('_composants/_lucide_icon.html.twig', { 
+                        name: 'chevron-down', 
+                        class: 'w-4 h-4 text-white/90 group-hover:text-white transition-all duration-300 group-hover:rotate-180' 
+                    }) }}
+                </button>
+                
+                <!-- Theme Toggle -->
+                {% include '_composants/_theme_toggle.html.twig' %}
+            </div>
+            
+            <!-- Dropdown Menu -->
+            <div x-show="isOpen" 
+                 x-click-away="isOpen = false"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
+                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
+                 class="absolute right-0 mt-3 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-50 backdrop-blur-md">
+                
+                <!-- User Info Section -->
+                <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center gap-3">
+                        <img src="/cool-user.png" class="w-10 h-10 rounded-full" alt="User Avatar">
+                        <div>
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                {% if app.user %}{{ app.user.firstname ~ ' ' ~ app.user.lastname }}{% endif %}
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                                {% if app.user %}{{ app.user.email }}{% endif %}
+                            </p>
+                            {% if type == 'admin' %}
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400 mt-1">
+                                    Admin
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="py-2">
+                    <a href="{{ path('front_default_index') }}" 
+                       class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:text-white transition-all duration-200 group">
+                        {{ include('_composants/_lucide_icon.html.twig', { 
+                            name: 'house', 
+                            class: 'w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-mainColor-400 dark:group-hover:text-mainColor-800 transition-colors duration-200' 
+                        }) }}
+                        <span>Accueil</span>
+                    </a>
+                    <a href="{{ path('front_app_account') }}" 
+                       class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:text-white transition-all duration-200 group">
+                        {{ include('_composants/_lucide_icon.html.twig', { 
+                            name: 'user', 
+                            class: 'w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-mainColor-400 dark:group-hover:text-mainColor-800 transition-colors duration-200' 
+                        }) }}
+                        <span>Account</span>
+                    </a>
+                </div>
+                
+                {% if type == 'admin' %}
+                    <!-- Admin-specific links -->
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <div class="border-t border-gray-200 dark:border-gray-700 pt-2">
+                            <a href="{{ path('back_app_index') }}" 
+                                class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:text-white transition-all duration-200 group">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'settings', 
+                                    class: 'w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-mainColor-400 dark:group-hover:text-mainColor-800 transition-colors duration-200' 
+                                }) }}
+                                <span>Admin</span>
+                            </a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <!-- Base-specific links -->
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <div class="border-t border-gray-200 dark:border-gray-700 pt-2">
+                            <a href="{{ path('back_app_index') }}" 
+                                class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:text-white transition-all duration-200 group">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'shield-check', 
+                                    class: 'w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-mainColor-400 dark:group-hover:text-mainColor-800 transition-colors duration-200' 
+                                }) }}
+                                <span>Admin Panel</span>
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                <!-- Logout Section -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-2">
+                    <a href="{{ path('app_logout') }}" 
+                       class="flex items-center gap-3 px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 dark:hover:text-white transition-all duration-200 group">
+                        {{ include('_composants/_lucide_icon.html.twig', { 
+                            name: 'log-out', 
+                            class: 'w-4 h-4' 
+                        }) }}
+                        <span class="font-medium">Déconnexion</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+{% block javascripts %}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.directive('click-away', (el, {expression}, {evaluateLater, cleanup}) => {
+                let evaluate = evaluateLater(expression)
+                let handler = (event) => {
+                    if (!el.contains(event.target) && el.__x && el.__x.$data && el.__x.$data.isOpen) {
+                        el.__x.$data.isOpen = false
+                    }
+                }
+                document.addEventListener('click', handler)
+                cleanup(() => {
+                    document.removeEventListener('click', handler)
+                })
+            })
+        })
+    </script>
+{% endblock %} 

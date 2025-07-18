@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -13,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\IsTrue;
 
 class RegistrationFormType extends AbstractType
 {
@@ -44,6 +46,15 @@ class RegistrationFormType extends AbstractType
                 ],
                 'second_options' => ['label' => 'Repeat Password'],
                 'invalid_message' => 'The password fields must match.',
+            ])
+            ->add('agreeTerms', CheckboxType::class, [
+                'label' => 'I agree to the Terms of Service and Privacy Policy',
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'You must agree to the terms of service to register.',
+                    ]),
+                ],
             ])
         ;
     }

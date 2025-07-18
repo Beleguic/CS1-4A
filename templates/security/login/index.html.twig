@@ -1,33 +1,65 @@
 {% extends 'security.html.twig' %}
 
-{% block title %}Login - Plumbpay{% endblock %}
+{% block title %}Connexion - PlumbPay{% endblock %}
 
 {% block body %}
-    <div class="flex flex-col gap-4 lg:justify-between h-full">
-        <div>
-            <a href="{{ path('front_default_index') }}" class="px-4 py-2 text-center rounded-lg bg-mainColor-400 text-TextColor-800 hover:bg-secondaryColor-400 focus:bg-secondaryColor-400">Go to home</a>
-        </div>
-        <div class="flex flex-col gap-4">
-            <h1 class="font-bold text-2xl">Welcome back to plumbpay !</h1>
-            <p>Let's generate some new invoices</p>
-        </div>
-            {% if app.request.query.get('error') %}
-                
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                    <strong class="font-bold">Erreur!</strong>
-                    <span class="block sm:inline">{{ app.request.query.get('error') }}</span>
-                    
-                </div>
-            {% endif %}
-        {% if error %}
-            <section>
-                <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            </section>
-        {% endif %}
-        {{ include('security/login/_form.html.twig') }}
-        <section>
-            <p>Forgot password ? <a href="{{ path('forgot_password') }}" class="font-semibold text-mainColor-400 hover:text-secondaryColor-400 focus:text-secondaryColor-400">Recover password</a></p>
-        </section>
+    <!-- Page Header -->
+    <div class="text-center space-y-2 mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Bon retour !</h2>
+        <p class="text-gray-600 dark:text-gray-300 text-lg">Connectez-vous à votre compte PlumbPay</p>
     </div>
 
+    <!-- Error Messages -->
+    {% if app.request.query.get('error') or error %}
+        <div class="mb-6 p-4 bg-red-500/20 dark:bg-red-500/10 backdrop-blur-sm border border-red-400/30 dark:border-red-400/20 text-red-100 dark:text-red-200 rounded-xl" role="alert">
+            <div class="flex items-start space-x-3">
+                {{ include('_composants/_lucide_icon.html.twig', { name: 'alert-circle', class: 'w-5 h-5 text-red-300 dark:text-red-400 mt-0.5 flex-shrink-0' }) }}
+                <div>
+                    <h4 class="font-semibold">Erreur d'authentification</h4>
+                    <p class="text-sm text-red-200 dark:text-red-300 mt-1">
+                        {% if app.request.query.get('error') %}
+                            {{ app.request.query.get('error') }}
+                        {% elseif error %}
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Login Form -->
+    {{ include('security/login/_form.html.twig') }}
+
+    <!-- Divider -->
+    <div class="relative my-8">
+        <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-200 dark:border-gray-600"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+            <span class="px-4 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">Nouveau sur PlumbPay ?</span>
+        </div>
+    </div>
+
+    <!-- Register Link -->
+    <div class="text-center">
+        <a href="{{ path('app_register') }}" class="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-medium bg-gray-100 dark:bg-gray-700 backdrop-blur-sm text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-600 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 focus:bg-gray-200 dark:focus:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-mainColor-400 dark:focus:ring-mainColor-400 transition-all duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { name: 'user-plus', class: 'w-4 h-4 mr-2' }) }}
+            Créer un nouveau compte
+        </a>
+    </div>
+
+    <!-- Forgot Password -->
+    <div class="text-center mt-6">
+        <a href="{{ path('forgot_password') }}" class="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 text-sm font-medium transition-colors duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { name: 'key', class: 'w-4 h-4 mr-2' }) }}
+            Mot de passe oublié ?
+        </a>
+    </div>
+
+    <!-- Security Badge -->
+    <div class="mt-8 flex items-center justify-center space-x-2 text-gray-500 dark:text-gray-400 text-xs">
+        {{ include('_composants/_lucide_icon.html.twig', { name: 'shield-check', class: 'w-4 h-4' }) }}
+        <span>Vos données sont protégées par une sécurité de niveau entreprise</span>
+    </div>
 {% endblock %}
