@@ -49,9 +49,21 @@ final class Version20240303205627 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN request_new_company_user.company_id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN request_new_company_user.user_id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE role (id INT NOT NULL, name VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE "user" (id UUID NOT NULL, company_id UUID DEFAULT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) DEFAULT NULL, lastname VARCHAR(255) DEFAULT NULL, firstname VARCHAR(255) DEFAULT NULL, activation_token VARCHAR(255) DEFAULT NULL, enabled BOOLEAN DEFAULT NULL, reset_password_token VARCHAR(255) DEFAULT NULL, verified_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON "user" (email)');
-        $this->addSql('CREATE INDEX IDX_8D93D649979B1AD6 ON "user" (company_id)');
+        // Modifier la table user existante au lieu de la créer
+        $this->addSql('ALTER TABLE "user" DROP CONSTRAINT IF EXISTS user_pkey');
+        $this->addSql('ALTER TABLE "user" ALTER COLUMN id TYPE UUID USING gen_random_uuid()');
+        $this->addSql('ALTER TABLE "user" ADD COLUMN IF NOT EXISTS company_id UUID DEFAULT NULL');
+        $this->addSql('ALTER TABLE "user" ADD COLUMN IF NOT EXISTS lastname VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE "user" ADD COLUMN IF NOT EXISTS firstname VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE "user" ADD COLUMN IF NOT EXISTS activation_token VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE "user" ADD COLUMN IF NOT EXISTS enabled BOOLEAN DEFAULT NULL');
+        $this->addSql('ALTER TABLE "user" ADD COLUMN IF NOT EXISTS reset_password_token VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE "user" ADD COLUMN IF NOT EXISTS verified_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
+        $this->addSql('ALTER TABLE "user" ADD COLUMN IF NOT EXISTS created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL');
+        $this->addSql('ALTER TABLE "user" ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL');
+        $this->addSql('ALTER TABLE "user" ADD PRIMARY KEY (id)');
+        $this->addSql('CREATE UNIQUE INDEX IF NOT EXISTS UNIQ_8D93D649E7927C74 ON "user" (email)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_8D93D649979B1AD6 ON "user" (company_id)');
         $this->addSql('COMMENT ON COLUMN "user".id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN "user".company_id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN "user".verified_at IS \'(DC2Type:datetime_immutable)\'');
@@ -94,7 +106,7 @@ final class Version20240303205627 extends AbstractMigration
         $this->addSql('DROP TABLE product');
         $this->addSql('DROP TABLE request_new_company_user');
         $this->addSql('DROP TABLE role');
-        $this->addSql('DROP TABLE "user"');
+        // Ne pas supprimer la table user car elle existe déjà depuis une migration précédente
         $this->addSql('DROP TABLE messenger_messages');
     }
 }
