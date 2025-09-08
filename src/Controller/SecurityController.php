@@ -71,7 +71,7 @@ class SecurityController extends AbstractController
 
             // Envoyer l'email d'activation
             $activationLink = $this->generateUrl('activate_account', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
-            $emailService->sendEmail(
+            $response = $emailService->sendEmail(
                 'Plumbpay',
                 'team_plumbpay@outlook.com',
                 $user->getUserIdentifier(),
@@ -80,7 +80,11 @@ class SecurityController extends AbstractController
                 "<p>Bienvenue ! Cliquez ici pour activer votre compte : <a href=\"$activationLink\">Activer</a></p>"
             );
 
-            $this->addFlash('success', 'Un email d’activation vous a été envoyé.');
+            if (!$response['success']) {
+                $this->addFlash('error', 'Erreur envoi email : ' . $response['error']);
+            } else {
+                $this->addFlash('success', 'Un email d’activation vous a été envoyé.');
+            }
             return $this->redirectToRoute('app_login');
         }
 
