@@ -15,7 +15,7 @@
                 <div>
                     <span class="font-bold">Logo</span>
                     {% if company.imageName is not same as('') %}
-                        <a href="{{ vich_uploader_asset(company, 'imageFile') }}" class="cursor-pointer" download="logo-{{ company.name }}">Download logo</a>
+                        - <a href="{{ vich_uploader_asset(company, 'imageFile') }}" class="cursor-pointer" download="logo-{{ company.name }}">Download logo</a>
                     {% endif %}
                 </div>
                 {% if company.imageName is not same as('') %}

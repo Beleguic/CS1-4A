@@ -43,54 +43,55 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, BrevoEmailService $emailService): Response
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface $entityManager,
+        BrevoEmailService $emailService
+    ): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Générer et stocker un token unique pour l'activation du compte
-            $token = bin2hex(random_bytes(32)); // Génère un token unique
+            // Compte désactivé par défaut
+            $user->setEnabled(false);
+
+            // Générer un token d'activation
+            $token = bin2hex(random_bytes(32));
             $user->setActivationToken($token);
-    
-            // Envoyer un e-mail de confirmation avec le lien d'activation
+
+            // Hasher le mot de passe
+            $plainPassword = $form->get('plainPassword')->getData();
+            $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // Envoyer l'email d'activation
             $activationLink = $this->generateUrl('activate_account', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
-    
-            $senderName = 'Plumbpay';
-            $senderEmail = 'team_plumbpay@outlook.com';
-            $recipientName = $user->getUserIdentifier();
-            $recipientEmail = $user->getEmail();
-            $subject = 'Confirmation d\'inscription';
-            $htmlContent = '<html><head></head><body><p>Bienvenue sur notre site !</p><p>Veuillez cliquer sur le lien suivant pour activer votre compte : <a href="' . $activationLink . '">Activer votre compte</a></p></body></html>';
-    
-            // Envoyer l'e-mail de confirmation
-            $response = $emailService->sendEmail($senderName, $senderEmail, $recipientName, $recipientEmail, $subject, $htmlContent);
-    
-            if ($response['success']) {
-                // L'e-mail de confirmation a été envoyé avec succès, on peut maintenant stocker l'utilisateur
-                $user->setPassword(
-                    $userPasswordHasher->hashPassword(
-                        $user,
-                        $form->get('password')->getData()
-                    )
-                );
-    
-                $entityManager->persist($user);
-                $entityManager->flush();
-    
-                return $this->redirectToRoute('app_login');
+            $response = $emailService->sendEmail(
+                'Plumbpay',
+                'team_plumbpay@outlook.com',
+                $user->getUserIdentifier(),
+                $user->getEmail(),
+                'Confirmation d\'inscription',
+                "<p>Bienvenue ! Cliquez ici pour activer votre compte : <a href=\"$activationLink\">Activer</a></p>"
+            );
+
+            if (!$response['success']) {
+                $this->addFlash('error', 'Erreur envoi email : ' . $response['error']);
             } else {
-                // Une erreur s'est produite lors de l'envoi de l'e-mail
-                return $this->redirectToRoute('app_register');
+                $this->addFlash('success', 'Un email d’activation vous a été envoyé.');
             }
+            return $this->redirectToRoute('app_login');
         }
-    
+
         return $this->render('security/registration/index.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
-
 
     #[Route('/activate-account/{token}', name: 'activate_account')]
     public function activateAccount($token, EntityManagerInterface $entityManager): Response
@@ -98,15 +99,16 @@ class SecurityController extends AbstractController
         $user = $entityManager->getRepository(User::class)->findOneBy(['activationToken' => $token]);
 
         if (!$user) {
-
+            $this->addFlash('error', 'Token invalide.');
             return $this->redirectToRoute('app_login');
         }
 
         $user->setActivationToken(null);
-        $user->setEnabled(true);
-        $user->setVerifiedAt(new \DateTimeImmutable());
+        $user->setEnabled(true); // active le compte
+        $user->setVerifiedAt(new \DateTimeImmutable()); // optionnel : date de vérification
         $entityManager->flush();
 
+        $this->addFlash('success', 'Votre compte est maintenant activé !');
         return $this->redirectToRoute('app_login');
     }
 

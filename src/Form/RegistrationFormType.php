@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Form;
 
 use App\Entity\User;
@@ -24,22 +25,20 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class)
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
-            ->add('password', repeatedType::class, [
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
+                'mapped' => false, // ⚠️ ne pas mapper à l'entité
                 'first_options' => [
                     'label' => 'Password',
                     'constraints' => [
-                        new NotBlank([
-                            'message' => 'Please enter a password',
-                        ]),
+                        new NotBlank(['message' => 'Please enter a password']),
                         new Length([
                             'min' => 8,
                             'minMessage' => 'Your password should have at least {{ limit }} characters',
                             'max' => 4096,
-                            'maxMessage' => 'Password should have not exceed {{ limit }} caracters.',
                         ]),
                         new Regex([
-                            'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&-_.])[A-Za-z\d@$!%*?&-_.]+$/',
+                            'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\-_.])[A-Za-z\d@$!%*?&\-_.]+$/',
                             'message' => 'Your password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
                         ]),
                     ],
@@ -55,8 +54,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You must agree to the terms of service to register.',
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

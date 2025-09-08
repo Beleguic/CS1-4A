@@ -264,9 +264,15 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
                 $productsData[] = [
                     'id' => (string) $product->getId(),
                     'name' => $product->getName(),
-                    'quantity' => $quantity,
-                    'unit_price' => $unitPrice,
-                    'total' => $productTotal
+                    'description' => $product->getDescription(),
+                    'price' => $product->getPrice(),
+                    'tva' => $product->getTva(),
+                    'quantite' => $quantity,
+                    'prix_totale' => $productTotal * 100, // Conversion en centimes
+                    'category' => [
+                        'id' => (string) $product->getCategory()->getId(),
+                        'name' => $product->getCategory()->getName()
+                    ]
                 ];
             }
             
@@ -274,7 +280,7 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
             $devis->setClient($client)
                 ->setNumDevis('DEV-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT))
                 ->setMessage($faker->sentence(12))
-                ->setTotalPrice($totalPrice)
+                ->setTotalPrice($totalPrice * 100) // Conversion en centimes
                 ->setProduits($productsData)
                 ->setCompanyId($company->getId());
 
@@ -303,9 +309,15 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
                 $productsData[] = [
                     'id' => (string) $product->getId(),
                     'name' => $product->getName(),
-                    'quantity' => $quantity,
-                    'unit_price' => $unitPrice,
-                    'total' => $productTotal
+                    'description' => $product->getDescription(),
+                    'price' => $product->getPrice(),
+                    'tva' => $product->getTva(),
+                    'quantite' => $quantity,
+                    'prix_totale' => $productTotal * 100, // Conversion en centimes
+                    'category' => [
+                        'id' => (string) $product->getCategory()->getId(),
+                        'name' => $product->getCategory()->getName()
+                    ]
                 ];
             }
             
