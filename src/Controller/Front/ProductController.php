@@ -35,6 +35,10 @@ class ProductController extends AbstractController
         $user = $this->getUser();
         $companyId = $user->getCompanyId();
 
+        if (!$companyId) {
+            throw new \Exception('Aucune société liée à cet utilisateur.');
+        }
+
         $product = new Product();
         $product->setCompanyId($companyId);
         //dd($product);

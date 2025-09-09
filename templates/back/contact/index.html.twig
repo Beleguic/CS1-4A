@@ -19,7 +19,7 @@
                     <th>Subject</th>
                     <th>Message</th>
                     <th>Created At</th>
-                    <th>Updated At</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,7 +33,7 @@
                     <td>{{ contact.company }}</td>
                     <td>{{ contact.subject|slice(0,10) }}</td>
                     <td>{{ contact.message|slice(0,20) }}</td>
-                    <td>{{ contact.createdAt ? contact.createdAt|date('d/m/Y H:i') : '' }}</td>
+                    <td>{{ contact.createdAt ? contact.createdAt|date('d F Y \à H:h') : '' }}</td>
                     <td>
                         <div class="h-full w-full flex gap-4">
                             <a href="{{ path('back_app_contact_show', {'id': contact.id}) }}" class="btn btn-show">Show</a>

@@ -49,15 +49,15 @@
         <section class="flex flex-col gap-4">
             <div class="grid grid-cols-1 py-2">
                 <div>Created at</div>
-                <div>{{ user.createdAt ? user.createdAt|date('d/m/Y H:i') : '' }}</div>
+                <div>{{ user.createdAt ? user.createdAt|date('d F Y \à H:h') : '' }}</div>
             </div>
             <div class="grid grid-cols-1 py-2">
                 <div>Verified at</div>
-                <div>{{ user.verifiedAt ? user.verifiedAt|date('d/m/Y H:i') : '' }}</div>
+                <div>{{ user.verifiedAt ? user.verifiedAt|date('d F Y \à H:h') : '' }}</div>
             </div>
             <div class="grid grid-cols-1 py-2">
                 <div>Updated at</div>
-                <div>{{ user.updatedAt ? user.updatedAt|date('d/m/Y H:i') : '' }}</div>
+                <div>{{ user.updatedAt ? user.updatedAt|date('d F Y \à H:h') : '' }}</div>
             </div>
         </section>
     </div>
