@@ -13,11 +13,11 @@
             </div>
             <div class="grid grid-cols-1 py-2 gap-2">
                 <div class="font-bold">Created at</div>
-                <div>{{ contact.createdAt ? contact.createdAt|date('d/m/Y H:i') : '' }}</div>
+                <div>{{ contact.createdAt ? contact.createdAt|date('d F Y \à H:h') : '' }}</div>
             </div>
             <div class="grid grid-cols-1 py-2 gap-2">
                 <div class="font-bold">Updated at</div>
-                <div>{{ contact.updatedAt ? contact.updatedAt|date('d/m/Y H:i') : '' }}</div>
+                <div>{{ contact.updatedAt ? contact.updatedAt|date('d F Y \à H:h') : '' }}</div>
             </div>
         </section>
         <section class="flex flex-col gap-4">

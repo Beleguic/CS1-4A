@@ -241,17 +241,19 @@ class Client
         // Vérifier que le tableau contient les clés nécessaires
 
         $client = new Client();
-        $client->setNom($array['Nom']);
-        $client->setPrenom($array['Prenom']);
-        $client->setEmail($array['Email']);
-        $client->setNumeroTelephone($array['NumeroTelephone']);
-        $client->setAddressNumber($array['address_number']);
-        $client->setAddressType($array['address_type']);
-        $client->setAddressName($array['address_name']);
-        $client->setAddressZipCode($array['address_zip_code']);
-        $client->setAddressCity($array['address_city']);
-        $client->setAddressCountry($array['address_country']);
-        return $client;
+
+        $client->setNom($array['Nom'] ?? '');
+        $client->setPrenom($array['Prenom'] ?? '');
+        $client->setEmail($array['Email'] ?? '');
+        $client->setNumeroTelephone($array['NumeroTelephone'] ?? '');
+        $client->setAddressNumber($array['address_number'] ?? null);
+        $client->setAddressType($array['address_type'] ?? null);
+        $client->setAddressName($array['address_name'] ?? null);
+        $client->setAddressZipCode($array['address_zip_code'] ?? null);
+        $client->setAddressCity($array['address_city'] ?? null);
+        $client->setAddressCountry($array['address_country'] ?? null);
+
+    return $client;
     }
 
     public function getCompanyId(): ?Uuid

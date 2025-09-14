@@ -59,11 +59,11 @@
         <section class="flex flex-col gap-4">
             <div class="grid grid-cols-1 py-2 gap-2">
                 <div class="font-bold">Created at</div>
-                <div>{{ company.createdAt ? company.createdAt|date('d/m/Y H:i') : '' }}</div>
+                <div>{{ company.createdAt ? company.createdAt|date('d F Y \à H:h') : '' }}</div>
             </div>
             <div class="grid grid-cols-1 py-2 gap-2">
                 <div class="font-bold">Updated at</div>
-                <div>{{ company.updatedAt ? company.updatedAt|date('d/m/Y H:i') : '' }}</div>
+                <div>{{ company.updatedAt ? company.updatedAt|date('d F Y \à H:h') : '' }}</div>
             </div>
         </section>
     </div>
