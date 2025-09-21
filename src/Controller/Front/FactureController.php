@@ -29,7 +29,7 @@ class FactureController extends AbstractController
 
         $user = $this->getUser();
         $companyId = $user->getCompanyId();
-
+        
         return $this->render('front/facture/index.html.twig', [
             'factures' => $factureRepository->findByCompagny($companyId),
         ]);
@@ -43,6 +43,16 @@ class FactureController extends AbstractController
         $categoriProduits = [];
         $tauxTVA = [];
         $total['ht'] = 0;
+
+        // Récupérer l'entreprise
+        $company = null;
+        if ($facture->getCompanyId()) {
+            $company = $entityManager->getRepository(\App\Entity\Company::class)->find($facture->getCompanyId());
+            // Clear the File object to avoid serialization issues
+            if ($company) {
+                $company->clearImageFile();
+            }
+        }
 
         foreach ($facture->getProduits() as $produit) {
             $categoryTemp = $produit['category']['name'];
@@ -58,7 +68,10 @@ class FactureController extends AbstractController
             if(!isset($total['tva'][$produit['tva']])){
                 $total['tva'][$produit['tva']] = 0;
             }
-            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
+            // Calcul de la TVA : Prix HT * (Taux TVA / 100)
+            $prixHT = $produit['price'] * $produit['quantite'];
+            $montantTVA = $prixHT * ($produit['tva'] / 100);
+            $total['tva'][$produit['tva']] += $montantTVA;
         }
 
         ksort($total['tva']);
@@ -73,6 +86,7 @@ class FactureController extends AbstractController
             'tauxTVA' => $tauxTVA,
             'total' => $total,
             'client' => $client,
+            'company' => $company,
         ]);
 
     }
@@ -135,7 +149,10 @@ class FactureController extends AbstractController
             if(!isset($total['tva'][$produit['tva']])){
                 $total['tva'][$produit['tva']] = 0;
             }
-            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
+            // Calcul de la TVA : Prix HT * (Taux TVA / 100)
+            $prixHT = $produit['price'] * $produit['quantite'];
+            $montantTVA = $prixHT * ($produit['tva'] / 100);
+            $total['tva'][$produit['tva']] += $montantTVA;
         }
 
         ksort($total['tva']);
@@ -196,7 +213,10 @@ class FactureController extends AbstractController
             if(!isset($total['tva'][$produit['tva']])){
                 $total['tva'][$produit['tva']] = 0;
             }
-            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
+            // Calcul de la TVA : Prix HT * (Taux TVA / 100)
+            $prixHT = $produit['price'] * $produit['quantite'];
+            $montantTVA = $prixHT * ($produit['tva'] / 100);
+            $total['tva'][$produit['tva']] += $montantTVA;
         }
 
         ksort($total['tva']);
