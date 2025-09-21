@@ -97,8 +97,23 @@ class DevisController extends AbstractController
             return $this->redirectToRoute('front_app_devis_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        // Préparer les produits pour l'affichage (même logique que edit)
+        $produitsTable = [];
+        $produitDevis = $devis->getProduits();
+        if ($produitDevis && is_iterable($produitDevis)) {
+            foreach ($produitDevis as $produit) {
+                if (is_object($produit) && method_exists($produit, 'getCategory')) {
+                    $categoryTemp = $produit->getCategory()->jsonSerialize();
+                    $produitsTemp = $produit->jsonSerialize();
+                    $produitsTemp['category'] = $categoryTemp;
+                    $produitsTable[] = $produitsTemp;
+                }
+            }
+        }
+
         return $this->render('front/devis/new.html.twig', [
             'devis' => $devis,
+            'devisProduit' => json_encode($produitsTable),
             'form' => $form,
             'product' => $productsJson,
         ]);
@@ -201,7 +216,7 @@ class DevisController extends AbstractController
             $devis->setTotalPrice($totalPrice);
             $entityManager->flush();
 
-            return $this->redirectToRoute('front_app_devis_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_app_devis_show', ['id' => $devis->getId()], Response::HTTP_SEE_OTHER);
         }
 
         $produitsTable = [];
@@ -225,8 +240,16 @@ class DevisController extends AbstractController
     public function delete(Request $request, Devis $devi, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$devi->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($devi);
-            $entityManager->flush();
+            try {
+                $devisNum = $devi->getNumDevis();
+                $entityManager->remove($devi);
+                $entityManager->flush();
+                $this->addFlash('success', 'Le devis "' . $devisNum . '" a été annulé avec succès.');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Erreur lors de l\'annulation : ' . $e->getMessage());
+            }
+        } else {
+            $this->addFlash('error', 'Token de sécurité invalide.');
         }
 
         return $this->redirectToRoute('front_app_devis_index', [], Response::HTTP_SEE_OTHER);

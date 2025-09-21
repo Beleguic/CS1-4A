@@ -1,17 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Category{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Modifier la catégorie - ' ~ category.name) %}
+
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-<div class="max-w-4xl mx-auto px-4 py-8">
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        {{ include('/front/category/_form.html.twig', {'button_label': 'Update', 'button_class': 'mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2', 'button_style': 'background-color: #134F63;', 'hover_style': 'onmouseover=this.style.backgroundColor=\'#05C1FA\' onmouseout=this.style.backgroundColor=\'#134F63\''}) }}
-    </div>
+    <div class="px-4 py-8">
+        {{ include('/front/category/_nav.html.twig') }}
 
-    <a href="{{ path('front_app_category_index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; margin-right: 8px;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Back to list</a>
-
-    <div class="mt-4">
-        {{ include('/front/category/_delete_form.html.twig') }}
+        <div class="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            {{ include('/front/category/_form.html.twig', {'button_label': 'Modifier', 'button_class': 'mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2', 'button_style': 'background-color: #134F63;', 'hover_style': 'onmouseover=this.style.backgroundColor=\'#05C1FA\' onmouseout=this.style.backgroundColor=\'#134F63\''}) }}
+        </div>
     </div>
-</div>
 {% endblock %}

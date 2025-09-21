@@ -11,6 +11,7 @@
     {% block javascripts %}
             <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
         {{ encore_entry_script_tags('app') }}
+        <script src="{{ asset('js/form-errors.js') }}"></script>
         <script>
             // Simple navigation detection for icon refresh
             window.addEventListener('pageshow', function(event) {

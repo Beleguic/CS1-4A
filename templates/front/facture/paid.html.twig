@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %} 
 
-{% block title %}Paid with Stripe{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Payer avec Stripe') %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
 

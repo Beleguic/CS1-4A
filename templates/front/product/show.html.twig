@@ -1,30 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Produit - ' ~ product.name) %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-    <div class="overflow-x-auto relative shadow-md sm:rounded-lg my-5">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <tbody class="bg-white dark:bg-gray-800">
-                <tr class="border-b dark:border-gray-700">
-                    <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">Name</th>
-                    <td class="py-4 px-6">{{ product.name }}</td>
-                </tr>
-                <tr class="border-b dark:border-gray-700">
-                    <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">Price</th>
-                    <td class="py-4 px-6">{{ product.price }}</td>
-                </tr>
-                <tr class="border-b dark:border-gray-700">
-                    <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">Description</th>
-                    <td class="py-4 px-6">{{ product.description }}</td>
-                </tr>
-            </tbody>
-        </table>
+    {{ include('/front/product/_nav.html.twig') }}
+
+    <div class="grid grid-cols-1 gap-6">
+        <!-- Nom -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nom du produit</label>
+            <input type="text" value="{{ product.name }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+        </div>
+
+        <!-- Prix -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Prix (centimes)</label>
+            <input type="text" value="{{ product.price | number_format(0, ',', ' ') }} centimes" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+        </div>
+
+        <!-- Prix en euros -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Prix (euros)</label>
+            <input type="text" value="{{ (product.price / 100) | number_format(2, ',', ' ') }} €" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+        </div>
+
+        <!-- TVA -->
+        {% if product.tva is defined %}
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Taux de TVA</label>
+                <input type="text" value="{{ product.tva }}%" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+            </div>
+        {% endif %}
+
+        <!-- Catégorie -->
+        {% if product.category is defined %}
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Catégorie</label>
+                <input type="text" value="{{ product.category.name }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+            </div>
+        {% endif %}
+
+        <!-- Description -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Description</label>
+            <textarea readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed resize-none" rows="3">{{ product.description }}</textarea>
+        </div>
+
+        <!-- Dates -->
+        {% if product.createdAt is defined or product.updatedAt is defined %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% if product.createdAt is defined %}
+                    <div class="grid grid-cols-1 gap-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Créé le</label>
+                        <input type="text" value="{{ product.createdAt ? product.createdAt|date('d F Y \à H:i') : 'Non défini' }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+                    </div>
+                {% endif %}
+                {% if product.updatedAt is defined %}
+                    <div class="grid grid-cols-1 gap-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Mis à jour le</label>
+                        <input type="text" value="{{ product.updatedAt ? product.updatedAt|date('d F Y \à H:i') : 'Non défini' }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
-
-    <a href="{{ path('front_app_product_index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; margin-right: 8px;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Back to list</a>
-
-    <a href="{{ path('front_app_product_edit', {'id': product.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Edit</a>
-
-    {{ include('/front/product/_delete_form.html.twig') }}
 {% endblock %}

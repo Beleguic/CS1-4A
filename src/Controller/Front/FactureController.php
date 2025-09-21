@@ -143,11 +143,19 @@ class FactureController extends AbstractController
     public function delete(Request $request, Facture $facture, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$facture->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($facture);
-            $entityManager->flush();
+            try {
+                $factureNum = $facture->getNumFacture();
+                $entityManager->remove($facture);
+                $entityManager->flush();
+                $this->addFlash('success', 'La facture "' . $factureNum . '" a été supprimée avec succès.');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Erreur lors de la suppression : ' . $e->getMessage());
+            }
+        } else {
+            $this->addFlash('error', 'Token de sécurité invalide.');
         }
 
-        return $this->redirectToRoute('app_facture_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('front_app_facture_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/download-pdf', name: 'app_facture_download_pdf', methods: ['GET'])]
@@ -215,7 +223,7 @@ class FactureController extends AbstractController
         $clientNameSafe = $client ? preg_replace('/[^A-Za-z0-9\-]/', '_', $client->getNom() . '_' . $client->getPrenom()) : 'Client_Inconnu';
 
 
-        $pdfFileName = "devis_" . $clientNameSafe . "_" . $facture->getId()->toRfc4122() . ".pdf";
+        $pdfFileName = "facture_" . $clientNameSafe . "_" . $facture->getId()->toRfc4122() . ".pdf";
 
 
         return new Response($dompdf->output(), 200, [
@@ -265,7 +273,7 @@ class FactureController extends AbstractController
         $factureNum = $facture->getNumFacture();
         $subject = 'Votre Facture ' . $factureNum . ' de Plumbpay';
 
-        // Générer le contenu HTML du devis
+        // Générer le contenu HTML de la facture
 
         // Récupérer l'entreprise pour l'email
         $company = null;

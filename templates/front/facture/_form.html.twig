@@ -1,4 +1,117 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'grid grid-cols-1 gap-4'}}) }}
+
+    <!-- Numéro de facture -->
+    {% if form.num_facture is defined %}
+        <div class="flex flex-col gap-2">
+            {{ form_label(form.num_facture, 'Numéro de facture', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+            {{ form_widget(form.num_facture, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200', 'placeholder': 'FAC-2025-0001'}}) }}
+            {{ form_errors(form.num_facture) }}
+        </div>
+    {% endif %}
+
+    <!-- Numéro de devis -->
+    {% if form.num_devis is defined %}
+        <div class="flex flex-col gap-2">
+            {{ form_label(form.num_devis, 'Numéro de devis associé', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+            {{ form_widget(form.num_devis, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200', 'placeholder': 'DEV-2025-0001'}}) }}
+            {{ form_errors(form.num_devis) }}
+        </div>
+    {% endif %}
+
+    <!-- Client -->
+    {% if form.client is defined %}
+        <div class="flex flex-col gap-2">
+            {{ form_label(form.client, 'Client', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+            {{ form_widget(form.client, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+            {{ form_errors(form.client) }}
+        </div>
+    {% endif %}
+
+    <!-- Dates -->
+    {% if form.date_facture is defined or form.date_echeance is defined %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% if form.date_facture is defined %}
+                <div class="flex flex-col gap-2">
+                    {{ form_label(form.date_facture, 'Date de facturation', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                    {{ form_widget(form.date_facture, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                    {{ form_errors(form.date_facture) }}
+                </div>
+            {% endif %}
+            {% if form.date_echeance is defined %}
+                <div class="flex flex-col gap-2">
+                    {{ form_label(form.date_echeance, 'Date d\'échéance', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                    {{ form_widget(form.date_echeance, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                    {{ form_errors(form.date_echeance) }}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- Prix et paiement -->
+    {% if form.prix_total is defined or form.prix_paye is defined %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% if form.prix_total is defined %}
+                <div class="flex flex-col gap-2">
+                    {{ form_label(form.prix_total, 'Prix total', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                    {{ form_widget(form.prix_total, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200', 'placeholder': '0.00'}}) }}
+                    {{ form_errors(form.prix_total) }}
+                </div>
+            {% endif %}
+            {% if form.prix_paye is defined %}
+                <div class="flex flex-col gap-2">
+                    {{ form_label(form.prix_paye, 'Montant payé', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                    {{ form_widget(form.prix_paye, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200', 'placeholder': '0.00'}}) }}
+                    {{ form_errors(form.prix_paye) }}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- Statut de paiement -->
+    {% if form.paid is defined %}
+        <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-2">
+                {{ form_widget(form.paid, {'attr': {'class': 'cursor-pointer'}}) }}
+                {{ form_label(form.paid, 'Facture payée', {'attr': {'class': 'cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+            </div>
+            {{ form_errors(form.paid) }}
+        </div>
+    {% endif %}
+
+    <!-- Réduction -->
+    {% if form.reduction is defined %}
+        <div class="flex flex-col gap-2">
+            {{ form_label(form.reduction, 'Réduction (%)', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+            {{ form_widget(form.reduction, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200', 'placeholder': '0'}}) }}
+            {{ form_errors(form.reduction) }}
+        </div>
+    {% endif %}
+
+    <!-- Messages/Remarques -->
+    {% if form.messages is defined %}
+        <div class="flex flex-col gap-2">
+            {{ form_label(form.messages, 'Remarques', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+            {{ form_widget(form.messages, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200 resize-none', 'rows': '3', 'placeholder': 'Remarques ou conditions particulières...'}}) }}
+            {{ form_errors(form.messages) }}
+        </div>
+    {% endif %}
+
+    <!-- Autres champs dynamiques -->
+    {% for field in form %}
+        {% if field.vars.name != '_token' and field.vars.name != 'num_facture' and field.vars.name != 'num_devis' and field.vars.name != 'client' and field.vars.name != 'date_facture' and field.vars.name != 'date_echeance' and field.vars.name != 'prix_total' and field.vars.name != 'prix_paye' and field.vars.name != 'paid' and field.vars.name != 'reduction' and field.vars.name != 'messages' %}
+            <div class="flex flex-col gap-2">
+                {{ form_label(field, null, {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                {{ form_widget(field, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                {{ form_errors(field) }}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <!-- Bouton de soumission -->
+    <div class="flex flex-col gap-4">
+        <button type="submit" class="group w-full flex items-center justify-center px-6 py-3 bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-white/30 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+            {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
+
 {{ form_end(form) }}

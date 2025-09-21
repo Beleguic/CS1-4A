@@ -68,10 +68,10 @@ class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('front_app_client_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_app_client_show', ['id' => $client->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('client/edit.html.twig', [
+        return $this->render('front/client/edit.html.twig', [
             'client' => $client,
             'form' => $form,
         ]);
@@ -81,8 +81,16 @@ class ClientController extends AbstractController
     public function delete(Request $request, Client $client, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($client);
-            $entityManager->flush();
+            try {
+                $clientName = $client->getNom() . ' ' . $client->getPrenom();
+                $entityManager->remove($client);
+                $entityManager->flush();
+                $this->addFlash('success', 'Le client "' . $clientName . '" a été supprimé avec succès.');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Erreur lors de la suppression : ' . $e->getMessage());
+            }
+        } else {
+            $this->addFlash('error', 'Token de sécurité invalide.');
         }
 
         return $this->redirectToRoute('front_app_client_index', [], Response::HTTP_SEE_OTHER);

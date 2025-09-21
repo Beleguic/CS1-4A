@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}PlumbPay - Liste des factures{% endblock %}
 {% set page_title = page_title|default('PlumbPay - Liste des factures') %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+        {{ include('/front/facture/_nav.html.twig') }}
+
         <table class="min-w-full w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -31,16 +33,16 @@
                             {{ facture.client.nom ~ ' ' ~ facture.client.prenom }}
                         {% endif %}
                     </td>
-                    <td class="py-4 px-6">{{ facture.prixTotal }}</td>
+                    <td class="py-4 px-6">{{ (facture.prixTotal)|number_format(2, ',', ' ') }} €</td>
                     <td class="py-4 px-6">{{ facture.paid ? 'oui' : 'non' }}</td>
-                    <td class="py-4 px-6">{{ facture.prixPaye }}</td>
+                    <td class="py-4 px-6">{{ (facture.prixPaye)|number_format(2, ',', ' ') }} €</td>
                     <td class="py-4 px-6">{{ facture.dateFacture|date("d/m/Y") }}</td>
                     <td class="py-4 px-6">{{ facture.dateEcheance|date("d/m/Y") }}</td>
                     <td class="py-4 px-6">
                         <div class="flex gap-2 items-center justify-center flex-wrap">
-                            <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="px-2 py-1 text-xs font-medium rounded text-white bg-blue-500 hover:bg-blue-700 whitespace-nowrap">Voir</a>
-                            <a href="{{ path('front_app_facture_send_email', {'id': facture.id}) }}" class="px-2 py-1 text-xs font-medium rounded text-white bg-yellow-500 hover:bg-yellow-700 whitespace-nowrap">Email</a>
-                            <a href="{{ path('front_app_facture_download_pdf', {'id': facture.id}) }}" class="px-2 py-1 text-xs font-medium rounded text-white bg-red-500 hover:bg-red-700 whitespace-nowrap">PDF</a>
+                            <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="px-4 py-1 text-xs font-medium rounded text-white bg-blue-500 hover:bg-blue-700 whitespace-nowrap">Voir</a>
+                            <a href="{{ path('front_app_facture_send_email', {'id': facture.id}) }}" class="px-4 py-1 text-xs font-medium rounded text-white bg-yellow-500 hover:bg-yellow-700 whitespace-nowrap">Email</a>
+                            <a href="{{ path('front_app_facture_download_pdf', {'id': facture.id}) }}" class="px-4 py-1 text-xs font-medium rounded text-white bg-red-500 hover:bg-red-700 whitespace-nowrap">PDF</a>
                             
                             {% if not facture.paid %}
                                 <form method="post" action="{{ path('front_app_facture_toggle_payment', {'id': facture.id}) }}" 

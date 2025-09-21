@@ -19,7 +19,10 @@ class FactureType extends AbstractType
         $builder
         ->add('client', EntityType::class, [
             'class' => Client::class,
-            
+            'label' => 'Sélectionnez un client',
+            'choice_label' => function ($client) {
+                return $client->getNom() . ' ' . $client->getPrenom() . ' - ' . $client->getEmail();
+            },
         ])
         ->add('devis', DevisType::class, [
             'label' => 'Devis associé',
