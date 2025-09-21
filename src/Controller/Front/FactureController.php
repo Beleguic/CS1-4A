@@ -256,4 +256,27 @@ class FactureController extends AbstractController
 
         return $this->redirectToRoute('front_app_facture_index');
     }
+
+    #[Route('/{id}/toggle-payment-status', name: 'app_facture_toggle_payment', methods: ['POST'])]
+    public function togglePaymentStatus(Request $request, Facture $facture, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('toggle_payment'.$facture->getId(), $request->request->get('_token'))) {
+            // Basculer le statut de paiement
+            $newStatus = !$facture->isPaid();
+            $facture->setPaid($newStatus);
+            
+            // Si la facture est marquée comme payée, mettre le montant payé égal au montant total
+            if ($newStatus) {
+                $facture->setPrixPaye($facture->getPrixTotal());
+                $this->addFlash('success', 'La facture a été marquée comme payée.');
+            } else {
+                $facture->setPrixPaye(0);
+                $this->addFlash('info', 'La facture a été marquée comme non payée.');
+            }
+            
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('front_app_facture_index', [], Response::HTTP_SEE_OTHER);
+    }
 }

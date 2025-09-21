@@ -3,7 +3,34 @@
 {% block title %}Facture {{ facture.numFacture }}{% endblock %}
 
 {% block body %}
-    <a href="{{ path('front_app_facture_index') }}" class="btn">Retour à la liste des factures</a>
+    <div class="flex justify-between items-center mb-4">
+        <a href="{{ path('front_app_facture_index') }}" class="btn">Retour à la liste des factures</a>
+        
+        <div class="flex gap-3 items-center">
+            {% if not facture.paid %}
+                <!-- Bouton payer uniquement si non payée -->
+                <form method="post" action="{{ path('front_app_facture_toggle_payment', {'id': facture.id}) }}" 
+                      onsubmit="return confirm('Confirmer que cette facture a été PAYÉE ?');" 
+                      style="display: inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('toggle_payment' ~ facture.id) }}">
+                    <button type="submit" 
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-150 bg-green-500 hover:bg-green-700 focus:ring-green-500"
+                            title="Marquer comme payée">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Marquer comme payée
+                    </button>
+                </form>
+            {% endif %}
+            
+            <!-- Badge statut -->
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                         {{ facture.paid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                {{ facture.paid ? '✓ Payée' : '✗ Non payée' }}
+            </span>
+        </div>
+    </div>
 
     {% set messages = facture.messages | default('Pas de remarques') %}
     <div class="container mx-auto">

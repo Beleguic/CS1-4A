@@ -37,10 +37,33 @@
                     <td class="py-4 px-6">{{ facture.dateFacture|date("d/m/Y") }}</td>
                     <td class="py-4 px-6">{{ facture.dateEcheance|date("d/m/Y") }}</td>
                     <td class="py-4 px-6">
-                        <div class="flex gap-2 items-center justify-center">
+                        <div class="flex gap-2 items-center justify-center flex-wrap">
                             <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="px-2 py-1 text-xs font-medium rounded text-white bg-blue-500 hover:bg-blue-700 whitespace-nowrap">Voir</a>
                             <a href="{{ path('front_app_facture_send_email', {'id': facture.id}) }}" class="px-2 py-1 text-xs font-medium rounded text-white bg-yellow-500 hover:bg-yellow-700 whitespace-nowrap">Email</a>
                             <a href="{{ path('front_app_facture_download_pdf', {'id': facture.id}) }}" class="px-2 py-1 text-xs font-medium rounded text-white bg-red-500 hover:bg-red-700 whitespace-nowrap">PDF</a>
+                            
+                            {% if not facture.paid %}
+                                <form method="post" action="{{ path('front_app_facture_toggle_payment', {'id': facture.id}) }}" 
+                                      onsubmit="return confirm('Confirmer que cette facture a été PAYÉE ?');" 
+                                      style="display: inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('toggle_payment' ~ facture.id) }}">
+                                    <button type="submit" 
+                                            class="px-2 py-1 text-xs font-medium rounded text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-150 bg-green-500 hover:bg-green-700 focus:ring-green-500"
+                                            title="Marquer comme payée">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        Payée
+                                    </button>
+                                </form>
+                            {% else %}
+                                <span class="px-2 py-1 text-xs font-medium rounded text-green-800 bg-green-100 whitespace-nowrap">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Payée
+                                </span>
+                            {% endif %}
                          </div>
                     </td>
                 </tr>
