@@ -10,7 +10,7 @@
         {% endif %}
     {% endfor %}
     <div class="mt-4 flex gap-4">
-        <button class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">{{ button_label|default('Save') }}</button>
+        <button class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">{{ button_label|default('Rechercher') }}</button>
         
         {% if app.request.query.get('year') is not null and hasStats is defined and hasStats == true %}
             <a href="{{ path('front_app_statistics_export_csv', {'year': app.request.query.get('year')}) }}" 
