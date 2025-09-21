@@ -23,7 +23,7 @@ class AccountType extends AbstractType
                 'constraints' => [
                 ],
             ])
-            ->add('newPassword', repeatedType::class, [
+            ->add('newPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'label' => 'New Password',
                 'mapped' => false,
@@ -59,7 +59,7 @@ class AccountType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('firstname', textType::class, [
+            ->add('firstname', TextType::class, [
                 'mapped' => true,
                 'constraints' => [
                     new Length([

@@ -1,15 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Product{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Créer un nouveau produit') %}
+{% block title %}PlumbPay - Créer un nouveau produit{% endblock %}
 
 {% block body %}
-    <h1 class="text-3xl font-bold underline text-center my-8" style="color: #000000;">Create New Product</h1>
+    <div class="px-4 py-8">
+        {{ include('/front/product/_nav.html.twig') }}
 
-    <div class="max-w-lg mx-auto">
-        {{ include('/front/product/_form.html.twig') }}
-    </div>
-
-    <div class="text-center mt-4">
-        <a href="{{ path('front_app_product_index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; transition: background-color 0.2s ease-in-out;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Back to List</a>
+        <div class="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            {{ include('/front/product/_form.html.twig', {'button_label': 'Créer', 'button_class': 'mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2', 'button_style': 'background-color: #134F63;', 'hover_style': 'onmouseover=this.style.backgroundColor=\'#05C1FA\' onmouseout=this.style.backgroundColor=\'#134F63\''}) }}
+        </div>
     </div>
 {% endblock %}

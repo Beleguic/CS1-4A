@@ -1,39 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Client{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Client - ' ~ client.Nom ~ ' ' ~ client.Prenom) %}
+
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-    <h1 class="text-3xl font-bold underline text-center my-8">Client</h1>
+    {{ include('/front/client/_nav.html.twig') }}
 
-    <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-        <table class="min-w-full leading-normal">
-            <tbody>
-                <tr>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nom</th>
-                    <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">{{ client.Nom }}</td>
-                </tr>
-                <tr>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Prenom</th>
-                    <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">{{ client.Prenom }}</td>
-                </tr>
-                <tr>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
-                    <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">{{ client.Email }}</td>
-                </tr>
-                <tr>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">NumeroTelephone</th>
-                    <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">{{ client.NumeroTelephone }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <div class="grid grid-cols-1 gap-6">
+        <!-- Nom -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nom</label>
+            <input type="text" value="{{ client.Nom }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+        </div>
 
-    <div class="text-center mt-4 gap-2">
-        <a href="{{ path('front_app_client_index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; transition: background-color 0.2s ease-in-out;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Back to list</a>
-        <a href="{{ path('front_app_client_edit', {'id': client.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; transition: background-color 0.2s ease-in-out;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Edit</a>
-    </div>
+        <!-- Prénom -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Prénom</label>
+            <input type="text" value="{{ client.Prenom }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+        </div>
 
-    <div class="mt-4 text-center">
-        {{ include('/front/client/_delete_form.html.twig') }}
+        <!-- Email -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+            <input type="email" value="{{ client.Email }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+        </div>
+
+        <!-- Téléphone -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Numéro de téléphone</label>
+            <input type="tel" value="{{ client.NumeroTelephone }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+        </div>
+
+        <!-- Adresse complète -->
+        {% if client.getFullAddress is defined %}
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Adresse complète</label>
+                <textarea readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed resize-none" rows="2">{{ client.getFullAddress() }}</textarea>
+            </div>
+        {% endif %}
+
+        <!-- Dates -->
+        {% if client.createdAt is defined or client.updatedAt is defined %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% if client.createdAt is defined %}
+                    <div class="grid grid-cols-1 gap-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Créé le</label>
+                        <input type="text" value="{{ client.createdAt ? client.createdAt|date('d F Y \à H:i') : 'Non défini' }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+                    </div>
+                {% endif %}
+                {% if client.updatedAt is defined %}
+                    <div class="grid grid-cols-1 gap-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Mis à jour le</label>
+                        <input type="text" value="{{ client.updatedAt ? client.updatedAt|date('d F Y \à H:i') : 'Non défini' }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

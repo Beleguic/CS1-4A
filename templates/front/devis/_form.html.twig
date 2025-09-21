@@ -1,15 +1,62 @@
-{{ form_start(form, {'attr': {'class': 'flex flex-col gap-4'}}) }}
-{% for field in form %}
+{{ form_start(form, {'attr': {'class': 'grid grid-cols-1 gap-4'}}) }}
 
-    {% if field.vars.name != '_token' %}
-        <div class="flex flex-col">
-            {{ form_label(field, null, {'label_attr': {'class': 'font-medium'}}) }}
-            {{ form_widget(field, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'}}) }}
-            {{ form_errors(field, {'attr': {'class': 'text-red-500 text-sm'}}) }}
+    <!-- Numéro de devis -->
+    {% if form.numDevis is defined %}
+        <div class="flex flex-col gap-2">
+            {{ form_label(form.numDevis, 'Numéro de devis', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+            {{ form_widget(form.numDevis, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200', 'placeholder': 'DEV-2025-0001'}}) }}
+            {{ form_errors(form.numDevis) }}
         </div>
     {% endif %}
-{% endfor %}
-<button class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">{{ button_label|default('Save') }}</button>
+
+    <!-- Client -->
+    {% if form.client is defined %}
+        <div class="flex flex-col gap-2">
+            {{ form_label(form.client, 'Client', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+            {{ form_widget(form.client, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+            {{ form_errors(form.client) }}
+        </div>
+    {% endif %}
+
+    <!-- Produits -->
+    {% if form.produits is defined %}
+        <div class="flex flex-col gap-2">
+            {{ form_label(form.produits, 'Produits', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+            <div class="w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100">
+                {{ form_widget(form.produits) }}
+            </div>
+            {{ form_errors(form.produits) }}
+            <p class="text-xs text-gray-500 dark:text-gray-400">Sélectionnez les produits pour ce devis</p>
+        </div>
+    {% endif %}
+
+    <!-- Message/Remarques -->
+    {% if form.message is defined %}
+        <div class="flex flex-col gap-2">
+            {{ form_label(form.message, 'Remarques', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+            {{ form_widget(form.message, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200 resize-none', 'rows': '3', 'placeholder': 'Remarques ou conditions particulières...'}}) }}
+            {{ form_errors(form.message) }}
+        </div>
+    {% endif %}
+
+    <!-- Autres champs dynamiques -->
+    {% for field in form %}
+        {% if field.vars.name != '_token' and field.vars.name != 'numDevis' and field.vars.name != 'client' and field.vars.name != 'produits' and field.vars.name != 'message' %}
+            <div class="flex flex-col gap-2">
+                {{ form_label(field, null, {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                {{ form_widget(field, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                {{ form_errors(field) }}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <!-- Bouton de soumission -->
+    <div class="flex flex-col gap-4">
+        <button type="submit" class="group w-full flex items-center justify-center px-6 py-3 bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-white/30 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+            {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
+
 {{ form_end(form) }}
 
 {% block javascripts %}

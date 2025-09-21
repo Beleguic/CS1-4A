@@ -1,13 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Devis {{ devis.numDevis }}{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Voir le devis - ' ~ devis.numDevis) %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-    <div class="flex gap-2">
-        <a href="{{ path('front_app_devis_index') }}" class="btn">Retour à la liste des devis</a>
-        <a href="{{ path('front_app_devis_edit', {'id': devis.id}) }}" class="btn">Modifier le devis</a>
-        {{ include('/front/devis/_delete_form.html.twig') }}
-    </div>
+    {{ include('/front/devis/_nav.html.twig') }}
 
     {% set messages = devis.message | default('Pas de remarques') %}
     <div class="container mx-auto">
@@ -58,10 +55,10 @@
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.name }}</td>
                                     <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.description }}</td>
-                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.price | number_format(2, ',', ' ') }} €</td>
+                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ (produit.price / 100) | number_format(2, ',', ' ') }} €</td>
                                     <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.tva | number_format(1, ',', ' ') }} %</td>
                                     <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.quantite }}</td>
-                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.prix_totale  | number_format(2, ',', ' ') }} €</td>
+                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ (produit.prix_totale / 100) | number_format(2, ',', ' ') }} €</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -71,11 +68,11 @@
             {% endfor %}
         </div>
         <div class="text-right mt-4 flex flex-col gap-2">
-            <h2 class="text-1xl text-xs uppercase text-black dark:text-white">Total HT : {{ total.ht | number_format(2, ',', ' ')}} €</h2>
+            <h2 class="text-1xl text-xs uppercase text-black dark:text-white">Total HT : {{ (total.ht / 100) | number_format(2, ',', ' ')}} €</h2>
             {% for taux_tva, total_tva in total.tva %}
-                <h2 class="text-1xl text-xs uppercase text-black dark:text-white">TVA {{ taux_tva }}% : {{ total_tva | number_format(2, ',', ' ') }} €</h2>
+                <h2 class="text-1xl text-xs uppercase text-black dark:text-white">TVA {{ taux_tva }}% : {{ (total_tva / 100) | number_format(2, ',', ' ') }} €</h2>
             {% endfor %}
-            <h2 class="text-2xl font-bold uppercase text-black dark:text-white">Total TTC : {{ total.ttc | number_format(2, ',', ' ') }} €</h2>
+            <h2 class="text-2xl font-bold uppercase text-black dark:text-white">Total TTC : {{ (total.ttc / 100) | number_format(2, ',', ' ') }} €</h2>
         </div>
     </div>
 {% endblock %}

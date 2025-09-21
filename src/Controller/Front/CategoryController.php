@@ -67,7 +67,7 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('front_app_category_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_app_category_show', ['id' => $category->getId()], Response::HTTP_FOUND);
         }
 
         return $this->render('front/category/edit.html.twig', [
@@ -80,8 +80,16 @@ class CategoryController extends AbstractController
     public function delete(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($category);
-            $entityManager->flush();
+            try {
+                $categoryName = $category->getName();
+                $entityManager->remove($category);
+                $entityManager->flush();
+                $this->addFlash('success', 'La catégorie "' . $categoryName . '" a été supprimée avec succès.');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Erreur lors de la suppression : ' . $e->getMessage());
+            }
+        } else {
+            $this->addFlash('error', 'Token de sécurité invalide.');
         }
 
         return $this->redirectToRoute('front_app_category_index', [], Response::HTTP_SEE_OTHER);

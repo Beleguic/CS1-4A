@@ -1,10 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Facture{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Modifier la facture - ' ~ facture.numFacture) %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-    <h1>Edit Facture</h1>
-
     {{ include('/front/facture/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('front_app_facture_index') }}">back to list</a>

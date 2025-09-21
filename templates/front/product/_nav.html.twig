@@ -1,0 +1,32 @@
+<div class="flex flex-col sm:flex-row gap-4 mb-6">
+    {% if app.request and not (app.request.getRequestUri matches('/\\/(|index)$/')) %}
+        <a href="{{ path('front_app_product_index') }}" class="inline-flex items-center justify-center px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-gray-500/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { 
+                name: 'arrow-left', 
+                class: 'w-4 h-4 mr-2' 
+            }) }}
+            Retour à la liste
+        </a>
+    {% endif %}
+    {% if app.request and not (app.request.getRequestUri matches('/\\/new$/')) %}
+        <a href="{{ path('front_app_product_new') }}" class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-mainColor-400/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { 
+                name: 'plus', 
+                class: 'w-4 h-4 mr-2' 
+            }) }}
+            Nouveau produit
+        </a>
+    {% endif %}
+    {% if app.request and not (app.request.getRequestUri matches('/\\/new$/')) and product is defined %}
+        <a href="{{ path('front_app_product_edit', {'id': product.id}) }}" class="inline-flex items-center justify-center px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { 
+                name: 'edit', 
+                class: 'w-4 h-4 mr-2' 
+            }) }}
+            Modifier
+        </a>
+    {% endif %}
+    {% if app.request and (app.request.getRequestUri matches('/\\/product\\/[0-9a-fA-F-]+(\\/edit)?$/')) %}
+        {{ include('/front/product/_delete_form.html.twig') }}
+    {% endif %}
+</div>

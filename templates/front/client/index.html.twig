@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Client index{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Liste des clients') %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-    <h1 class="text-3xl font-bold underline text-center my-8">Client Index</h1>
+    {{ include('/front/client/_nav.html.twig') }}
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-auto">
 
-    <div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-auto" style="max-width: 90%;">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -24,24 +25,20 @@
                     <td class="py-4 px-6">{{ client.Email }}</td>
                     <td class="py-4 px-6">{{ client.NumeroTelephone }}</td>
                     <td class="py-4 px-6 flex gap-2">
-                        <a href="{{ path('front_app_client_show', {'id': client.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Show</a>
-                        <a href="{{ path('front_app_client_edit', {'id': client.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Edit</a>
-                        <form method="post" action="{{ path('front_app_client_delete', {'id': client.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');" class="inline">
+                        <a href="{{ path('front_app_client_show', {'id': client.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Voir</a>
+                        <a href="{{ path('front_app_client_edit', {'id': client.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Modifier</a>
+                        <form method="post" action="{{ path('front_app_client_delete', {'id': client.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce client ?');" class="inline">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete'~client.id) }}">
-                            <button type="submit" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">Delete</button>
+                            <button type="submit" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700 h-full">Supprimer</button>
                         </form>
                     </td>
                 </tr>
             {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td colspan="5" class="py-4 px-6">No records found</td>
+                    <td colspan="5" class="py-4 px-6">Aucun client trouvé</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-    </div>
-
-    <div class="text-center mt-4">
-        <a href="{{ path('front_app_client_new') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition ease-in-out duration-150">Create new</a>
     </div>
 {% endblock %}

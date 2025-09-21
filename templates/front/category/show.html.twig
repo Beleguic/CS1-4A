@@ -1,27 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Catégorie - ' ~ category.name) %}
+
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
+    {{ include('/front/category/_nav.html.twig') }}
 
-    <div class="overflow-x-auto relative shadow-md sm:rounded-lg my-5">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <tbody class="bg-white dark:bg-gray-800">
-                <tr class="border-b dark:border-gray-700">
-                    <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">Name</th>
-                    <td class="py-4 px-6">{{ category.name }}</td>
-                </tr>
-                <tr class="border-b dark:border-gray-700">
-                    <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">Description</th>
-                    <td class="py-4 px-6">{{ category.description }}</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="grid grid-cols-1 gap-6">
+        <!-- Nom -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nom de la catégorie</label>
+            <input type="text" value="{{ category.name }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+        </div>
+
+        <!-- Description -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Description</label>
+            <textarea readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed resize-none" rows="3">{{ category.description }}</textarea>
+        </div>
+
+        <!-- Dates -->
+        {% if category.createdAt is defined or category.updatedAt is defined %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% if category.createdAt is defined %}
+                    <div class="grid grid-cols-1 gap-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Créé le</label>
+                        <input type="text" value="{{ category.createdAt ? category.createdAt|date('d F Y \à H:i') : 'Non défini' }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+                    </div>
+                {% endif %}
+                {% if category.updatedAt is defined %}
+                    <div class="grid grid-cols-1 gap-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Mis à jour le</label>
+                        <input type="text" value="{{ category.updatedAt ? category.updatedAt|date('d F Y \à H:i') : 'Non défini' }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
-
-    <a href="{{ path('front_app_category_index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; margin-right: 8px;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Back to list</a>
-
-    <a href="{{ path('front_app_category_edit', {'id': category.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Edit</a>
-
-    {{ include('/front/category/_delete_form.html.twig') }}
 {% endblock %}
