@@ -170,21 +170,22 @@ class StatisticsController extends AbstractController
         $totalInvoices = $this->countEntitiesByDate($entityManager, 'App\Entity\Facture', new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"), $company_id);
         $totalPriceInvoices = $this->getTotalPriceOfInvoices($entityManager, new \DateTime("$selectedYear-01-01 00:00:00"), new \DateTime("$selectedYear-12-31 23:59:59"), $company_id);
 
-        // Création du contenu CSV
-        $csvContent = "Statistiques " . $company->getName() . " - Année $selectedYear\n\n";
+        // Création du contenu CSV avec BOM UTF-8 pour Excel
+        $csvContent = "\xEF\xBB\xBF"; // BOM UTF-8
+        $csvContent .= "Statistiques " . $company->getName() . " - Année $selectedYear\n\n";
         
         // Résumé annuel
         $csvContent .= "RÉSUMÉ ANNUEL $selectedYear\n";
-        $csvContent .= "Catégorie,Total,Prix Total\n";
-        $csvContent .= "Clients,$totalCustomers,-\n";
-        $csvContent .= "Catégories,$totalCategories,-\n";
-        $csvContent .= "Produits,$totalProducts,-\n";
-        $csvContent .= "Devis,$totalQuotations," . number_format($totalPriceQuotations, 2) . " €\n";
-        $csvContent .= "Factures,$totalInvoices," . number_format($totalPriceInvoices, 2) . " €\n\n";
+        $csvContent .= "Catégorie;Total;Prix Total\n";
+        $csvContent .= "Clients;$totalCustomers;-\n";
+        $csvContent .= "Catégories;$totalCategories;-\n";
+        $csvContent .= "Produits;$totalProducts;-\n";
+        $csvContent .= "Devis;$totalQuotations;" . number_format($totalPriceQuotations, 2, ',', ' ') . " €\n";
+        $csvContent .= "Factures;$totalInvoices;" . number_format($totalPriceInvoices, 2, ',', ' ') . " €\n\n";
         
         // Détail par mois
         $csvContent .= "DÉTAIL MENSUEL $selectedYear\n";
-        $csvContent .= "Mois,Clients Total,Clients %,Catégories Total,Catégories %,Produits Total,Produits %,Devis Total,Devis Prix,Devis %,Factures Total,Factures Prix,Factures %\n";
+        $csvContent .= "Mois;Clients Total;Clients %;Catégories Total;Catégories %;Produits Total;Produits %;Devis Total;Devis Prix;Devis %;Factures Total;Factures Prix;Factures %\n";
         
         for ($month = 1; $month <= 12; $month++) {
             $lastDayOfMonth = (int) date('t', strtotime("$selectedYear-$month-01"));
@@ -199,20 +200,20 @@ class StatisticsController extends AbstractController
             $totalPriceQuotationsMonth = $this->getTotalPriceOfQuotations($entityManager, $startDate, $endDate, $company_id);
             $totalPriceInvoicesMonth = $this->getTotalPriceOfInvoices($entityManager, $startDate, $endDate, $company_id);
             
-            $customerPercent = $totalCustomers > 0 ? number_format(($customerCount / $totalCustomers) * 100, 2) : '0.00';
-            $categoryPercent = $totalCategories > 0 ? number_format(($categoryCount / $totalCategories) * 100, 2) : '0.00';
-            $productPercent = $totalProducts > 0 ? number_format(($productCount / $totalProducts) * 100, 2) : '0.00';
-            $quotationPercent = $totalQuotations > 0 ? number_format(($quotationsCount / $totalQuotations) * 100, 2) : '0.00';
-            $invoicePercent = $totalInvoices > 0 ? number_format(($invoicesCount / $totalInvoices) * 100, 2) : '0.00';
+            $customerPercent = $totalCustomers > 0 ? number_format(($customerCount / $totalCustomers) * 100, 2, ',', ' ') : '0,00';
+            $categoryPercent = $totalCategories > 0 ? number_format(($categoryCount / $totalCategories) * 100, 2, ',', ' ') : '0,00';
+            $productPercent = $totalProducts > 0 ? number_format(($productCount / $totalProducts) * 100, 2, ',', ' ') : '0,00';
+            $quotationPercent = $totalQuotations > 0 ? number_format(($quotationsCount / $totalQuotations) * 100, 2, ',', ' ') : '0,00';
+            $invoicePercent = $totalInvoices > 0 ? number_format(($invoicesCount / $totalInvoices) * 100, 2, ',', ' ') : '0,00';
             
             $monthName = date('F', mktime(0, 0, 0, $month, 1));
             
-            $csvContent .= "$monthName,$customerCount,$customerPercent%,$categoryCount,$categoryPercent%,$productCount,$productPercent%,$quotationsCount," . number_format($totalPriceQuotationsMonth, 2) . " €,$quotationPercent%,$invoicesCount," . number_format($totalPriceInvoicesMonth, 2) . " €,$invoicePercent%\n";
+            $csvContent .= "$monthName;$customerCount;$customerPercent%;$categoryCount;$categoryPercent%;$productCount;$productPercent%;$quotationsCount;" . number_format($totalPriceQuotationsMonth, 2, ',', ' ') . " €;$quotationPercent%;$invoicesCount;" . number_format($totalPriceInvoicesMonth, 2, ',', ' ') . " €;$invoicePercent%\n";
         }
 
         // Création de la réponse avec le fichier CSV
         $response = new Response($csvContent);
-        $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+        $response->headers->set('Content-Type', 'text/csv; charset=utf-8; separator=;');
         $response->headers->set('Content-Disposition', 'attachment; filename="statistiques_' . $company->getName() . '_' . $selectedYear . '.csv"');
         
         return $response;

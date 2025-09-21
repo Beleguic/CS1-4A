@@ -100,9 +100,19 @@
 
     <div class="company-info">
         <h3>{{ company.name }}</h3>
-        <p>Adresse: {{ company.address ?? 'Non renseignée' }}</p>
-        <p>Téléphone: {{ company.phone ?? 'Non renseigné' }}</p>
+        <p>Adresse: 
+            {% if company.addressNumber or company.addressType or company.addressName or company.addressCity %}
+                {{ company.addressNumber ?? '' }} 
+                {{ company.addressType ?? '' }} 
+                {{ company.addressName ?? '' }}<br>
+                {{ company.addressZipCode ?? '' }} {{ company.addressCity ?? '' }}
+                {% if company.addressCountry %}, {{ company.addressCountry }}{% endif %}
+            {% else %}
+                Non renseignée
+            {% endif %}
+        </p>
         <p>Email: {{ company.email ?? 'Non renseigné' }}</p>
+        {% if company.companyNumber %}<p>SIRET: {{ company.companyNumber }}</p>{% endif %}
     </div>
 
     <!-- Résumé Annuel -->
