@@ -152,7 +152,12 @@ class DevisController extends AbstractController
 
         ksort($total['tva']);
 
-        $total['ttc'] = $devis->getTotalPrice();
+        // Calculer le total TTC = Total HT + Total TVA
+        $totalTVA = 0;
+        foreach ($total['tva'] as $montantTVA) {
+            $totalTVA += $montantTVA;
+        }
+        $total['ttc'] = $total['ht'] + $totalTVA;
 
         // Récupérer l'entreprise
         $company = null;
@@ -287,7 +292,12 @@ class DevisController extends AbstractController
 
         ksort($total['tva']);
 
-        $total['ttc'] = $devis->getTotalPrice();
+        // Calculer le total TTC = Total HT + Total TVA
+        $totalTVA = 0;
+        foreach ($total['tva'] as $montantTVA) {
+            $totalTVA += $montantTVA;
+        }
+        $total['ttc'] = $total['ht'] + $totalTVA;
 
         // Récupérer l'entreprise
         $company = null;
@@ -334,25 +344,36 @@ class DevisController extends AbstractController
         $total['ht'] = 0;
 
         foreach ($devis->getProduits() as $produit) {
-            $categoryTemp = $produit['category']['name'];
+            $categoryTemp = $produit->getCategory()->getName();
             $categoriProduits[$categoryTemp][] = $produit;
 
-            if(!isset($tauxTVA[$produit['tva']])){
-                $tauxTVA[intval($produit['tva'])] = 0;
+            $prixHT = $produit->getPrice() * $produit->getQuantite();
+            $tauxTVAProduit = $produit->getTva() / 100;
+            $montantTVA = $prixHT * $tauxTVAProduit;
+
+            $tvaKey = (string)$produit->getTva();
+
+            if(!isset($tauxTVA[$tvaKey])){
+                $tauxTVA[$tvaKey] = 0;
             }
 
-            $tauxTVA[intval($produit['tva'])] += $produit['price'] * $produit['quantite'];
-            $total['ht'] += $produit['price'] * $produit['quantite'];
+            $tauxTVA[$tvaKey] += $prixHT;
+            $total['ht'] += $prixHT;
 
-            if(!isset($total['tva'][$produit['tva']])){
-                $total['tva'][$produit['tva']] = 0;
+            if(!isset($total['tva'][$tvaKey])){
+                $total['tva'][$tvaKey] = 0;
             }
-            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
+            $total['tva'][$tvaKey] += $montantTVA;
         }
 
         ksort($total['tva']);
 
-        $total['ttc'] = $devis->getTotalPrice();
+        // Calculer le total TTC = Total HT + Total TVA
+        $totalTVA = 0;
+        foreach ($total['tva'] as $montantTVA) {
+            $totalTVA += $montantTVA;
+        }
+        $total['ttc'] = $total['ht'] + $totalTVA;
 
         $client = $devis->getClient();
         if (!$client) {
