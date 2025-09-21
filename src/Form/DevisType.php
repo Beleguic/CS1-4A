@@ -34,8 +34,18 @@ class DevisType extends AbstractType
                     }
                     return $client->getNom() . ' ' . $client->getPrenom() . $adresse;
                 },
-                'query_builder' => function (ClientRepository $er) {
+                'query_builder' => function (ClientRepository $er) use ($options) {
+                    $company_id = $options['company_id'] ?? null;
+                    
+                    if ($company_id === null) {
+                        return $er->createQueryBuilder('c')
+                            ->orderBy('c.Nom', 'ASC')
+                            ->addOrderBy('c.Prenom', 'ASC');
+                    }
+                    
                     return $er->createQueryBuilder('c')
+                        ->where('c.company_id = :company_id')
+                        ->setParameter('company_id', $company_id)
                         ->orderBy('c.Nom', 'ASC')
                         ->addOrderBy('c.Prenom', 'ASC');
                 },

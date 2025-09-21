@@ -202,7 +202,9 @@ class DevisController extends AbstractController
         // Les produits sont déjà des objets Product, pas besoin de conversion
         // $devis->getProduits() retourne déjà une Collection d'objets Product
 
-        $form = $this->createForm(DevisType::class, $devis);
+        $form = $this->createForm(DevisType::class, $devis, [
+            'company_id' => $companyId // Passer le company_id au formulaire
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

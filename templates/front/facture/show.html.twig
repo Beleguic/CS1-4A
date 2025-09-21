@@ -114,7 +114,7 @@
             {% for taux_tva, total_tva in total.tva %}
                 <h2 class="text-1xl text-xs uppercase text-black dark:text-white">TVA {{ taux_tva }}% : {{ (total_tva / 100) | number_format(2, ',', ' ') }} €</h2>
             {% endfor %}
-            <h2 class="text-2xl font-bold uppercase text-black dark:text-white">Total TTC : {{ (total.ttc) | number_format(2, ',', ' ') }} €</h2>
+            <h2 class="text-2xl font-bold uppercase text-black dark:text-white">Total TTC : {{ (total.ttc / 100) | number_format(2, ',', ' ') }} €</h2>
         </div>
     </div>
 {% endblock %}

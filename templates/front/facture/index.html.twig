@@ -33,9 +33,9 @@
                             {{ facture.client.nom ~ ' ' ~ facture.client.prenom }}
                         {% endif %}
                     </td>
-                    <td class="py-4 px-6 text-right">{{ (facture.prixTotal)|number_format(2, ',', ' ') }} €</td>
+                    <td class="py-4 px-6 text-right">{{ (facture.prixTotal / 100)|number_format(2, ',', ' ') }} €</td>
                     <td class="py-4 px-6">{{ facture.paid ? 'oui' : 'non' }}</td>
-                    <td class="py-4 px-6 text-right">{{ (facture.prixPaye)|number_format(2, ',', ' ') }} €</td>
+                    <td class="py-4 px-6 text-right">{{ (facture.prixPaye / 100)|number_format(2, ',', ' ') }} €</td>
                     <td class="py-4 px-6">{{ facture.dateFacture|date("d/m/Y") }}</td>
                     <td class="py-4 px-6">{{ facture.dateEcheance|date("d/m/Y") }}</td>
                     <td class="py-4 px-6">

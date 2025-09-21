@@ -41,7 +41,9 @@ class ProductController extends AbstractController
 
         $product = new Product();
         $product->setCompanyId($companyId);
-        $form = $this->createForm(ProductType::class, $product);
+        $form = $this->createForm(ProductType::class, $product, [
+            'company_id' => $companyId
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -69,7 +71,12 @@ class ProductController extends AbstractController
     #[Route('/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ProductType::class, $product);
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+        
+        $form = $this->createForm(ProductType::class, $product, [
+            'company_id' => $companyId
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
