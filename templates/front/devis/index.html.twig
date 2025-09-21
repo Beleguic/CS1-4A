@@ -4,9 +4,9 @@
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-<div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-    {{ include('/front/devis/_nav.html.twig') }}
+{{ include('/front/devis/_nav.html.twig') }}
 
+<div class="overflow-x-auto relative shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -23,7 +23,7 @@
                 <td class="py-4 px-6 font-medium text-gray-900 dark:text-white">{{ devi.getNumDevis() }}</td>
                 <td class="py-4 px-6">{{ devi.getClient().getNom() ~ " " ~ devi.getClient().getPrenom() }}</td>
                 <td class="py-4 px-6">{{ devi.createdAt|date('d/m/Y') }}</td>
-                <td class="py-4 px-6 font-semibold">{{ (devi.getTotalPrice() / 100)|number_format(2, ',', ' ')|number_format(2, ',', ' ') }} € €</td>
+                <td class="py-4 px-6 font-semibold text-right">{{ (devi.getTotalPrice() / 100)|number_format(2, ',', ' ') }} €</td>
                 <td class="py-4 px-6 flex gap-2">
                     <a href="{{ path('front_app_devis_show', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Voir</a>
                     <a href="{{ path('front_app_devis_edit', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-700">Modifier</a>
