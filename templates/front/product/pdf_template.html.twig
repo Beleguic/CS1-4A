@@ -68,8 +68,8 @@
         <div class="product-price">Prix : {{ product.price }} €</div>
     </div>
     <footer>
-        <div>© 2024 Mon Entreprise - Tous droits réservés</div>
-        <div>Généré avec l'application Plumbpay</div>
+        <div>© {{ "now"|date("Y") }}  - Tous droits réservés</div>
+        <div>Généré avec l'application Plumbpay - Société : {{ product.company ? product.company.name : 'Non renseignée' }}</div>
     </footer>
 </body>
 </html>

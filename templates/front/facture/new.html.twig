@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Facture{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Créer une nouvelle facture') %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-    <h1>Create new Facture</h1>
+    {{ include('/front/facture/_nav.html.twig') }}
 
     {{ include('/front/facture/_form.html.twig') }}
 
-    <a href="{{ path('front_app_facture_index') }}">back to list</a>
 {% endblock %}

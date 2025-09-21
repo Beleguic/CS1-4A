@@ -197,7 +197,6 @@ class CompanyController extends AbstractController
                 if ($passwordHasher->isPasswordValid($user, $form->get('oldPassword')->getData())) {
                     $newEncodedPassword = $passwordHasher->hashPassword($user, $form->get('newPassword')->getData());
                     $user->setPassword($newEncodedPassword);
-                    $manager->flush();
                     $this->addFlash('success', 'Mot de passe mis à jour avec succès');
                 } else {
                     $this->addFlash('error', 'Ancien mot de passe incorrect.');

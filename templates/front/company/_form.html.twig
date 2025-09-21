@@ -20,24 +20,59 @@
         
         <!-- Logo actuel (si existe) -->
         {% if form.vars.value.imageName is defined and form.vars.value.imageName is not empty and form.vars.value.imageName != '' %}
-            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">Logo actuel</h4>
-                <div class="flex items-center gap-4">
-                    <img src="{{ vich_uploader_asset(form.vars.value, 'imageFile') }}" class="w-16 h-16 object-cover rounded-lg border border-gray-300 dark:border-gray-600">
-                    <div class="flex flex-col gap-2 flex-1">
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Nom: {{ form.vars.value.imageName }}</p>
-                        <div class="flex gap-2">
-                            <a href="{{ vich_uploader_asset(form.vars.value, 'imageFile') }}" class="inline-flex items-center px-3 py-1 text-xs font-medium text-mainColor-600 dark:text-mainColor-400 hover:text-mainColor-800 dark:hover:text-mainColor-300 transition-colors duration-200" download="logo-{{ form.vars.value.name }}">
+            <div class="relative p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm">
+                <div class="absolute top-3 right-3">
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+                        {{ include('_composants/_lucide_icon.html.twig', { 
+                            name: 'check-circle', 
+                            class: 'w-3 h-3 mr-1' 
+                        }) }}
+                        Logo actuel
+                    </span>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-6">
+                    <div class="relative group">
+                        <img src="{{ vich_uploader_asset(form.vars.value, 'imageFile') }}" class="w-24 h-24 object-cover rounded-xl border-2 border-white dark:border-gray-600 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-xl transition-all duration-300 flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'eye', 
+                                    class: 'w-6 h-6 text-white' 
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-3 flex-1 text-center sm:text-left">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ form.vars.value.imageName }}</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Taille: {{ (form.vars.value.imageSize / 1024) | number_format(0) }} KB
+                            </p>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-3 justify-center sm:justify-start">
+                            <a href="{{ vich_uploader_asset(form.vars.value, 'imageFile') }}" class="inline-flex items-center px-4 py-2 bg-mainColor-100 text-mainColor-700 hover:bg-mainColor-200 dark:bg-mainColor-900/20 dark:text-mainColor-400 dark:hover:bg-mainColor-900/40 rounded-lg font-medium transition-all duration-200 transform hover:scale-105" download="logo-{{ form.vars.value.name }}" target="_blank">
                                 {{ include('_composants/_lucide_icon.html.twig', { 
                                     name: 'download', 
-                                    class: 'w-3 h-3 mr-1' 
+                                    class: 'w-4 h-4 mr-2' 
                                 }) }}
                                 Télécharger
                             </a>
-                            <button type="button" onclick="removeCurrentLogo()" class="inline-flex items-center px-3 py-1 text-xs font-medium text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors duration-200">
+                            
+                            <button type="button" onclick="previewCurrentLogo()" class="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40 rounded-lg font-medium transition-all duration-200 transform hover:scale-105">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'eye', 
+                                    class: 'w-4 h-4 mr-2' 
+                                }) }}
+                                Aperçu
+                            </button>
+                            
+                            <button type="button" onclick="removeCurrentLogo()" class="inline-flex items-center px-4 py-2 bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 rounded-lg font-medium transition-all duration-200 transform hover:scale-105">
                                 {{ include('_composants/_lucide_icon.html.twig', { 
                                     name: 'trash-2', 
-                                    class: 'w-3 h-3 mr-1' 
+                                    class: 'w-4 h-4 mr-2' 
                                 }) }}
                                 Supprimer
                             </button>
@@ -47,21 +82,116 @@
             </div>
         {% endif %}
 
-        <!-- Zone d'upload -->
-        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-mainColor-400 dark:hover:border-mainColor-400 transition-colors duration-200">
+        <!-- Zone d'upload moderne -->
+        <div class="relative">
+            <!-- Zone de drop cachée au-dessus -->
+            <div id="drop-overlay" class="absolute inset-0 bg-mainColor-500/20 border-2 border-mainColor-500 rounded-xl flex items-center justify-center z-10 opacity-0 pointer-events-none transition-all duration-300">
+                <div class="text-center">
+                    <div class="w-16 h-16 mx-auto mb-3 bg-mainColor-500 rounded-full flex items-center justify-center animate-bounce">
+                        {{ include('_composants/_lucide_icon.html.twig', { 
+                            name: 'upload', 
+                            class: 'w-8 h-8 text-white' 
+                        }) }}
+                    </div>
+                    <p class="text-mainColor-700 dark:text-mainColor-300 font-semibold">Déposez votre logo ici !</p>
+                </div>
+            </div>
             
-            <!-- Input file visible -->
-            {{ form_widget(form.imageFile, {
-                'attr': {
-                    'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200',
-                    'accept': 'image/*'
-                }
-            }) }}
+            <!-- Zone d'upload principale -->
+            <div id="upload-zone" class="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center transition-all duration-300 cursor-pointer hover:border-mainColor-400 hover:bg-mainColor-50/30 dark:hover:bg-mainColor-900/10 group"
+                 onclick="triggerFileInput()">
+                
+                <!-- État par défaut -->
+                <div id="default-state">
+                    <!-- Icône animée -->
+                    <div class="mb-6">
+                        <div class="relative mx-auto w-20 h-20">
+                            <!-- Cercle de fond -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-mainColor-100 to-mainColor-200 dark:from-mainColor-900/30 dark:to-mainColor-800/30 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
+                            <!-- Icône -->
+                            <div class="relative w-full h-full flex items-center justify-center">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'image-plus', 
+                                    class: 'w-10 h-10 text-mainColor-600 dark:text-mainColor-400 group-hover:scale-110 transition-transform duration-300' 
+                                }) }}
+                            </div>
+                            <!-- Effet de pulse -->
+                            <div class="absolute inset-0 bg-mainColor-400 rounded-full opacity-0 group-hover:opacity-20 group-hover:scale-125 transition-all duration-500"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Texte principal -->
+                    <div class="mb-4">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-mainColor-600 dark:group-hover:text-mainColor-400 transition-colors duration-300">
+                            Choisissez votre logo
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
+                            Glissez un fichier ici ou 
+                            <span class="text-mainColor-600 dark:text-mainColor-400 font-semibold underline decoration-2 underline-offset-2">cliquez pour parcourir</span>
+                        </p>
+                    </div>
+                    
+                    <!-- Informations avec icônes -->
+                    <div class="flex flex-wrap justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                        <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'file-image', 
+                                class: 'w-4 h-4 text-green-500' 
+                            }) }}
+                            <span>JPG, PNG, GIF</span>
+                        </div>
+                        <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'hard-drive', 
+                                class: 'w-4 h-4 text-blue-500' 
+                            }) }}
+                            <span>Max 5MB</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- État de chargement -->
+                <div id="loading-state" class="hidden">
+                    <div class="mb-4">
+                        <div class="mx-auto w-16 h-16 border-4 border-mainColor-200 border-t-mainColor-600 rounded-full animate-spin"></div>
+                    </div>
+                    <p class="text-mainColor-600 dark:text-mainColor-400 font-semibold">Traitement en cours...</p>
+                </div>
+                
+                <!-- Input file caché -->
+                {{ form_widget(form.imageFile, {
+                    'attr': {
+                        'class': 'absolute inset-0 w-full h-full opacity-0 cursor-pointer',
+                        'accept': 'image/*',
+                        'onchange': 'handleFileSelect(this)',
+                        'id': 'logo-file-input'
+                    }
+                }) }}
+            </div>
             
-            <div class="mt-3">
-                <p class="text-xs text-gray-500 dark:text-gray-400">
-                    Formats acceptés : JPG, PNG, GIF (max 5MB)
-                </p>
+            <!-- Prévisualisation du fichier sélectionné -->
+            <div id="file-preview" class="hidden mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-xl">
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <img id="preview-img" class="w-16 h-16 object-cover rounded-lg border-2 border-green-300 dark:border-green-600 shadow-md">
+                        <div class="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'check', 
+                                class: 'w-3 h-3 text-white' 
+                            }) }}
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-green-800 dark:text-green-200">Fichier sélectionné</h4>
+                        <p id="file-info" class="text-sm text-green-600 dark:text-green-400"></p>
+                    </div>
+                    <button type="button" onclick="resetFileInput()" class="p-2 text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-all duration-200">
+                        {{ include('_composants/_lucide_icon.html.twig', { 
+                            name: 'x-circle', 
+                            class: 'w-5 h-5' 
+                        }) }}
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -69,9 +199,141 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Nettoyer les éléments VichUploader par défaut
+            const vichImage = document.querySelector('.vich-image');
+            if (vichImage) {
+                Array.from(vichImage.children).forEach(function(child) {
+                    if (child.tagName.toLowerCase() !== 'input') {
+                        child.remove();
+                    }
+                });
+            }
+            
+            // Initialiser le drag & drop
+            initializeDragAndDrop();
+        });
+
+        // Initialisation du drag & drop
+        function initializeDragAndDrop() {
+            const uploadZone = document.getElementById('upload-zone');
+            const dropOverlay = document.getElementById('drop-overlay');
+            
+            // Événements drag & drop
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadZone.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadZone.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadZone.addEventListener(eventName, unhighlight, false);
+            });
+            
+            uploadZone.addEventListener('drop', handleDrop, false);
+        }
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        function highlight(e) {
+            document.getElementById('drop-overlay').style.opacity = '1';
+            document.getElementById('drop-overlay').style.pointerEvents = 'auto';
+        }
+        
+        function unhighlight(e) {
+            document.getElementById('drop-overlay').style.opacity = '0';
+            document.getElementById('drop-overlay').style.pointerEvents = 'none';
+        }
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0) {
+                const fileInput = document.getElementById('logo-file-input');
+                fileInput.files = files;
+                handleFileSelect(fileInput);
+            }
+        }
+        
+        // Déclencher l'input file
+        function triggerFileInput() {
+            document.getElementById('logo-file-input').click();
+        }
+        
+        // Gestion de la sélection de fichier
+        function handleFileSelect(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            // Validation
+            if (!file.type.startsWith('image/')) {
+                alert('❌ Veuillez sélectionner un fichier image (JPG, PNG, GIF)');
+                resetFileInput();
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                alert('❌ Le fichier est trop volumineux. Taille maximum : 5MB');
+                resetFileInput();
+                return;
+            }
+            
+            // Afficher le chargement
+            showLoadingState();
+            
+            // Simuler un délai de traitement (optionnel)
+            setTimeout(() => {
+                showFilePreview(file);
+            }, 800);
+        }
+        
+        // Afficher l'état de chargement
+        function showLoadingState() {
+            document.getElementById('default-state').classList.add('hidden');
+            document.getElementById('loading-state').classList.remove('hidden');
+        }
+        
+        // Afficher la prévisualisation
+        function showFilePreview(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('preview-img').src = e.target.result;
+                document.getElementById('file-info').textContent = `${file.name} • ${(file.size / 1024).toFixed(0)} KB`;
+                
+                // Masquer la zone d'upload et afficher la prévisualisation
+                document.getElementById('upload-zone').classList.add('hidden');
+                document.getElementById('file-preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Réinitialiser l'input
+        function resetFileInput() {
+            document.getElementById('logo-file-input').value = '';
+            document.getElementById('upload-zone').classList.remove('hidden');
+            document.getElementById('file-preview').classList.add('hidden');
+            document.getElementById('default-state').classList.remove('hidden');
+            document.getElementById('loading-state').classList.add('hidden');
+        }
+        
+        // Aperçu du logo actuel
+        function previewCurrentLogo() {
+            const currentLogo = '{{ vich_uploader_asset(form.vars.value, 'imageFile') }}';
+            if (currentLogo) {
+                window.open(currentLogo, '_blank');
+            }
+        }
+        
+        // Suppression du logo actuel
         function removeCurrentLogo() {
             if (confirm('Êtes-vous sûr de vouloir supprimer le logo actuel ?')) {
-                // Créer un input caché pour indiquer la suppression
                 const form = document.querySelector('form');
                 if (form) {
                     const removeInput = document.createElement('input');
@@ -80,8 +342,6 @@
                     removeInput.value = '1';
                     form.appendChild(removeInput);
                 }
-                
-                // Recharger la page pour mettre à jour l'affichage
                 location.reload();
             }
         }

@@ -1,14 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category index{% endblock %}
+{% block title %}PlumbPay - Liste des catégories{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Liste des catégories') %}
 
 {% block body %}
-
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+        {{ include('/front/category/_nav.html.twig') }}
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="py-3 px-6">Name</th>
+                    <th scope="col" class="py-3 px-6">ID</th>
+                    <th scope="col" class="py-3 px-6">Nom</th>
                     <th scope="col" class="py-3 px-6">Description</th>
                     <th scope="col" class="py-3 px-6">Actions</th>
                 </tr>
@@ -19,9 +22,12 @@
                     <td class="py-4 px-6">{{ category.name }}</td>
                     <td class="py-4 px-6">{{ category.description }}</td>
                     <td class="py-4 px-6 flex gap-2">
-                        <a href="{{ path('front_app_category_show', {'id': category.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Show</a>
-                        <a href="{{ path('front_app_category_edit', {'id': category.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Edit</a>
-                        <a href="{{ path('front_app_category_delete', {'id': category.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">Delete</a>
+                        <a href="{{ path('front_app_category_show', {'id': category.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Voir</a>
+                        <a href="{{ path('front_app_category_edit', {'id': category.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Modifier</a>
+                        <form method="post" action="{{ path('front_app_category_delete', {'id': category.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');" class="inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                            <button type="submit" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700 h-full">Supprimer</button>
+                        </form>
                     </td>
                 </tr>
             {% else %}
@@ -32,7 +38,4 @@
             </tbody>
         </table>
     </div>
-
-    <a href="{{ path('front_app_category_new') }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Create New</a>
-
 {% endblock %}

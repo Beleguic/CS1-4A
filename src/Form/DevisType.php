@@ -23,7 +23,9 @@ class DevisType extends AbstractType
             ->add('client', EntityType::class, [
                 'class' => Client::class,
                 'label' => 'Sélectionnez un client',
-                'choice_label' => 'Nom',
+                'choice_label' => function ($client) {
+                    return $client->getNom() . ' ' . $client->getPrenom() . ' - ' . $client->getEmail();
+                },
                 /*'query_builder' => function (EntityRepository $er) use ($entrepriseId) {
                     return $er->createQueryBuilder('c')
                         ->andWhere('c.entreprise = :entrepriseId')

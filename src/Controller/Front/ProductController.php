@@ -41,7 +41,6 @@ class ProductController extends AbstractController
 
         $product = new Product();
         $product->setCompanyId($companyId);
-        //dd($product);
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
@@ -50,7 +49,7 @@ class ProductController extends AbstractController
             $entityManager->persist($product);
             $entityManager->flush();
 
-            return $this->redirectToRoute('front_app_product_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_app_product_index', [], Response::HTTP_FOUND);
         }
 
         return $this->render('front/product/new.html.twig', [
@@ -76,7 +75,7 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('front_app_product_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_app_product_show', ['id' => $product->getId()], Response::HTTP_FOUND);
         }
 
         return $this->render('front/product/edit.html.twig', [
@@ -89,11 +88,19 @@ class ProductController extends AbstractController
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($product);
-            $entityManager->flush();
+            try {
+                $productName = $product->getName();
+                $entityManager->remove($product);
+                $entityManager->flush();
+                $this->addFlash('success', 'Le produit "' . $productName . '" a été supprimé avec succès.');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Erreur lors de la suppression : ' . $e->getMessage());
+            }
+        } else {
+            $this->addFlash('error', 'Token de sécurité invalide.');
         }
 
-        return $this->redirectToRoute('front_app_product_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('front_app_product_index', [], Response::HTTP_FOUND);
     }
 
     // src/Controller/Front/ProductController.php
