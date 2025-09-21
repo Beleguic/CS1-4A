@@ -21,6 +21,12 @@ class StatisticsController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $isSuperAdmin = $this->isGranted('ROLE_SUPER_ADMIN');
         
         if ($isSuperAdmin) {
@@ -180,6 +186,12 @@ class StatisticsController extends AbstractController
     public function exportCsv(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $isSuperAdmin = $this->isGranted('ROLE_SUPER_ADMIN');
         
         if ($isSuperAdmin) {
@@ -266,6 +278,12 @@ class StatisticsController extends AbstractController
     public function exportPdf(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $isSuperAdmin = $this->isGranted('ROLE_SUPER_ADMIN');
         
         if ($isSuperAdmin) {

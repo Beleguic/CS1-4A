@@ -18,6 +18,12 @@ class CategoryController extends AbstractController
     public function index(CategoryRepository $categoryRepository): Response
     {
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
 
         return $this->render('front/category/index.html.twig', [
@@ -30,6 +36,12 @@ class CategoryController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
 
         $category = new Category();
@@ -64,6 +76,12 @@ class CategoryController extends AbstractController
     public function edit(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
         
         $form = $this->createForm(CategoryType::class, $category, [

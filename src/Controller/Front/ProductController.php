@@ -20,8 +20,13 @@ class ProductController extends AbstractController
     #[Route('/', name: 'app_product_index', methods: ['GET'])]
     public function index(ProductRepository $productRepository): Response
     {
-
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
 
         return $this->render('front/product/index.html.twig', [
@@ -33,6 +38,12 @@ class ProductController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
 
         if (!$companyId) {
@@ -72,6 +83,12 @@ class ProductController extends AbstractController
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
         
         $form = $this->createForm(ProductType::class, $product, [
