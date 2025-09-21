@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Devis;
 use App\Form\DevisType;
 use App\Repository\DevisRepository;
+use App\Repository\CompanyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -101,7 +102,7 @@ class DevisController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_devis_show', methods: ['GET'])]
-    public function show(Devis $devis): Response
+    public function show(Devis $devis, CompanyRepository $companyRepository): Response
     {
 
         $categoriProduits = [];
@@ -112,25 +113,39 @@ class DevisController extends AbstractController
             $categoryTemp = $produit['category']['name'];
             $categoriProduits[$categoryTemp][] = $produit;
 
-            if(!isset($tauxTVA[$produit['tva']])){
-                $tauxTVA[intval($produit['tva'])] = 0;
+            $prixHT = $produit['price'] * $produit['quantite'];
+            $tauxTVAProduit = $produit['tva'] / 100;
+            $montantTVA = $prixHT * $tauxTVAProduit;
+
+
+            $tvaKey = (string)$produit['tva']; // Convertir en string pour éviter les problèmes de clé
+
+            if(!isset($tauxTVA[$tvaKey])){
+                $tauxTVA[$tvaKey] = 0;
             }
 
-            $tauxTVA[intval($produit['tva'])] += $produit['price'] * $produit['quantite'];
-            $total['ht'] += $produit['price'] * $produit['quantite'];
+            $tauxTVA[$tvaKey] += $prixHT;
+            $total['ht'] += $prixHT;
 
-            if(!isset($total['tva'][$produit['tva']])){
-                $total['tva'][$produit['tva']] = 0;
+            if(!isset($total['tva'][$tvaKey])){
+                $total['tva'][$tvaKey] = 0;
             }
-            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
+            $total['tva'][$tvaKey] += $montantTVA;
         }
 
         ksort($total['tva']);
 
         $total['ttc'] = $devis->getTotalPrice();
 
+        // Récupérer l'entreprise
+        $company = null;
+        if ($devis->getCompanyId()) {
+            $company = $companyRepository->find($devis->getCompanyId());
+        }
+
         return $this->render('front/devis/show.html.twig', [
             'devis' => $devis,
+            'company' => $company,
             'categoriProduits' => $categoriProduits,
             'tauxTVA' => $tauxTVA,
             'total' => $total,

@@ -12,10 +12,17 @@
         </div>
         <div class="text-right">
             <h1 class="text-2xl font-bold underline" style="color: #000000;">Entreprise</h1>
-            {# <p>{{ devis.entreprise.getNom() }}</p>
-            <p>{{ devis.entreprise.getFullAddress() }}</p>
-            <p>{{ devis.entreprise.getEmail() }} </p>
-            <p>{{ devis.entreprise.getNumeroTelephone() }}</p>  #}
+            {% if company %}
+                <p>{{ company.name }}</p>
+                <p>{{ company.addressNumber }} {{ company.addressType }} {{ company.addressName }}</p>
+                <p>{{ company.addressZipCode }} {{ company.addressCity }}</p>
+                <p>{{ company.email }}</p>
+                {% if company.companyNumber %}
+                    <p>SIRET: {{ company.companyNumber }}</p>
+                {% endif %}
+            {% else %}
+                <p>Informations d'entreprise non disponibles</p>
+            {% endif %}
         </div>
         <div class="text-left">
             <h1 class="text-2xl font-bold underline" style="color: #000000;">Client</h1>
@@ -58,7 +65,7 @@
         <div class="text-right mt-4">
             <h2 class="text-1xl" style="color: #000000;">Total HT : {{ total.ht | number_format(2, ',', ' ')}} €</h2>
             {% for taux_tva, total_tva in total.tva %}
-                <h2 class="text-1xl" style="color: #000000;">TVA {{ taux_tva }}% : {{ total_tva | number_format(1, ',', ' ') | number_format(2, ',', ' ') }} €</h2>
+                <h2 class="text-1xl" style="color: #000000;">TVA {{ taux_tva }}% : {{ total_tva | number_format(2, ',', ' ') }} €</h2>
             {% endfor %}
             <h2 class="text-2xl font-bold" style="color: #000000;">Total TTC : {{ total.ttc | number_format(2, ',', ' ') }} €</h2>
         </div>

@@ -20,9 +20,6 @@ class DevisType extends AbstractType
             ->add('numDevis', TextType::class, [
                 'label' => 'Numero de Devis',
             ])
-            ->add('entreprise', TextType::class, [
-                'label' => 'Entreprise',
-            ])
             ->add('client', EntityType::class, [
                 'class' => Client::class,
                 'label' => 'Sélectionnez un client',

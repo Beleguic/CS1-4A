@@ -36,14 +36,22 @@ class ProductType extends AbstractType
                 'label' => 'Categorie',
                 'choice_label' => 'name',
                 'query_builder' => function (CategoryRepository $er) use ($options) {
-                    $company_id = $options['data']->getCompanyId() ?? null;
-                    // Récupérer le company_id depuis la requête ou d'où vous le tenez
-                    // Par exemple, si vous l'avez dans votre contrôleur, passez-le ici en option
+                    // Vérifier si data existe et a une méthode getCompanyId
+                    $company_id = null;
+                    if (isset($options['data']) && is_object($options['data']) && method_exists($options['data'], 'getCompanyId')) {
+                        $company_id = $options['data']->getCompanyId();
+                    }
+                    
+                    // Si pas de company_id, récupérer toutes les catégories
+                    if ($company_id === null) {
+                        return $er->createQueryBuilder('c')
+                            ->orderBy('c.name', 'ASC');
+                    }
 
                     return $er->createQueryBuilder('c')
                         ->where('c.company_id = :company_id')
                         ->setParameter('company_id', $company_id)
-                        ->orderBy('c.name', 'ASC'); // Vous pouvez ajuster l'ordre de tri ici
+                        ->orderBy('c.name', 'ASC');
                 },
             ])
 
