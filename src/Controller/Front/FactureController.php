@@ -55,23 +55,45 @@ class FactureController extends AbstractController
         }
 
         foreach ($facture->getProduits() as $produit) {
-            $categoryTemp = $produit['category']['name'];
+            // Vérifier si c'est un objet Product ou un tableau
+            if (is_object($produit)) {
+                $categoryTemp = $produit->getCategory()->getName();
+                $prixHT = $produit->getPrice() * $produit->getQuantite();
+                $tauxTVAProduit = $produit->getTva() / 100;
+                $tvaKey = (string)$produit->getTva();
+            } else {
+                // C'est un tableau (ancien format)
+                if (isset($produit['category']['name'])) {
+                    $categoryTemp = $produit['category']['name'];
+                } elseif (isset($produit['category'])) {
+                    $categoryTemp = $produit['category'];
+                } else {
+                    $categoryTemp = 'Non catégorisé';
+                }
+                
+                $price = isset($produit['price']) ? $produit['price'] : 0;
+                $quantite = isset($produit['quantite']) ? $produit['quantite'] : 1;
+                $tva = isset($produit['tva']) ? $produit['tva'] : 0;
+                
+                $prixHT = $price * $quantite;
+                $tauxTVAProduit = $tva / 100;
+                $tvaKey = (string)$tva;
+            }
+            
             $categoriProduits[$categoryTemp][] = $produit;
+            $montantTVA = $prixHT * $tauxTVAProduit;
 
-            if(!isset($tauxTVA[$produit['tva']])){
-                $tauxTVA[intval($produit['tva'])] = 0;
+            if(!isset($tauxTVA[$tvaKey])){
+                $tauxTVA[$tvaKey] = 0;
             }
 
-            $tauxTVA[intval($produit['tva'])] += $produit['price'] * $produit['quantite'];
-            $total['ht'] += $produit['price'] * $produit['quantite'];
+            $tauxTVA[$tvaKey] += $prixHT;
+            $total['ht'] += $prixHT;
 
-            if(!isset($total['tva'][$produit['tva']])){
-                $total['tva'][$produit['tva']] = 0;
+            if(!isset($total['tva'][$tvaKey])){
+                $total['tva'][$tvaKey] = 0;
             }
-            // Calcul de la TVA : Prix HT * (Taux TVA / 100)
-            $prixHT = $produit['price'] * $produit['quantite'];
-            $montantTVA = $prixHT * ($produit['tva'] / 100);
-            $total['tva'][$produit['tva']] += $montantTVA;
+            $total['tva'][$tvaKey] += $montantTVA;
         }
 
         ksort($total['tva']);

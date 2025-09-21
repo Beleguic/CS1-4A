@@ -59,31 +59,34 @@ class DevisController extends AbstractController
             ];
         }
 
-        $products = json_encode($productArray);
+        $productsJson = json_encode($productArray);
 
         $devis = new Devis();
         $devis->setNumDevis('D' . date('Ymd') . '-' . rand(1000, 9999));
-        $form = $this->createForm(DevisType::class, $devis);
+        
+        // Ajouter un produit par défaut pour que la collection fonctionne
+        $produit = new Product();
+        $produit->setCompanyId($companyId); // Assigner le company_id au produit
+        $devis->addProduit($produit); // Utiliser la méthode addProduit
+        
+        $form = $this->createForm(DevisType::class, $devis, [
+            'company_id' => $companyId // Passer le company_id au formulaire
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $devis->setCompanyId($companyId);
-            $products = $devis->getProduits();
-
-            $prod = [];
-            foreach ($products as $product) {
-                $product->setName($productArray[$product->getName()]["name"]);
-                $prodtemp = $product->jsonSerialize();
-                $prodtemp['category'] = $product->getCategory()->jsonSerialize();
-
-                $prod[] = $prodtemp;
-            }
-            // on enregistre les produits dans l'objet devis
-            $devis->setProduits($prod);
-            // calcul du prix total
+            
+            // Calculer le prix total à partir des produits de la collection
             $totalPrice = 0;
-            foreach ($products as $product) {
-                $totalPrice += $product->getPrixTotale();
+            foreach ($devis->getProduits() as $product) {
+                // Assigner le company_id au produit
+                $product->setCompanyId($companyId);
+                
+                // Calculer le prix total pour ce produit (prix * quantité)
+                $prixProduit = $product->getPrice() * $product->getQuantite();
+                $product->setPrixTotale($prixProduit);
+                $totalPrice += $prixProduit;
             }
 
             $devis->setTotalPrice($totalPrice);
@@ -97,7 +100,7 @@ class DevisController extends AbstractController
         return $this->render('front/devis/new.html.twig', [
             'devis' => $devis,
             'form' => $form,
-            'product' => $products,
+            'product' => $productsJson,
         ]);
     }
 
@@ -110,15 +113,14 @@ class DevisController extends AbstractController
         $total['ht'] = 0;
 
         foreach ($devis->getProduits() as $produit) {
-            $categoryTemp = $produit['category']['name'];
+            $categoryTemp = $produit->getCategory()->getName();
             $categoriProduits[$categoryTemp][] = $produit;
 
-            $prixHT = $produit['price'] * $produit['quantite'];
-            $tauxTVAProduit = $produit['tva'] / 100;
+            $prixHT = $produit->getPrice() * $produit->getQuantite();
+            $tauxTVAProduit = $produit->getTva() / 100;
             $montantTVA = $prixHT * $tauxTVAProduit;
 
-
-            $tvaKey = (string)$produit['tva']; // Convertir en string pour éviter les problèmes de clé
+            $tvaKey = (string)$produit->getTva(); // Convertir en string pour éviter les problèmes de clé
 
             if(!isset($tauxTVA[$tvaKey])){
                 $tauxTVA[$tvaKey] = 0;
@@ -177,34 +179,23 @@ class DevisController extends AbstractController
 
         $products = json_encode($productArray);
 
-        $prodTemp = [];
-        foreach ($devis->getProduits() as $product) {
-            $produitTemp = Product::arrayToProduit($product);
-            $categoryTemp = $entityManager->getRepository(Category::class)->findOneBy(['id' => $product['category']['id']]);
-            $produitTemp->setCategory($categoryTemp);
-            $prodTemp[] = $produitTemp;
-        }
-        $devis->setProduits($prodTemp);
+        // Les produits sont déjà des objets Product, pas besoin de conversion
+        // $devis->getProduits() retourne déjà une Collection d'objets Product
 
         $form = $this->createForm(DevisType::class, $devis);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $products = $devis->getProduits();
-
-            $prod = [];
-            foreach ($products as $product) {
-                $product->setName($productArray[$product->getName()]["name"]);
-                $prodtemp = $product->jsonSerialize();
-                $prodtemp['category'] = $product->getCategory()->jsonSerialize();
-
-                $prod[] = $prodtemp;
-            }
-            $devis->setProduits($prod);
+            // Calculer le prix total à partir des produits de la collection
             $totalPrice = 0;
-            foreach ($products as $product) {
-                $totalPrice += $product->getPrixTotale();
+            foreach ($devis->getProduits() as $product) {
+                // Assigner le company_id au produit
+                $product->setCompanyId($companyId);
+                
+                // Calculer le prix total pour ce produit (prix * quantité)
+                $prixProduit = $product->getPrice() * $product->getQuantite();
+                $product->setPrixTotale($prixProduit);
+                $totalPrice += $prixProduit;
             }
 
             $devis->setTotalPrice($totalPrice);
@@ -249,20 +240,26 @@ class DevisController extends AbstractController
         $total['ht'] = 0;
 
         foreach ($devis->getProduits() as $produit) {
-            $categoryTemp = $produit['category']['name'];
+            $categoryTemp = $produit->getCategory()->getName();
             $categoriProduits[$categoryTemp][] = $produit;
 
-            if(!isset($tauxTVA[$produit['tva']])){
-                $tauxTVA[intval($produit['tva'])] = 0;
+            $prixHT = $produit->getPrice() * $produit->getQuantite();
+            $tauxTVAProduit = $produit->getTva() / 100;
+            $montantTVA = $prixHT * $tauxTVAProduit;
+
+            $tvaKey = (string)$produit->getTva();
+
+            if(!isset($tauxTVA[$tvaKey])){
+                $tauxTVA[$tvaKey] = 0;
             }
 
-            $tauxTVA[intval($produit['tva'])] += $produit['price'] * $produit['quantite'];
-            $total['ht'] += $produit['price'] * $produit['quantite'];
+            $tauxTVA[$tvaKey] += $prixHT;
+            $total['ht'] += $prixHT;
 
-            if(!isset($total['tva'][$produit['tva']])){
-                $total['tva'][$produit['tva']] = 0;
+            if(!isset($total['tva'][$tvaKey])){
+                $total['tva'][$tvaKey] = 0;
             }
-            $total['tva'][$produit['tva']] += $produit['prix_totale'] - ($produit['price'] * $produit['quantite']);
+            $total['tva'][$tvaKey] += $montantTVA;
         }
 
         ksort($total['tva']);
@@ -391,7 +388,22 @@ class DevisController extends AbstractController
         $facture->setDateFacture(new \DateTime());
         $facture->setNumDevis($devis->getNumDevis());
         $facture->setPrixTotal($devis->getTotalPrice());
-        $facture->setProduits($devis->getProduits());
+        // Sérialiser les produits correctement
+        $produitsArray = [];
+        foreach ($devis->getProduits() as $produit) {
+            $produitsArray[] = [
+                'name' => $produit->getName(),
+                'description' => $produit->getDescription(),
+                'price' => $produit->getPrice(),
+                'tva' => $produit->getTva(),
+                'quantite' => $produit->getQuantite(),
+                'prix_totale' => $produit->getPrixTotale(),
+                'category' => [
+                    'name' => $produit->getCategory()->getName()
+                ]
+            ];
+        }
+        $facture->setProduits($produitsArray);
         $facture->setMessages($devis->getMessage());
         $facture->setCompanyId($companyId);
         $facture->setPaid(false);

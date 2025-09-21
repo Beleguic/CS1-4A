@@ -1,17 +1,115 @@
-{{ form_start(form, {'attr': {'class': 'flex flex-col gap-4'}}) }}
-{% for field in form %}
+{{ form_start(form, {'attr': {'class': 'flex flex-col gap-6'}}) }}
 
-    {% if field.vars.name != '_token' %}
-        <div class="flex flex-col">
-            {{ form_label(field, null, {'label_attr': {'class': 'font-medium'}}) }}
-            {{ form_widget(field, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'}}) }}
-            {{ form_errors(field, {'attr': {'class': 'text-red-500 text-sm'}}) }}
-        </div>
-    {% endif %}
-{% endfor %}
-<button class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">{{ button_label|default('Save') }}</button>
+<!-- Numéro de devis -->
+<div class="flex flex-col gap-2">
+    {{ form_label(form.numDevis, 'Numéro de devis', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+    {{ form_widget(form.numDevis, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 transition-all duration-200'}}) }}
+    {{ form_errors(form.numDevis) }}
+</div>
+
+<!-- Client -->
+<div class="flex flex-col gap-2">
+    {{ form_label(form.client, 'Client', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+    {{ form_widget(form.client, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 transition-all duration-200'}}) }}
+    {{ form_errors(form.client) }}
+</div>
+
+<!-- Section Produits -->
+<div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+        {{ include('_composants/_lucide_icon.html.twig', { name: 'package', class: 'w-5 h-5 mr-2 text-mainColor-400' }) }}
+        Produits
+    </h3>
+    
+    <!-- Collection de produits -->
+    <div id="produits-collection" data-prototype="{{ form_widget(form.produits.vars.prototype)|e('html_attr') }}">
+        {% for produit in form.produits %}
+            <div class="produit-item border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-4 bg-gray-50 dark:bg-gray-800">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-md font-medium text-gray-900 dark:text-gray-100">Produit {{ loop.index }}</h4>
+                    <button type="button" class="remove-produit text-red-500 hover:text-red-700 transition-colors duration-200">
+                        {{ include('_composants/_lucide_icon.html.twig', { name: 'trash-2', class: 'w-4 h-4' }) }}
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Sélecteur de produit existant -->
+                    <div class="flex flex-col gap-2 md:col-span-2 lg:col-span-3">
+                        {{ form_label(produit.existingProduct, 'Produit existant', {'label_attr': {'class': 'text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                        {{ form_widget(produit.existingProduct, {'attr': {'class': 'w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 transition-all duration-200 product-selector'}}) }}
+                        {{ form_errors(produit.existingProduct) }}
+                    </div>
+
+                    <!-- Nom du produit -->
+                    <div class="flex flex-col gap-2">
+                        {{ form_label(produit.name, 'Nom', {'label_attr': {'class': 'text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                        {{ form_widget(produit.name, {'attr': {'class': 'w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 transition-all duration-200'}}) }}
+                        {{ form_errors(produit.name) }}
+                    </div>
+
+                    <!-- Description -->
+                    <div class="flex flex-col gap-2">
+                        {{ form_label(produit.description, 'Description', {'label_attr': {'class': 'text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                        {{ form_widget(produit.description, {'attr': {'class': 'w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 transition-all duration-200'}}) }}
+                        {{ form_errors(produit.description) }}
+                    </div>
+
+                    <!-- Catégorie -->
+                    <div class="flex flex-col gap-2">
+                        {{ form_label(produit.category, 'Catégorie', {'label_attr': {'class': 'text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                        {{ form_widget(produit.category, {'attr': {'class': 'w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 transition-all duration-200'}}) }}
+                        {{ form_errors(produit.category) }}
+                    </div>
+
+                    <!-- Prix -->
+                    <div class="flex flex-col gap-2">
+                        {{ form_label(produit.price, 'Prix (€)', {'label_attr': {'class': 'text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                        {{ form_widget(produit.price, {'attr': {'class': 'w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 transition-all duration-200', 'step': '0.01'}}) }}
+                        {{ form_errors(produit.price) }}
+                    </div>
+
+                    <!-- TVA -->
+                    <div class="flex flex-col gap-2">
+                        {{ form_label(produit.tva, 'TVA (%)', {'label_attr': {'class': 'text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                        {{ form_widget(produit.tva, {'attr': {'class': 'w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 transition-all duration-200', 'step': '0.01'}}) }}
+                        {{ form_errors(produit.tva) }}
+                    </div>
+
+                    <!-- Quantité -->
+                    <div class="flex flex-col gap-2">
+                        {{ form_label(produit.quantite, 'Quantité', {'label_attr': {'class': 'text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                        {{ form_widget(produit.quantite, {'attr': {'class': 'w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 transition-all duration-200', 'min': '1', 'value': '1'}}) }}
+                        {{ form_errors(produit.quantite) }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Bouton Ajouter un produit -->
+    <div class="mt-4">
+        <button type="button" id="add-produit" class="inline-flex items-center px-4 py-2 bg-mainColor-400 text-white rounded-lg hover:bg-mainColor-500 transition-colors duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { name: 'plus', class: 'w-4 h-4 mr-2' }) }}
+            Ajouter un produit
+        </button>
+    </div>
+</div>
+
+<!-- Bouton de soumission -->
+<div class="flex justify-end mt-6">
+    <button type="submit" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+        {{ include('_composants/_lucide_icon.html.twig', { name: 'save', class: 'w-4 h-4 mr-2' }) }}
+        {{ button_label|default('Créer le devis') }}
+    </button>
+</div>
+
 {{ form_end(form) }}
 
 {% block javascripts %}
-    <script src="{{ asset('js/devis.js') }}"></script>
+    
+    
+    <!-- Scripts personnalisés -->
+    <script src="{{ asset('js/devis-collection.js') }}"></script>
+    
+    
 {% endblock %}

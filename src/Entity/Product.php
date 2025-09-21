@@ -45,6 +45,10 @@ class Product
     #[ORM\Column(type: 'uuid')]
     private ?Uuid $company_id = null;
 
+    #[ORM\ManyToOne(targetEntity: Devis::class, inversedBy: 'produits')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Devis $devis = null;
+
 
     public function getId(): ?Uuid
     {
@@ -175,5 +179,15 @@ class Product
         return $this;
     }
 
+    public function getDevis(): ?Devis
+    {
+        return $this->devis;
+    }
 
+    public function setDevis(?Devis $devis): static
+    {
+        $this->devis = $devis;
+
+        return $this;
+    }
 }

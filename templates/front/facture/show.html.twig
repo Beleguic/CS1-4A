@@ -93,14 +93,16 @@
                             </thead>
                             <tbody>
                             {% for produit in produits %}
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.name }}</td>
-                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.description }}</td>
-                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.price | number_format(2, ',', ' ') }} €</td>
-                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.tva | number_format(1, ',', ' ') }} %</td>
-                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.quantite }}</td>
-                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.prix_totale  | number_format(2, ',', ' ') }} €</td>
-                                </tr>
+                                {% if produit is not empty and produit.name is defined %}
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.name }}</td>
+                                        <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.description }}</td>
+                                        <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.price | number_format(2, ',', ' ') }} €</td>
+                                        <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.tva | number_format(1, ',', ' ') }} %</td>
+                                        <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.quantite }}</td>
+                                        <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.prix_totale | number_format(2, ',', ' ') }} €</td>
+                                    </tr>
+                                {% endif %}
                             {% endfor %}
                             </tbody>
                         </table>
