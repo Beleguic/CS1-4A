@@ -40,8 +40,10 @@ class ContactController extends AbstractController
     public function delete(Request $request, Contact $contact, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$contact->getId(), $request->request->get('_token'))) {
+            $contactName = $contact->getFirstname() . ' ' . $contact->getLastname();
             $entityManager->remove($contact);
             $entityManager->flush();
+            $this->addFlash('success', 'Le contact "' . $contactName . '" a été supprimé avec succès !');
         }
 
         return $this->redirectToRoute('back_app_contact', [], Response::HTTP_SEE_OTHER);

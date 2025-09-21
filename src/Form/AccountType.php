@@ -22,40 +22,41 @@ class AccountType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                 ],
+                'label' => 'Mot de passe actuel',
             ])
             ->add('newPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'label' => 'New Password',
+                'label' => 'Nouveau mot de passe',
                 'mapped' => false,
                 'first_options' => [
                     'constraints' => [
                         new Length([
                             'min' => 8,
-                            'minMessage' => 'New password should have at least {{ limit }} caracters.',
+                            'minMessage' => 'Nouveau mot de passe doit contenir au moins {{ limit }} caractères.',
                             'max' => 4096,
-                            'maxMessage' => 'New password should have not exceed {{ limit }} caracters.',
+                            'maxMessage' => 'Nouveau mot de passe ne doit pas dépasser {{ limit }} caractères.',
                         ]),
                         new Regex([
                             'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
-                            'message' => 'Your password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
+                            'message' => 'Votre mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.'
                         ]),
                     ],
                 ],
-                'second_options' => ['label' => 'Repeat Password'],
-                'invalid_message' => 'The password fields must match.',
+                'second_options' => ['label' => 'Répéter le mot de passe'],
+                'invalid_message' => 'Les mots de passe doivent correspondre.',
             ])
             ->add('lastname', TextType::class, [
                 'mapped' => true,
                 'constraints' => [
                     new Length([
                         'min' => 2,
-                        'minMessage' => 'Your lastname should have at least {{ limit }} caracters.',
+                        'minMessage' => 'Votre nom doit contenir au moins {{ limit }} caractères.',
                         'max' => 255,
-                        'maxMessage' => 'Your lastname should have not exceed {{ limit }} caracters.',
+                        'maxMessage' => 'Votre nom ne doit pas dépasser {{ limit }} caractères.',
                     ]),
                     new Regex([
                         'pattern' => '/^[a-zA-ZÀ-ÖØ-öø-ÿ]+$/',
-                        'message' => 'Your lastname can only contain uppercase letters, lowercase letters and accented letters.'
+                        'message' => 'Votre nom ne peut contenir que des majuscules, des minuscules et des lettres accentuées.'
                     ]),
                 ],
             ])
@@ -64,20 +65,20 @@ class AccountType extends AbstractType
                 'constraints' => [
                     new Length([
                         'min' => 2,
-                        'minMessage' => 'Your firstname should have at least {{ limit }} caracters.',
+                        'minMessage' => 'Votre prénom doit contenir au moins {{ limit }} caractères.',
                         'max' => 255,
-                        'maxMessage' => 'Your firstname should have not exceed {{ limit }} caracters.',
+                        'maxMessage' => 'Votre prénom ne doit pas dépasser {{ limit }} caractères.',
                     ]),
                     new Regex([
                         'pattern' => '/^[a-zA-ZÀ-ÖØ-öø-ÿ]+$/',
-                        'message' => 'Your firstname can only contain uppercase letters, lowercase letters and accented letters.'
+                        'message' => 'Votre prénom ne peut contenir que des majuscules, des minuscules et des lettres accentuées.'
                     ]),
                 ],
             ])
             ->add('showPassword', CheckboxType::class, [
                 'mapped' => false,
                 'required' => false,
-                'label' => 'Edit password',
+                'label' => 'Modifier le mot de passe',
             ])
         ;
     }

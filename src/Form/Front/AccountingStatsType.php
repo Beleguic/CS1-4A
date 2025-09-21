@@ -13,9 +13,9 @@ class AccountingStatsType extends AbstractType
     {
         $builder
             ->add('year', ChoiceType::class, [
-                'label' => 'Statistics for',
+                'label' => 'Statistiques pour',
                 'choices' => $options['years'],
-                'placeholder' => 'Choose an option',
+                'placeholder' => 'Choisir une option',
                 'required' => true,
             ])
         ;

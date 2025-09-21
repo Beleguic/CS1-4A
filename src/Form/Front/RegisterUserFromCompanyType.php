@@ -25,25 +25,25 @@ class RegisterUserFromCompanyType extends AbstractType
             ->add('password', repeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => 'Password',
+                    'label' => 'Mot de passe',
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Please enter a password',
+                            'message' => 'Veuillez entrer un mot de passe',
                         ]),
                         new Length([
                             'min' => 8,
-                            'minMessage' => 'Your password should have at least {{ limit }} characters',
+                            'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
                             'max' => 4096,
-                            'maxMessage' => 'Password should have not exceed {{ limit }} caracters.',
+                            'maxMessage' => 'Votre mot de passe ne doit pas dépasser {{ limit }} caractères.',
                         ]),
                         new Regex([
                             'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&-_.])[A-Za-z\d@$!%*?&-_.]+$/',
-                            'message' => 'Your password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
+                            'message' => 'Votre mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.'
                         ]),
                     ],
                 ],
-                'second_options' => ['label' => 'Repeat Password'],
-                'invalid_message' => 'The password fields must match.',
+                'second_options' => ['label' => 'Répéter le mot de passe'],
+                'invalid_message' => 'Les mots de passe doivent correspondre.',
             ])
         ;
     }

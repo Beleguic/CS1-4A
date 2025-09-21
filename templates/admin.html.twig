@@ -3,11 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
         <title>{% block title %}{% endblock %}</title>
         <link rel="icon" href="/plombier.png" type="image/png">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
+            <link rel="stylesheet" href="{{ asset('css/admin-forms.css') }}">
         {% endblock %}
         {% block javascripts %}
                 <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>

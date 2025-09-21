@@ -1,0 +1,55 @@
+{% if pageCount > 1 %}
+    <nav class="flex items-center justify-between">
+        <!-- Page Info -->
+        <div class="hidden sm:flex items-center text-sm text-gray-700 dark:text-gray-300">
+            <span>Page {{ current }} sur {{ pageCount }}</span>
+            {% if totalCount is defined %}
+                <span class="ml-2">({{ totalCount }} résultat{{ totalCount > 1 ? 's' : '' }})</span>
+            {% endif %}
+        </div>
+
+        <div class="flex items-center gap-2">
+            <!-- Previous Page -->
+            {% if previous is defined %}
+                <a href="{{ path(route, query|merge({(pageParameterName): previous})) }}" 
+                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors duration-150">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'chevron-left', class: 'w-4 h-4 mr-1' }) }}
+                    Précédent
+                </a>
+            {% else %}
+                <span class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-300 bg-gray-100 border border-gray-200 rounded-lg cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-500">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'chevron-left', class: 'w-4 h-4 mr-1' }) }}
+                    Précédent
+                </span>
+            {% endif %}
+
+            <!-- Page Numbers -->
+            {% for page in pagesInRange %}
+                {% if page != current %}
+                    <a href="{{ path(route, query|merge({(pageParameterName): page})) }}" 
+                       class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors duration-150">
+                        {{ page }}
+                    </a>
+                {% else %}
+                    <span class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-mainColor-500 border border-mainColor-500 rounded-lg dark:bg-mainColor-600 dark:border-mainColor-600">
+                        {{ page }}
+                    </span>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Next Page -->
+            {% if next is defined %}
+                <a href="{{ path(route, query|merge({(pageParameterName): next})) }}" 
+                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors duration-150">
+                    Suivant
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'chevron-right', class: 'w-4 h-4 ml-1' }) }}
+                </a>
+            {% else %}
+                <span class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-300 bg-gray-100 border border-gray-200 rounded-lg cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-500">
+                    Suivant
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'chevron-right', class: 'w-4 h-4 ml-1' }) }}
+                </span>
+            {% endif %}
+        </div>
+    </nav>
+{% endif %}

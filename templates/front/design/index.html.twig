@@ -1,76 +1,525 @@
 {% extends 'default.html.twig' %}
 
-{% block title %}Design - Plumbpay{% endblock %}
+{% block title %}Design System - PlumbPay{% endblock %}
 
 {% block body %}
-    <section class="px-2">
-        <h3 class="font-bold text-xl mb-2">Forms</h3>
-        <div class="flex flex-col gap-4">
-            <div class="input-container">
-                <label for="text">text</label>
-                <input type="text" name="text" id="text" placeholder="text">
-            </div>
-            <div class="input-container">
-                <label for="email">email</label>
-                <input type="email" name="email" id="email" placeholder="email@domain.fr">
-            </div>
-            <div class="input-container">
-                <label for="number">number</label>
-                <input type="number" name="number" id="number" placeholder="100,20">
-            </div>
-            <div class="input-container">
-                <label for="password">password</label>
-                <input type="password" name="password" id="password" placeholder="100,20">
-            </div>
-            <div class="input-container">
-                <label for="select">select</label>
-                <select name="select" id="select">
-                    <option value="1">option 1</option>
-                    <option value="2">option 2</option>
-                    <option value="3">option 3</option>
-                </select>
-            </div>
-        </div>
-    </section>
-    <section class="px-2">
-        <h3 class="font-bold text-xl mb-2">Accordéons</h3>
-        <div class="accordions-container">
-            <div class="accordion-container">
-                <div class="accordion-header">
-                    <span class="accordion-btn-text">Accordéon 1</span>
-                    <svg class="accordion-icon" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
-                        <path class="fill-bgBody-800 dark:fill-bgBody-400" d="M9.06429 7.5L15 13.4357V15H13.4357L7.5 9.06429L1.56429 15H0V13.4357L5.93571 7.5L0 1.56429V0H1.56429L7.5 5.93571L13.4357 0H15V1.56429L9.06429 7.5Z"/>
-                    </svg>
-                </div>
-                <div class="accordion-content">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore iste culpa dolore quisquam repellat, tenetur at quos maxime sunt facilis debitis veniam nulla nobis. Quos consequatur nisi consequuntur temporibus!
-                </div>
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Design System PlumbPay</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-400">Composants et éléments de l'interface utilisateur</p>
             </div>
 
-            <div class="accordion-container">
-                <div class="accordion-header">
-                    <span class="accordion-btn-text">Accordéon 2</span>
-                    <svg class="accordion-icon" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
-                        <path class="fill-bgBody-800 dark:fill-bgBody-400" d="M9.06429 7.5L15 13.4357V15H13.4357L7.5 9.06429L1.56429 15H0V13.4357L5.93571 7.5L0 1.56429V0H1.56429L7.5 5.93571L13.4357 0H15V1.56429L9.06429 7.5Z"/>
-                    </svg>
-                </div>
-                <div class="accordion-content">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias delectus aspernatur ipsa hic voluptatum error totam animi officia vero, voluptas blanditiis. Minima explicabo ullam cupiditate tempore commodi? Quo, molestias.
-                </div>
-            </div>
+            <!-- Flash Messages -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'bell', class: 'w-6 h-6 mr-2 text-mainColor-500' }) }}
+                    Messages Flash
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Success -->
+                    <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                        <div class="flex items-center">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'w-5 h-5 text-green-500 mr-2' }) }}
+                            <span class="text-green-800 dark:text-green-200 font-medium">Succès</span>
+                        </div>
+                        <p class="text-green-700 dark:text-green-300 text-sm mt-1">Opération réussie avec succès !</p>
+                    </div>
 
-            <div class="accordion-container">
-                <div class="accordion-header">
-                    <span class="accordion-btn-text">Accordéon 3</span>
-                    <svg class="accordion-icon" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
-                        <path class="fill-bgBody-800 dark:fill-bgBody-400" d="M9.06429 7.5L15 13.4357V15H13.4357L7.5 9.06429L1.56429 15H0V13.4357L5.93571 7.5L0 1.56429V0H1.56429L7.5 5.93571L13.4357 0H15V1.56429L9.06429 7.5Z"/>
-                    </svg>
+                    <!-- Error -->
+                    <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                        <div class="flex items-center">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'x-circle', class: 'w-5 h-5 text-red-500 mr-2' }) }}
+                            <span class="text-red-800 dark:text-red-200 font-medium">Erreur</span>
+                        </div>
+                        <p class="text-red-700 dark:text-red-300 text-sm mt-1">Une erreur est survenue !</p>
+                    </div>
+
+                    <!-- Warning -->
+                    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+                        <div class="flex items-center">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'alert-triangle', class: 'w-5 h-5 text-yellow-500 mr-2' }) }}
+                            <span class="text-yellow-800 dark:text-yellow-200 font-medium">Attention</span>
+                        </div>
+                        <p class="text-yellow-700 dark:text-yellow-300 text-sm mt-1">Attention requise !</p>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                        <div class="flex items-center">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'info', class: 'w-5 h-5 text-blue-500 mr-2' }) }}
+                            <span class="text-blue-800 dark:text-blue-200 font-medium">Information</span>
+                        </div>
+                        <p class="text-blue-700 dark:text-blue-300 text-sm mt-1">Information importante !</p>
+                    </div>
                 </div>
-                <div class="accordion-content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam facere, perferendis tempore soluta officiis excepturi quam nulla nemo incidunt unde saepe officia cum, tenetur cupiditate quisquam? Libero voluptates saepe quaerat?    
+            </section>
+
+            <!-- Buttons -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'mouse-pointer', class: 'w-6 h-6 mr-2 text-mainColor-500' }) }}
+                    Boutons
+                </h2>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Primary -->
+                        <button class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-mainColor-400 to-mainColor-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-mainColor-400/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'plus', class: 'w-4 h-4 mr-2' }) }}
+                            Primaire
+                        </button>
+
+                        <!-- Secondary -->
+                        <button class="inline-flex items-center justify-center px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-gray-500/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'edit', class: 'w-4 h-4 mr-2' }) }}
+                            Secondaire
+                        </button>
+
+                        <!-- Success -->
+                        <button class="inline-flex items-center justify-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-500/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'check', class: 'w-4 h-4 mr-2' }) }}
+                            Succès
+                        </button>
+
+                        <!-- Danger -->
+                        <button class="inline-flex items-center justify-center px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'trash-2', class: 'w-4 h-4 mr-2' }) }}
+                            Danger
+                        </button>
+                    </div>
                 </div>
-            </div>
-            
+            </section>
+
+            <!-- Forms -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'edit-3', class: 'w-6 h-6 mr-2 text-mainColor-500' }) }}
+                    Formulaires
+                </h2>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 align-top">
+                        <!-- Text Input -->
+                        <div class="grid grid-cols-1 gap-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Texte</label>
+                            <input type="text" 
+                                   class="w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200" 
+                                   placeholder="Entrez du texte">
+                        </div>
+
+                        <!-- Email Input -->
+                        <div class="grid grid-cols-1 gap-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+                            <input type="email" 
+                                   class="w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200" 
+                                   placeholder="email@domain.fr">
+                        </div>
+
+                        <!-- Number Input -->
+                        <div class="grid grid-cols-1 gap-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nombre</label>
+                            <input type="number" 
+                                   class="w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200" 
+                                   placeholder="100.20">
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="grid grid-cols-1 gap-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Mot de passe</label>
+                            <input type="password" 
+                                   class="w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200" 
+                                   placeholder="••••••••">
+                        </div>
+
+                        <!-- Select -->
+                        <div class="flex flex-col gap-2 align-top">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Sélection</label>
+                            <select class="w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200">
+                                <option value="1">Option 1</option>
+                                <option value="2">Option 2</option>
+                                <option value="3">Option 3</option>
+                            </select>
+                        </div>
+
+                        <!-- Textarea -->
+                        <div class="grid grid-cols-1 gap-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Zone de texte</label>
+                            <textarea rows="4" 
+                                      class="w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200 resize-none" 
+                                      placeholder="Tapez votre message ici..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cards -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'credit-card', class: 'w-6 h-6 mr-2 text-mainColor-500' }) }}
+                    Cartes
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Card 1 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-200">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-4">
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'users', class: 'w-6 h-6 text-blue-600 dark:text-blue-300' }) }}
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Utilisateurs</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Gestion des utilisateurs</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Interface moderne pour gérer les utilisateurs de l'application avec toutes les fonctionnalités nécessaires.</p>
+                            <button class="w-full inline-flex items-center justify-center px-4 py-2 bg-mainColor-500 hover:bg-mainColor-600 text-white font-medium rounded-lg transition-colors duration-200">
+                                Accéder
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'arrow-right', class: 'w-4 h-4 ml-2' }) }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-200">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-4">
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'building', class: 'w-6 h-6 text-green-600 dark:text-green-300' }) }}
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Entreprises</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Gestion des entreprises</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Interface complète pour gérer les entreprises avec toutes les informations nécessaires.</p>
+                            <button class="w-full inline-flex items-center justify-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-colors duration-200">
+                                Accéder
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'arrow-right', class: 'w-4 h-4 ml-2' }) }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-200">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'message-circle', class: 'w-6 h-6 text-purple-600 dark:text-purple-300' }) }}
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Contacts</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Messages de contact</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Interface pour consulter et gérer les messages de contact des utilisateurs.</p>
+                            <button class="w-full inline-flex items-center justify-center px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-lg transition-colors duration-200">
+                                Accéder
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'arrow-right', class: 'w-4 h-4 ml-2' }) }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tables -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'table', class: 'w-6 h-6 mr-2 text-mainColor-500' }) }}
+                    Tableaux
+                </h2>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="py-4 px-6 font-semibold">Nom</th>
+                                    <th scope="col" class="py-4 px-6 font-semibold">Email</th>
+                                    <th scope="col" class="py-4 px-6 font-semibold">Statut</th>
+                                    <th scope="col" class="py-4 px-6 font-semibold text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
+                                    <td class="py-4 px-6 align-middle">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mr-3">
+                                                {{ include('_composants/_lucide_icon.html.twig', { name: 'user', class: 'w-5 h-5 text-blue-600 dark:text-blue-300' }) }}
+                                            </div>
+                                            <div class="font-medium text-gray-900 dark:text-white">Jean Dupont</div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 align-middle">
+                                        <div class="text-gray-600 dark:text-gray-400">jean.dupont@example.com</div>
+                                    </td>
+                                    <td class="py-4 px-6 align-middle">
+                                        <div class="flex items-center justify-center">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'w-3 h-3 mr-1' }) }}
+                                                Actif
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 align-middle">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <button class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800 rounded-lg transition-colors duration-150" title="Voir">
+                                                {{ include('_composants/_lucide_icon.html.twig', { name: 'eye', class: 'w-4 h-4' }) }}
+                                            </button>
+                                            <button class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-green-600 bg-green-100 hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800 rounded-lg transition-colors duration-150" title="Modifier">
+                                                {{ include('_composants/_lucide_icon.html.twig', { name: 'edit', class: 'w-4 h-4' }) }}
+                                            </button>
+                                            <button class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 dark:bg-red-900 dark:text-red-300 dark:hover:bg-red-800 rounded-lg transition-colors duration-150" title="Supprimer">
+                                                {{ include('_composants/_lucide_icon.html.twig', { name: 'trash-2', class: 'w-4 h-4' }) }}
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
+                                    <td class="py-4 px-6 align-middle">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mr-3">
+                                                {{ include('_composants/_lucide_icon.html.twig', { name: 'user', class: 'w-5 h-5 text-green-600 dark:text-green-300' }) }}
+                                            </div>
+                                            <div class="font-medium text-gray-900 dark:text-white">Marie Martin</div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 align-middle">
+                                        <div class="text-gray-600 dark:text-gray-400">marie.martin@example.com</div>
+                                    </td>
+                                    <td class="py-4 px-6 align-middle">
+                                        <div class="flex items-center justify-center">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                                                {{ include('_composants/_lucide_icon.html.twig', { name: 'clock', class: 'w-3 h-3 mr-1' }) }}
+                                                En attente
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 align-middle">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <button class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800 rounded-lg transition-colors duration-150" title="Voir">
+                                                {{ include('_composants/_lucide_icon.html.twig', { name: 'eye', class: 'w-4 h-4' }) }}
+                                            </button>
+                                            <button class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-green-600 bg-green-100 hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800 rounded-lg transition-colors duration-150" title="Modifier">
+                                                {{ include('_composants/_lucide_icon.html.twig', { name: 'edit', class: 'w-4 h-4' }) }}
+                                            </button>
+                                            <button class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 dark:bg-red-900 dark:text-red-300 dark:hover:bg-red-800 rounded-lg transition-colors duration-150" title="Supprimer">
+                                                {{ include('_composants/_lucide_icon.html.twig', { name: 'trash-2', class: 'w-4 h-4' }) }}
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Accordions -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'chevron-down', class: 'w-6 h-6 mr-2 text-mainColor-500' }) }}
+                    Accordéons
+                </h2>
+                <div x-data="designAccordion()" class="flex flex-col gap-4">
+                    <!-- Accordion 1 -->
+                    <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                        <button 
+                            @click="toggle(1)"
+                            class="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-mainColor-400/50 rounded-2xl transition-all duration-300"
+                            :class="{ 'bg-gray-50 dark:bg-gray-700/90': activeId === 1 }"
+                        >
+                            <div class="flex items-center gap-4">
+                                <!-- Section Number -->
+                                <div class="shrink-0 w-8 h-8 bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                    1
+                                </div>
+                                <!-- Section Title -->
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white pr-4">
+                                    Section 1 - Informations générales
+                                </h3>
+                            </div>
+                            
+                            <!-- Expand/Collapse Icon -->
+                            <div class="shrink-0">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'chevron-down',
+                                    class: 'w-6 h-6 text-gray-600 dark:text-gray-300 transform transition-transform duration-300',
+                                    'x-bind:class': "{ 'rotate-180': activeId === 1 }"
+                                }) }}
+                            </div>
+                        </button>
+
+                        <!-- Content -->
+                        <div 
+                            x-show="activeId === 1"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 max-h-0"
+                            x-transition:enter-end="opacity-100 max-h-96"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 max-h-96"
+                            x-transition:leave-end="opacity-0 max-h-0"
+                            class="overflow-hidden"
+                        >
+                            <div class="px-8 pb-6">
+                                <div class="pl-12">
+                                    <div class="h-px bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 mb-4"></div>
+                                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion 2 -->
+                    <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                        <button 
+                            @click="toggle(2)"
+                            class="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-mainColor-400/50 rounded-2xl transition-all duration-300"
+                            :class="{ 'bg-gray-50 dark:bg-gray-700/90': activeId === 2 }"
+                        >
+                            <div class="flex items-center gap-4">
+                                <!-- Section Number -->
+                                <div class="shrink-0 w-8 h-8 bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                    2
+                                </div>
+                                <!-- Section Title -->
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white pr-4">
+                                    Section 2 - Configuration avancée
+                                </h3>
+                            </div>
+                            
+                            <!-- Expand/Collapse Icon -->
+                            <div class="shrink-0">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'chevron-down',
+                                    class: 'w-6 h-6 text-gray-600 dark:text-gray-300 transform transition-transform duration-300',
+                                    'x-bind:class': "{ 'rotate-180': activeId === 2 }"
+                                }) }}
+                            </div>
+                        </button>
+
+                        <!-- Content -->
+                        <div 
+                            x-show="activeId === 2"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 max-h-0"
+                            x-transition:enter-end="opacity-100 max-h-96"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 max-h-96"
+                            x-transition:leave-end="opacity-0 max-h-0"
+                            class="overflow-hidden"
+                        >
+                            <div class="px-8 pb-6">
+                                <div class="pl-12">
+                                    <div class="h-px bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 mb-4"></div>
+                                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion 3 -->
+                    <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                        <button 
+                            @click="toggle(3)"
+                            class="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-mainColor-400/50 rounded-2xl transition-all duration-300"
+                            :class="{ 'bg-gray-50 dark:bg-gray-700/90': activeId === 3 }"
+                        >
+                            <div class="flex items-center gap-4">
+                                <!-- Section Number -->
+                                <div class="shrink-0 w-8 h-8 bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                    3
+                                </div>
+                                <!-- Section Title -->
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white pr-4">
+                                    Section 3 - Support et assistance
+                                </h3>
+                            </div>
+                            
+                            <!-- Expand/Collapse Icon -->
+                            <div class="shrink-0">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'chevron-down',
+                                    class: 'w-6 h-6 text-gray-600 dark:text-gray-300 transform transition-transform duration-300',
+                                    'x-bind:class': "{ 'rotate-180': activeId === 3 }"
+                                }) }}
+                            </div>
+                        </button>
+
+                        <!-- Content -->
+                        <div 
+                            x-show="activeId === 3"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 max-h-0"
+                            x-transition:enter-end="opacity-100 max-h-96"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 max-h-96"
+                            x-transition:leave-end="opacity-0 max-h-0"
+                            class="overflow-hidden"
+                        >
+                            <div class="px-8 pb-6">
+                                <div class="pl-12">
+                                    <div class="h-px bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 mb-4"></div>
+                                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Badges -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    {{ include('_composants/_lucide_icon.html.twig', { name: 'tag', class: 'w-6 h-6 mr-2 text-mainColor-500' }) }}
+                    Badges
+                </h2>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <div class="flex flex-wrap gap-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'w-3 h-3 mr-1' }) }}
+                            Actif
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'x-circle', class: 'w-3 h-3 mr-1' }) }}
+                            Inactif
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'clock', class: 'w-3 h-3 mr-1' }) }}
+                            En attente
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'info', class: 'w-3 h-3 mr-1' }) }}
+                            Information
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'star', class: 'w-3 h-3 mr-1' }) }}
+                            Premium
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'building', class: 'w-3 h-3 mr-1' }) }}
+                            Entreprise
+                        </span>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
+    </div>
+
+    <script>
+        function designAccordion() {
+            return {
+                activeId: null, // No accordion open by default
+                
+                toggle(id) {
+                    // If clicking the active item, close it; otherwise open the new one
+                    this.activeId = this.activeId === id ? null : id;
+                }
+            }
+        }
+    </script>
 {% endblock %}

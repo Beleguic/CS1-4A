@@ -1,12 +1,18 @@
 {% extends 'admin.html.twig' %}
 
-{% block title %}New User{% endblock %}
+{% block title %}PlumbPay - Admin - Nouvel Utilisateur{% endblock %}
 
 {% block body %}
-    <h1>Create new User</h1>
-    <div class="flex flex-row gap-4">
-        <a href="{{ path('back_app_user') }}" class="btn btn-all">All users</a>
+    {{ include('/back/user/_nav.html.twig') }}
+    
+    <!-- Header Section -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Créer un nouvel utilisateur</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">Remplissez les informations ci-dessous pour créer un nouveau compte utilisateur.</p>
     </div>
-    {{ include('back/user/_form.html.twig') }}
 
+    <!-- Form Container -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        {{ include('back/user/_form.html.twig') }}
+    </div>
 {% endblock %}

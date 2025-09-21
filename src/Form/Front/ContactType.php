@@ -23,7 +23,7 @@ class ContactType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 255,
-                        'maxMessage' => 'Your lastname should not be longer than {{ limit }} characters.',
+                        'maxMessage' => 'Votre nom ne doit pas dépasser {{ limit }} caractères.',
                     ]),
                 ],
             ])
@@ -34,7 +34,7 @@ class ContactType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 255,
-                        'maxMessage' => 'Your firstname should not be longer than {{ limit }} characters.',
+                        'maxMessage' => 'Votre prénom ne doit pas dépasser {{ limit }} caractères.',
                     ]),
                 ],
             ])
@@ -47,11 +47,11 @@ class ContactType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 255,
-                        'maxMessage' => 'Your email should not be longer than {{ limit }} characters.',
+                        'maxMessage' => 'Votre email ne doit pas dépasser {{ limit }} caractères.',
                     ]),
                 ],            ])
             ->add('phone', TelType::class, [
-                'label' => 'Phone Number',
+                'label' => 'Numéro de téléphone',
                 'attr' => [
                     'type' => 'tel'
                 ],
@@ -63,7 +63,7 @@ class ContactType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 255,
-                        'maxMessage' => 'Your company should not be longer than {{ limit }} characters.',
+                        'maxMessage' => 'Votre entreprise ne doit pas dépasser {{ limit }} caractères.',
                     ]),
                 ],
             ])
@@ -74,7 +74,7 @@ class ContactType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 255,
-                        'maxMessage' => 'Your subject should not be longer than {{ limit }} characters.',
+                        'maxMessage' => 'Votre sujet ne doit pas dépasser {{ limit }} caractères.',
                     ]),
                 ],
             ])

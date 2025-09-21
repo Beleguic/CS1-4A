@@ -1,4 +1,10 @@
-<form method="post" action="{{ path('back_app_company_delete', {'id': company.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+<form method="post" action="{{ path('back_app_company_delete', {'id': company.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ? Cette action est irréversible.');" class="text-center">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ company.id) }}">
-    <button class="btn">Delete</button>
+    <button type="submit" class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200 hover:from-red-600 hover:to-red-700">
+        {{ include('_composants/_lucide_icon.html.twig', { 
+            name: 'trash-2', 
+            class: 'w-4 h-4 mr-2' 
+        }) }}
+        Supprimer
+    </button>
 </form>

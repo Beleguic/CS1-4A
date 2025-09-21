@@ -21,7 +21,7 @@ class RequestNewCompanyUserType extends AbstractType
                     'Plombier' => 'ROLE_PLUMBER',
                     'Comptable' => 'ROLE_ACCOUNTANT',
                 ],
-                'placeholder' => 'Select a role',
+                'placeholder' => 'Choisir un rôle',
                 'label' => 'Rôle',
             ]);
     }

@@ -100,7 +100,7 @@
     }
 
     table{
-        @apply w-full border-y border-gray-800 dark:border-gray-400 text-left my-4
+        @apply w-full border-y border-gray-800 dark:border-gray-400 text-left
     }
 
     table tr{
