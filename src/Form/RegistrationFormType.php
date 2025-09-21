@@ -22,36 +22,78 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
+            ->add('email', EmailType::class, [
+                'label' => 'Email'
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom'
+            ])
+            ->add('lastname', TextType::class, [
+                'label' => 'Nom'
+            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false, // ⚠️ ne pas mapper à l'entité
                 'first_options' => [
-                    'label' => 'Password',
+                    'label' => 'Mot de passe',
                     'constraints' => [
-                        new NotBlank(['message' => 'Please enter a password']),
+                        new NotBlank(['message' => 'Veuillez entrer un mot de passe']),
                         new Length([
                             'min' => 8,
-                            'minMessage' => 'Your password should have at least {{ limit }} characters',
+                            'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
                             'max' => 4096,
                         ]),
                         new Regex([
                             'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\-_.])[A-Za-z\d@$!%*?&\-_.]+$/',
-                            'message' => 'Your password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
+                            'message' => 'Votre mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.'
                         ]),
                     ],
                 ],
-                'second_options' => ['label' => 'Repeat Password'],
-                'invalid_message' => 'The password fields must match.',
+                'second_options' => ['label' => 'Répéter le mot de passe'],
+                'invalid_message' => 'Les mots de passe doivent correspondre.',
+            ])
+            // Champs pour l'entreprise
+            ->add('companyName', TextType::class, [
+                'label' => 'Nom de l\'entreprise',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer le nom de votre entreprise']),
+                ],
+            ])
+            ->add('companyEmail', EmailType::class, [
+                'label' => 'Email de l\'entreprise',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer l\'email de votre entreprise']),
+                ],
+            ])
+            ->add('companyAddress', TextType::class, [
+                'label' => 'Adresse de l\'entreprise',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer l\'adresse de votre entreprise']),
+                ],
+            ])
+            ->add('companyCity', TextType::class, [
+                'label' => 'Ville',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer la ville']),
+                ],
+            ])
+            ->add('companyZipCode', TextType::class, [
+                'label' => 'Code postal',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer le code postal']),
+                ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'label' => 'I agree to the Terms of Service and Privacy Policy',
+                'label' => 'J\'accepte les Conditions d\'Utilisation et la Politique de Confidentialité',
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You must agree to the terms of service to register.',
+                        'message' => 'Vous devez accepter les conditions d\'utilisation pour vous inscrire.',
                     ]),
                 ],
             ]);
