@@ -9,7 +9,6 @@
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    <th scope="col" class="py-3 px-6">Id</th>
                     <th scope="col" class="py-3 px-6">Nom</th>
                     <th scope="col" class="py-3 px-6">Prénom</th>
                     <th scope="col" class="py-3 px-6">Email</th>
@@ -20,7 +19,6 @@
             <tbody>
             {% for client in clients %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td class="py-4 px-6">{{ client.id }}</td>
                     <td class="py-4 px-6">{{ client.Nom }}</td>
                     <td class="py-4 px-6">{{ client.Prenom }}</td>
                     <td class="py-4 px-6">{{ client.Email }}</td>
@@ -36,7 +34,7 @@
                 </tr>
             {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td colspan="6" class="py-4 px-6">No records found</td>
+                    <td colspan="5" class="py-4 px-6">No records found</td>
                 </tr>
             {% endfor %}
             </tbody>
