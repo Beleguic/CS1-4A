@@ -98,7 +98,12 @@ class FactureController extends AbstractController
 
         ksort($total['tva']);
 
-        $total['ttc'] = $facture->getPrixTotal();
+        // Calculer le total TTC = Total HT + Total TVA
+        $totalTVA = 0;
+        foreach ($total['tva'] as $montantTVA) {
+            $totalTVA += $montantTVA;
+        }
+        $total['ttc'] = $total['ht'] + $totalTVA;
 
         $client = Client::arrayToClient($facture->getClient());
 
@@ -187,7 +192,12 @@ class FactureController extends AbstractController
 
         ksort($total['tva']);
 
-        $total['ttc'] = $facture->getPrixTotal();
+        // Calculer le total TTC = Total HT + Total TVA
+        $totalTVA = 0;
+        foreach ($total['tva'] as $montantTVA) {
+            $totalTVA += $montantTVA;
+        }
+        $total['ttc'] = $total['ht'] + $totalTVA;
 
         $client = Client::arrayToClient($facture->getClient());
 
@@ -262,7 +272,12 @@ class FactureController extends AbstractController
 
         ksort($total['tva']);
 
-        $total['ttc'] = $facture->getPrixTotal();
+        // Calculer le total TTC = Total HT + Total TVA
+        $totalTVA = 0;
+        foreach ($total['tva'] as $montantTVA) {
+            $totalTVA += $montantTVA;
+        }
+        $total['ttc'] = $total['ht'] + $totalTVA;
 
         $client = Client::arrayToClient($facture->getClient());
 

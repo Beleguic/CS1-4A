@@ -34,7 +34,9 @@ class ClientController extends AbstractController
         $companyId = $user->getCompanyId();
 
         $client = new Client();
-        $form = $this->createForm(ClientType::class, $client);
+        $form = $this->createForm(ClientType::class, $client, [
+            'company_id' => $companyId
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -62,7 +64,12 @@ class ClientController extends AbstractController
     #[Route('/{id}/edit', name: 'app_client_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Client $client, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ClientType::class, $client);
+        $user = $this->getUser();
+        $companyId = $user->getCompanyId();
+        
+        $form = $this->createForm(ClientType::class, $client, [
+            'company_id' => $companyId
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
