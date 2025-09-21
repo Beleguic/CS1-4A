@@ -7,7 +7,9 @@
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
+                <th scope="col" class="py-3 px-6">N° Devis</th>
                 <th scope="col" class="py-3 px-6">Client</th>
+                <th scope="col" class="py-3 px-6">Date</th>
                 <th scope="col" class="py-3 px-6">Total</th>
                 <th scope="col" class="py-3 px-6">Actions</th>
             </tr>
@@ -15,8 +17,10 @@
         <tbody>
         {% for devi in devis %}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="py-4 px-6 font-medium text-gray-900 dark:text-white">{{ devi.getNumDevis() }}</td>
                 <td class="py-4 px-6">{{ devi.getClient().getNom() ~ " " ~ devi.getClient().getPrenom() }}</td>
-                <td class="py-4 px-6">{{ devi.getTotalPrice() }}</td>
+                <td class="py-4 px-6">{{ devi.createdAt|date('d/m/Y') }}</td>
+                <td class="py-4 px-6 font-semibold">{{ devi.getTotalPrice()|number_format(2, ',', ' ') }} €</td>
                 <td class="py-4 px-6 flex gap-2">
                     <a href="{{ path('front_app_devis_show', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Voir</a>
                     <a href="{{ path('front_app_devis_edit', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-700">Modifier</a>
@@ -33,7 +37,7 @@
             </tr>
         {% else %}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td colspan="3" class="py-4 px-6">Aucun devis trouvé</td>
+                <td colspan="5" class="py-4 px-6 text-center text-gray-500">Aucun devis trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
