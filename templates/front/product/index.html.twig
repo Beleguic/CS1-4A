@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product index{% endblock %}
+{% block title %}Liste des produits{% endblock %}
 
 {% block body %}
 
@@ -8,8 +8,10 @@
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    <th scope="col" class="py-3 px-6">Name</th>
-                    <th scope="col" class="py-3 px-6">Price</th>
+                    <th scope="col" class="py-3 px-6">Nom</th>
+                    <th scope="col" class="py-3 px-6">Prix HT</th>
+                    <th scope="col" class="py-3 px-6">TVA</th>
+                    <th scope="col" class="py-3 px-6">Catégorie</th>
                     <th scope="col" class="py-3 px-6">Description</th>
                     <th scope="col" class="py-3 px-6">Actions</th>
                 </tr>
@@ -17,26 +19,42 @@
             <tbody>
             {% for product in products %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td class="py-4 px-6">{{ product.name }}</td>
-                    <td class="py-4 px-6">{{ product.price }}</td>
-                    <td class="py-4 px-6">{{ product.description }}</td>
-                    <td class="py-4 px-6 flex gap-2">
-                        <a href="{{ path('front_app_product_show', {'id': product.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Show</a>
-                        <a href="{{ path('front_app_product_edit', {'id': product.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-700">Edit</a>
-                        <a href="{{ path('front_app_product_delete', {'id': product.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">Delete</a>
-                        <a href="{{ path('front_app_product_download_pdf', {'id': product.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-400 hover:bg-blue-700">PDF</a>
-                        
+                    <td class="py-4 px-6 font-medium text-gray-900 dark:text-white">{{ product.name }}</td>
+                    <td class="py-4 px-6 font-semibold">{{ product.price|number_format(2, ',', ' ') }} €</td>
+                    <td class="py-4 px-6 text-center">
+                        <span class="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800">
+                            {{ product.tva|number_format(1, ',', ' ') }}%
+                        </span>
+                    </td>
+                    <td class="py-4 px-6">
+                        <span class="px-2 py-1 text-xs font-medium rounded bg-gray-100 text-gray-800">
+                            {{ product.category.name }}
+                        </span>
+                    </td>
+                    <td class="py-4 px-6 max-w-xs truncate" title="{{ product.description }}">{{ product.description }}</td>
+                    <td class="py-4 px-6">
+                        <div class="flex gap-1 flex-wrap">
+                            <a href="{{ path('front_app_product_show', {'id': product.id}) }}" class="px-3 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Voir</a>
+                            <a href="{{ path('front_app_product_edit', {'id': product.id}) }}" class="px-3 py-1 text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-700">Modifier</a>
+                            <a href="{{ path('front_app_product_delete', {'id': product.id}) }}" class="px-3 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">Supprimer</a>
+                            <a href="{{ path('front_app_product_download_pdf', {'id': product.id}) }}" class="px-3 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-400 hover:bg-blue-700">PDF</a>
+                        </div>
                     </td>
                 </tr>
             {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td colspan="4" class="py-4 px-6">No records found</td>
+                    <td colspan="6" class="py-4 px-6 text-center text-gray-500">Aucun produit trouvé</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
 
-    <a href="{{ path('front_app_product_new') }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Create new</a>
+    <a href="{{ path('front_app_product_new') }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-green-500 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Créer un nouveau produit
+    </a>
 
 {% endblock %}
