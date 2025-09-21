@@ -108,15 +108,22 @@ class CompanyController extends AbstractController
     #[Route('/add/employee', name: 'app_company_add_employee', methods: ['GET', 'POST'])]
     public function add_user(Request $request, EntityManagerInterface $entityManager, CompanyRepository $companyRepository, BrevoEmailService $emailService, SessionInterface $session,  ManagerRegistry $registry): Response
     {
+        $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $newCompanyUser = new RequestNewCompanyUser();
         $form = $this->createForm(RequestNewCompanyUserType::class, $newCompanyUser);
         $form->handleRequest($request);
-        $companyId = $this->getUser()->getCompanyId();
+        $companyId = $user->getCompanyId();
         $company = $registry->getRepository(Company::class)->find($companyId);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userId = $this->getUser()->getId();
-            $companyId = $this->getUser()->getCompanyId();
+            $userId = $user->getId();
+            $companyId = $user->getCompanyId();
             $newCompanyUser->setUserId($userId);
             $newCompanyUser->setCompanyId($companyId);
             $entityManager->persist($newCompanyUser);
@@ -135,7 +142,7 @@ class CompanyController extends AbstractController
             }
             $senderName = 'Plumbpay';
             $senderEmail = 'team_plumbpay@outlook.com';
-            $recipientName = $this->getUser()->getUserIdentifier();
+            $recipientName = $user->getUserIdentifier();
             $recipientEmail = $newCompanyUser->getEmail();
             $subject = "Plumbpay - " . $companyName . " vous a ajouté !";
             $htmlContent = "<html><head></head><body><p> La société " . $companyName . " vous a ajouté!</p><p>Veuillez cliquer sur le lien suivant pour être ajouté à " . $companyName . " : <a href='" . $activationLink . "'>Etre ajouté</a></p></body></html>";

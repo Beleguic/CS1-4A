@@ -20,6 +20,12 @@ class ClientController extends AbstractController
     public function index(ClientRepository $clientRepository): Response
     {
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
 
         return $this->render('front/client/index.html.twig', [
@@ -31,6 +37,12 @@ class ClientController extends AbstractController
     public function new(ManagerRegistry $registry, Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
 
         $client = new Client();
@@ -65,6 +77,12 @@ class ClientController extends AbstractController
     public function edit(Request $request, Client $client, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
         
         $form = $this->createForm(ClientType::class, $client, [

@@ -26,8 +26,13 @@ class FactureController extends AbstractController
     #[Route('/', name: 'app_facture_index', methods: ['GET'])]
     public function index(FactureRepository $factureRepository, EntityManagerInterface $entityManager): Response
     {
-
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
         
         return $this->render('front/facture/index.html.twig', [

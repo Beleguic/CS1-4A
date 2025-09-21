@@ -27,8 +27,13 @@ class DevisController extends AbstractController
     #[Route('/', name: 'app_devis_index', methods: ['GET'])]
     public function index(DevisRepository $devisRepository): Response
     {
-
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
 
         return $this->render('front/devis/index.html.twig', [
@@ -39,8 +44,13 @@ class DevisController extends AbstractController
     #[Route('/new', name: 'app_devis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        //$entrepriseId = 1;
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
 
         $products = $entityManager->getRepository(Product::class)->findByCompagny($companyId);
@@ -177,8 +187,13 @@ class DevisController extends AbstractController
     #[Route('/{id}/edit', name: 'app_devis_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Devis $devis, EntityManagerInterface $entityManager): Response
     {
-
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
 
         $products = $entityManager->getRepository(Product::class)->findByCompagny($companyId);
@@ -424,8 +439,13 @@ class DevisController extends AbstractController
     #[Route('/{id}/transform-devis', name: 'app_devis_transform_devis', methods: ['GET', 'POST'])]
     public function transform_devis(Request $request, Devis $devis, EntityManagerInterface $entityManager): Response
     {
-
         $user = $this->getUser();
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $companyId = $user->getCompanyId();
 
         $facture = new Facture();
