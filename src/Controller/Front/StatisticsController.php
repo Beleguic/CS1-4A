@@ -21,10 +21,22 @@ class StatisticsController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        $company_id = $user->getCompany()->getId();
-        $company = $user->getCompany();
-
-        $creationYear = $company->getCreatedAt()->format('Y');
+        $isSuperAdmin = $this->isGranted('ROLE_SUPER_ADMIN');
+        
+        if ($isSuperAdmin) {
+            // Pour le super admin, on récupère les stats de toutes les entreprises
+            $company_id = null;
+            $company = null;
+            $creationYear = 2020; // Année de création par défaut pour les stats globales
+        } else {
+            // Pour les autres utilisateurs, on récupère les stats de leur entreprise
+            if (!$user->getCompany()) {
+                throw $this->createNotFoundException('Vous devez être associé à une entreprise pour accéder à cette fonctionnalité.');
+            }
+            $company_id = $user->getCompany()->getId();
+            $company = $user->getCompany();
+            $creationYear = $company->getCreatedAt()->format('Y');
+        }
 
         $currentYear = (int) date('Y');
         $years = range($creationYear, $currentYear);
@@ -72,8 +84,14 @@ class StatisticsController extends AbstractController
                 $invoicesCount = $this->countEntitiesByDate($entityManager, 'App\Entity\Facture', $startDate, $endDate, $company_id);
                 $totalPriceMonth = $this->getTotalPriceOfQuotations($entityManager, $startDate, $endDate, $company_id);
 
+                $monthNames = [
+                    1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril',
+                    5 => 'Mai', 6 => 'Juin', 7 => 'Juillet', 8 => 'Août',
+                    9 => 'Septembre', 10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre'
+                ];
+                
                 $stats[$month] = [
-                    'month' => date('F', mktime(0, 0, 0, $month, 1)),
+                    'month' => $monthNames[$month],
                     'customer' => [
                         'total' => $customerCount,
                         'percent' => number_format($totalCustomers > 0 ? ($customerCount / $totalCustomers) * 100 : 0, 2),
@@ -126,8 +144,14 @@ class StatisticsController extends AbstractController
 
             $months = [];
 
+            $monthNames = [
+                1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril',
+                5 => 'Mai', 6 => 'Juin', 7 => 'Juillet', 8 => 'Août',
+                9 => 'Septembre', 10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre'
+            ];
+            
             for ($month = 1; $month <= 12; $month++) {
-                $months[$month] = date('F', mktime(0, 0, 0, $month, 1));
+                $months[$month] = $monthNames[$month];
             }
 
             return $this->render('/front/statistics/index.html.twig', [
@@ -137,6 +161,8 @@ class StatisticsController extends AbstractController
                 'controller_name' => 'StatisticsController',
                 'months' => $months,
                 'hasStats' => true,
+                'isSuperAdmin' => $isSuperAdmin,
+                'company' => $company,
             ]);
         }
 
@@ -145,6 +171,8 @@ class StatisticsController extends AbstractController
             'form' => $form->createView(),
             'controller_name' => 'StatisticsController',
             'hasStats' => false,
+            'isSuperAdmin' => $isSuperAdmin,
+            'company' => $company,
         ]);
     }
 
@@ -152,12 +180,20 @@ class StatisticsController extends AbstractController
     public function exportCsv(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        if (!$user || !$user->getCompany()) {
-            throw $this->createNotFoundException('Vous devez être connecté et avoir une société pour accéder à cette fonctionnalité.');
-        }
+        $isSuperAdmin = $this->isGranted('ROLE_SUPER_ADMIN');
         
-        $company_id = $user->getCompany()->getId();
-        $company = $user->getCompany();
+        if ($isSuperAdmin) {
+            // Pour le super admin, on récupère les stats de toutes les entreprises
+            $company_id = null;
+            $company = null;
+        } else {
+            // Pour les autres utilisateurs, on récupère les stats de leur entreprise
+            if (!$user || !$user->getCompany()) {
+                throw $this->createNotFoundException('Vous devez être connecté et avoir une société pour accéder à cette fonctionnalité.');
+            }
+            $company_id = $user->getCompany()->getId();
+            $company = $user->getCompany();
+        }
         
         $selectedYear = $request->query->getInt('year', date('Y'));
         
@@ -172,7 +208,8 @@ class StatisticsController extends AbstractController
 
         // Création du contenu CSV avec BOM UTF-8 pour Excel
         $csvContent = "\xEF\xBB\xBF"; // BOM UTF-8
-        $csvContent .= "Statistiques " . $company->getName() . " - Année $selectedYear\n\n";
+        $companyName = $isSuperAdmin ? "Toutes les entreprises" : $company->getName();
+        $csvContent .= "Statistiques " . $companyName . " - Année $selectedYear\n\n";
         
         // Résumé annuel
         $csvContent .= "RÉSUMÉ ANNUEL $selectedYear\n";
@@ -206,7 +243,12 @@ class StatisticsController extends AbstractController
             $quotationPercent = $totalQuotations > 0 ? number_format(($quotationsCount / $totalQuotations) * 100, 2, ',', ' ') : '0,00';
             $invoicePercent = $totalInvoices > 0 ? number_format(($invoicesCount / $totalInvoices) * 100, 2, ',', ' ') : '0,00';
             
-            $monthName = date('F', mktime(0, 0, 0, $month, 1));
+            $monthNames = [
+                1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril',
+                5 => 'Mai', 6 => 'Juin', 7 => 'Juillet', 8 => 'Août',
+                9 => 'Septembre', 10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre'
+            ];
+            $monthName = $monthNames[$month];
             
             $csvContent .= "$monthName;$customerCount;$customerPercent%;$categoryCount;$categoryPercent%;$productCount;$productPercent%;$quotationsCount;" . number_format($totalPriceQuotationsMonth, 2, ',', ' ') . " €;$quotationPercent%;$invoicesCount;" . number_format($totalPriceInvoicesMonth, 2, ',', ' ') . " €;$invoicePercent%\n";
         }
@@ -214,7 +256,8 @@ class StatisticsController extends AbstractController
         // Création de la réponse avec le fichier CSV
         $response = new Response($csvContent);
         $response->headers->set('Content-Type', 'text/csv; charset=utf-8; separator=;');
-        $response->headers->set('Content-Disposition', 'attachment; filename="statistiques_' . $company->getName() . '_' . $selectedYear . '.csv"');
+        $fileName = $isSuperAdmin ? "statistiques_globales" : "statistiques_" . preg_replace('/[^a-zA-Z0-9_-]/', '_', $company->getName());
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '_' . $selectedYear . '.csv"');
         
         return $response;
     }
@@ -223,12 +266,20 @@ class StatisticsController extends AbstractController
     public function exportPdf(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        if (!$user || !$user->getCompany()) {
-            throw $this->createNotFoundException('Vous devez être connecté et avoir une société pour accéder à cette fonctionnalité.');
-        }
+        $isSuperAdmin = $this->isGranted('ROLE_SUPER_ADMIN');
         
-        $company_id = $user->getCompany()->getId();
-        $company = $user->getCompany();
+        if ($isSuperAdmin) {
+            // Pour le super admin, on récupère les stats de toutes les entreprises
+            $company_id = null;
+            $company = null;
+        } else {
+            // Pour les autres utilisateurs, on récupère les stats de leur entreprise
+            if (!$user || !$user->getCompany()) {
+                throw $this->createNotFoundException('Vous devez être connecté et avoir une société pour accéder à cette fonctionnalité.');
+            }
+            $company_id = $user->getCompany()->getId();
+            $company = $user->getCompany();
+        }
         $selectedYear = $request->query->getInt('year', date('Y'));
         
         // Récupération des données annuelles
@@ -255,8 +306,14 @@ class StatisticsController extends AbstractController
             $totalPriceQuotationsMonth = $this->getTotalPriceOfQuotations($entityManager, $startDate, $endDate, $company_id);
             $totalPriceInvoicesMonth = $this->getTotalPriceOfInvoices($entityManager, $startDate, $endDate, $company_id);
             
+            $monthNames = [
+                1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril',
+                5 => 'Mai', 6 => 'Juin', 7 => 'Juillet', 8 => 'Août',
+                9 => 'Septembre', 10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre'
+            ];
+            
             $stats[$month] = [
-                'month' => date('F', mktime(0, 0, 0, $month, 1)),
+                'month' => $monthNames[$month],
                 'customer' => [
                     'total' => $customerCount,
                     'percent' => number_format($totalCustomers > 0 ? ($customerCount / $totalCustomers) * 100 : 0, 2),
@@ -307,6 +364,7 @@ class StatisticsController extends AbstractController
         // Rendu du template HTML pour PDF
         $html = $this->renderView('front/statistics/pdf_statistics_template.html.twig', [
             'company' => $company,
+            'isSuperAdmin' => $isSuperAdmin,
             'selectedYear' => $selectedYear,
             'stats' => $stats,
             'summary' => $summary,
@@ -317,8 +375,7 @@ class StatisticsController extends AbstractController
         $dompdf->render();
 
         // Nom de fichier sécurisé
-        $companyNameSafe = preg_replace('/[^a-zA-Z0-9_-]/', '_', $company->getName());
-        $pdfFileName = "statistiques_" . $companyNameSafe . "_" . $selectedYear . ".pdf";
+        $pdfFileName = $isSuperAdmin ? "statistiques_globales_" . $selectedYear . ".pdf" : "statistiques_" . preg_replace('/[^a-zA-Z0-9_-]/', '_', $company->getName()) . "_" . $selectedYear . ".pdf";
 
         return new Response($dompdf->output(), 200, [
             'Content-Type' => 'application/pdf',
@@ -335,13 +392,15 @@ class StatisticsController extends AbstractController
 
         $qb->select('COUNT(e.id)')
             ->from($className, 'e')
-            ->where($qb->expr()->andX(
-                $qb->expr()->between('e.createdAt', ':start', ':end'),
-                $qb->expr()->eq('e.company_id', ':company_id') // Assuming you have a 'company' field in your entities
-            ))
+            ->where($qb->expr()->between('e.createdAt', ':start', ':end'))
             ->setParameter('start', $startDate)
-            ->setParameter('end', $endDate)
-            ->setParameter('company_id', $company_id);
+            ->setParameter('end', $endDate);
+
+        // Si company_id est fourni, on filtre par entreprise
+        if ($company_id !== null) {
+            $qb->andWhere($qb->expr()->eq('e.company_id', ':company_id'))
+               ->setParameter('company_id', $company_id);
+        }
 
         return $qb->getQuery()->getSingleScalarResult();
     }
@@ -352,13 +411,15 @@ class StatisticsController extends AbstractController
 
         $qb->select('SUM(e.total_price)')
             ->from('App\Entity\Devis', 'e')
-            ->where($qb->expr()->andX(
-                $qb->expr()->between('e.createdAt', ':start', ':end'),
-                $qb->expr()->eq('e.company_id', ':company_id') // Assuming you have a 'company' field in your entities
-            ))
+            ->where($qb->expr()->between('e.createdAt', ':start', ':end'))
             ->setParameter('start', $startDate)
-            ->setParameter('end', $endDate)
-            ->setParameter('company_id', $company_id);
+            ->setParameter('end', $endDate);
+
+        // Si company_id est fourni, on filtre par entreprise
+        if ($company_id !== null) {
+            $qb->andWhere($qb->expr()->eq('e.company_id', ':company_id'))
+               ->setParameter('company_id', $company_id);
+        }
 
         return $qb->getQuery()->getSingleScalarResult() ?? 0;
     }
@@ -369,13 +430,15 @@ class StatisticsController extends AbstractController
 
         $qb->select('SUM(e.prix_total)')
             ->from('App\Entity\Facture', 'e')
-            ->where($qb->expr()->andX(
-                $qb->expr()->between('e.createdAt', ':start', ':end'),
-                $qb->expr()->eq('e.company_id', ':company_id') // Assuming you have a 'company' field in your entities
-            ))
+            ->where($qb->expr()->between('e.createdAt', ':start', ':end'))
             ->setParameter('start', $startDate)
-            ->setParameter('end', $endDate)
-            ->setParameter('company_id', $company_id);
+            ->setParameter('end', $endDate);
+
+        // Si company_id est fourni, on filtre par entreprise
+        if ($company_id !== null) {
+            $qb->andWhere($qb->expr()->eq('e.company_id', ':company_id'))
+               ->setParameter('company_id', $company_id);
+        }
 
         return $qb->getQuery()->getSingleScalarResult() ?? 0;
     }
