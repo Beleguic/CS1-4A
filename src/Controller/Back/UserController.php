@@ -40,7 +40,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();
-
+            $this->addFlash('success', 'L\'utilisateur "' . $user->getEmail() . '" a été créé avec succès !');
             return $this->redirectToRoute('back_app_user', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -66,7 +66,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash('success', 'L\'utilisateur "' . $user->getEmail() . '" a été modifié avec succès !');
             return $this->redirectToRoute('back_app_user', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -80,8 +80,10 @@ class UserController extends AbstractController
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $userEmail = $user->getEmail();
             $entityManager->remove($user);
             $entityManager->flush();
+            $this->addFlash('success', 'L\'utilisateur "' . $userEmail . '" a été supprimé avec succès !');
         }
 
         return $this->redirectToRoute('back_app_user', [], Response::HTTP_SEE_OTHER);

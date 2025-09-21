@@ -4,14 +4,23 @@ namespace App\Controller\Front;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
     #[Route('/', name: 'default_index')]
-    public function index(): Response
+    public function index(RequestStack $requestStack): Response
     {
-        return $this->render('front/index/index.html.twig');
+        // Démarrer la session si elle n'est pas déjà démarrée
+        $session = $requestStack->getSession();
+        if (!$session->isStarted()) {
+            $session->start();
+        }
+        
+        return $this->render('front/index/index.html.twig', [
+            'user' => $this->getUser()
+        ]);
     }
 
     #[Route('/design', name: 'design_index')]

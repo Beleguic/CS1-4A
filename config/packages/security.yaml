@@ -20,7 +20,7 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: front_app_account
+                default_target_path: default_index
             logout:
                 path: app_logout
                 target : app_login

@@ -1,4 +1,149 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+    <!-- Informations de base -->
+    <div class="grid grid-cols-1 gap-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2">
+            {{ include('_composants/_lucide_icon.html.twig', { name: 'building', class: 'w-5 h-5 mr-2 inline' }) }}
+            Informations de base
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Nom -->
+            {% if form.name is defined %}
+                <div class="grid grid-cols-1 gap-2">
+                    {{ form_label(form.name, 'Nom de l\'entreprise', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                    {{ form_widget(form.name, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                    {{ form_errors(form.name) }}
+                </div>
+            {% endif %}
+
+            <!-- Logo -->
+            {% if form.imageFile is defined %}
+                <div class="grid grid-cols-1 gap-2">
+                    {{ form_label(form.imageFile, 'Logo', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                    {{ form_widget(form.imageFile, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-mainColor-50 file:text-mainColor-700 hover:file:bg-mainColor-100 dark:file:bg-mainColor-900 dark:file:text-mainColor-300 transition-all duration-200'}}) }}
+                    {{ form_errors(form.imageFile) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Informations de contact -->
+    <div class="grid grid-cols-1 gap-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2">
+            {{ include('_composants/_lucide_icon.html.twig', { name: 'mail', class: 'w-5 h-5 mr-2 inline' }) }}
+            Informations de contact
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Email principal -->
+            {% if form.email is defined %}
+                <div class="grid grid-cols-1 gap-2">
+                    {{ form_label(form.email, 'Email principal', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                    {{ form_widget(form.email, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                    {{ form_errors(form.email) }}
+                </div>
+            {% endif %}
+
+            <!-- Email facturation -->
+            {% if form.invoice_email is defined %}
+                <div class="grid grid-cols-1 gap-2">
+                    {{ form_label(form.invoice_email, 'Email facturation', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                    {{ form_widget(form.invoice_email, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                    {{ form_errors(form.invoice_email) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Adresse -->
+    <div class="grid grid-cols-1 gap-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2">
+            {{ include('_composants/_lucide_icon.html.twig', { name: 'map-pin', class: 'w-5 h-5 mr-2 inline' }) }}
+            Adresse
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Numéro et type de rue -->
+            <div class="grid grid-cols-1 gap-2">
+                {{ form_label(form.address_number, 'Numéro', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                {{ form_widget(form.address_number, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                {{ form_errors(form.address_number) }}
+            </div>
+
+            <div class="grid grid-cols-1 gap-2">
+                {{ form_label(form.address_type, 'Type de rue', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                {{ form_widget(form.address_type, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                {{ form_errors(form.address_type) }}
+            </div>
+
+            <div class="grid grid-cols-1 gap-2">
+                {{ form_label(form.address_name, 'Nom de rue', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                {{ form_widget(form.address_name, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                {{ form_errors(form.address_name) }}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Code postal -->
+            <div class="grid grid-cols-1 gap-2">
+                {{ form_label(form.address_zip_code, 'Code postal', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                {{ form_widget(form.address_zip_code, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                {{ form_errors(form.address_zip_code) }}
+            </div>
+
+            <!-- Ville -->
+            <div class="grid grid-cols-1 gap-2">
+                {{ form_label(form.address_city, 'Ville', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                {{ form_widget(form.address_city, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                {{ form_errors(form.address_city) }}
+            </div>
+
+            <!-- Pays -->
+            <div class="grid grid-cols-1 gap-2">
+                {{ form_label(form.address_country, 'Pays', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                {{ form_widget(form.address_country, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                {{ form_errors(form.address_country) }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Informations financières -->
+    <div class="grid grid-cols-1 gap-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2">
+            {{ include('_composants/_lucide_icon.html.twig', { name: 'credit-card', class: 'w-5 h-5 mr-2 inline' }) }}
+            Informations financières
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Numéro d'entreprise -->
+            <div class="grid grid-cols-1 gap-2">
+                {{ form_label(form.company_number, 'Numéro d\'entreprise', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                {{ form_widget(form.company_number, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+                {{ form_errors(form.company_number) }}
+            </div>
+
+            <!-- IBAN -->
+            <div class="grid grid-cols-1 gap-2">
+                {{ form_label(form.iban, 'IBAN', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                {{ form_widget(form.iban, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200 font-mono text-sm'}}) }}
+                {{ form_errors(form.iban) }}
+            </div>
+
+            <!-- BIC -->
+            <div class="grid grid-cols-1 gap-2">
+                {{ form_label(form.bic, 'BIC', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+                {{ form_widget(form.bic, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200 font-mono text-sm'}}) }}
+                {{ form_errors(form.bic) }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="flex flex-col gap-4">
+        <button type="submit" class="group w-full flex items-center justify-center px-6 py-3 bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-white/30 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+            {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
+
 {{ form_end(form) }}

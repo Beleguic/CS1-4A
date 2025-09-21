@@ -75,7 +75,7 @@
                                  x-transition:leave="transition ease-in duration-150"
                                  x-transition:leave-start="opacity-100 scale-100 transform translate-y-0"
                                  x-transition:leave-end="opacity-0 scale-95 transform translate-y-1"
-                                 class="absolute right-0 top-14 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-20">
+                                 class="absolute right-0 top-14 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 z-20">
                                 
                                 <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                                     <div class="flex items-center gap-3">
@@ -89,7 +89,7 @@
                                     </div>
                                 </div>
 
-                                <div class="py-2">
+                                <div>
                                     <a href="{{ path('front_app_account') }}" class="dropdown-item">
                                         {{ include('_composants/_lucide_icon.html.twig', { name: 'user', class: 'w-4 h-4' }) }}
                                         Paramètres du Compte
@@ -104,8 +104,7 @@
                                             Administration
                                         </a>
                                     {% endif %}
-                                    <hr class="my-2 border-gray-200 dark:border-gray-700">
-                                    <a href="{{ path('app_logout') }}" class="dropdown-item text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20">
+                                    <a href="{{ path('app_logout') }}" class="dropdown-item text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-br-xl rounded-bl-xl">
                                         {{ include('_composants/_lucide_icon.html.twig', { name: 'log-out', class: 'w-4 h-4' }) }}
                                         Se déconnecter
                                     </a>

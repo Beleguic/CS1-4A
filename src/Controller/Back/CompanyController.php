@@ -39,6 +39,7 @@ class CompanyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($company);
             $entityManager->flush();
+            $this->addFlash('success', 'L\'entreprise "' . $company->getName() . '" a été créée avec succès !');
             return $this->redirectToRoute('back_app_company', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -65,7 +66,7 @@ class CompanyController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash('success', 'L\'entreprise "' . $company->getName() . '" a été modifiée avec succès !');
             return $this->redirectToRoute('back_app_company', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -80,8 +81,10 @@ class CompanyController extends AbstractController
     public function delete(Request $request, Company $company, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$company->getId(), $request->request->get('_token'))) {
+            $companyName = $company->getName();
             $entityManager->remove($company);
             $entityManager->flush();
+            $this->addFlash('success', 'L\'entreprise "' . $companyName . '" a été supprimée avec succès !');
         }
 
         return $this->redirectToRoute('back_app_company', [], Response::HTTP_SEE_OTHER);

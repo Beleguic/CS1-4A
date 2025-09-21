@@ -1,50 +1,128 @@
 {% extends 'admin.html.twig' %}
 
-{% block title %}PlumbPay - Admin - Contact{% endblock %}
+{% block title %}PlumbPay - Admin - Contacts{% endblock %}
 
 {% block body %}
-    <div class="table-container">
-        <div>
-            <h3 class="text-xl font-bold uppercase">{{ pagination|length }} contacts found</h3>
+    {{ include('/back/contact/_nav.html.twig') }}
+    
+    <!-- Header Section -->
+    <div class="mb-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Gestion des Contacts</h1>
+                <p class="text-gray-600 dark:text-gray-400 mt-1">
+                    {{ pagination.getTotalItemCount }} contact{{ pagination.getTotalItemCount > 1 ? 's' : '' }} trouvé{{ pagination.getTotalItemCount > 1 ? 's' : '' }}
+                </p>
+            </div>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Lastname</th>
-                    <th>Firstname</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Company</th>
-                    <th>Subject</th>
-                    <th>Message</th>
-                    <th>Created At</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for contact in pagination %}
-                <tr>
-                    <td>{{ contact.lastname }}</td>
-                    <td>{{ contact.firstname }}</td>
-                    <td>{{ contact.email }}</td>
-                    <td>{{ contact.phone }}</td>
-                    <td>{{ contact.company }}</td>
-                    <td>{{ contact.subject|slice(0,10) }}</td>
-                    <td>{{ contact.message|slice(0,20) }}</td>
-                    <td>{{ contact.createdAt ? contact.createdAt|date('d F Y \à H:h') : '' }}</td>
-                    <td>
-                        <div class="h-full w-full flex gap-4">
-                            <a href="{{ path('back_app_contact_show', {'id': contact.id}) }}" class="btn btn-show">Show</a>
-                        </div>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="9">No records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
     </div>
-    {{ knp_pagination_render(pagination) }}
+
+    <!-- Contacts Table -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="py-4 px-6 font-semibold">Contact</th>
+                        <th scope="col" class="py-4 px-6 font-semibold">Email</th>
+                        <th scope="col" class="py-4 px-6 font-semibold">Téléphone</th>
+                        <th scope="col" class="py-4 px-6 font-semibold">Entreprise</th>
+                        <th scope="col" class="py-4 px-6 font-semibold">Sujet</th>
+                        <th scope="col" class="py-4 px-6 font-semibold">Date</th>
+                        <th scope="col" class="py-4 px-6 font-semibold text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for contact in pagination %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
+                        <td class="py-4 px-6 align-middle">
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="font-medium text-gray-900 dark:text-white">{{ contact.firstname }} {{ contact.lastname }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-6 align-middle">
+                            <div class="text-gray-600 dark:text-gray-400">{{ contact.email }}</div>
+                        </td>
+                        <td class="py-4 px-6 align-middle">
+                            <div class="text-gray-600 dark:text-gray-400">{{ contact.phone }}</div>
+                        </td>
+                        <td class="py-4 px-6 align-middle">
+                            <div class="flex items-center">
+                                {% if contact.company %}
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                        {{ include('_composants/_lucide_icon.html.twig', { name: 'building', class: 'w-3 h-3 mr-1' }) }}
+                                        {{ contact.company }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-gray-400 dark:text-gray-500 text-xs">Non spécifiée</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="py-4 px-6 align-middle">
+                            <div class="max-w-xs truncate">
+                                <span class="text-gray-900 dark:text-white font-medium">{{ contact.subject }}</span>
+                            </div>
+                        </td>
+                        <td class="py-4 px-6 align-middle">
+                            <div class="text-gray-600 dark:text-gray-400 text-sm">
+                                {{ contact.createdAt ? contact.createdAt|date('d/m/Y H:i') : 'Non défini' }}
+                            </div>
+                        </td>
+                        <td class="py-4 px-6 align-middle">
+                            <div class="flex items-center justify-center gap-2">
+                                <a href="{{ path('back_app_contact_show', {'id': contact.id}) }}" 
+                                   class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800 rounded-lg transition-colors duration-150"
+                                   title="Voir les détails">
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'eye', class: 'w-4 h-4' }) }}
+                                </a>
+                                <button onclick="confirmDelete('{{ contact.id }}', '{{ contact.firstname }} {{ contact.lastname }}')" 
+                                        class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 dark:bg-red-900 dark:text-red-300 dark:hover:bg-red-800 rounded-lg transition-colors duration-150"
+                                        title="Supprimer">
+                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'trash-2', class: 'w-4 h-4' }) }}
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr class="bg-white dark:bg-gray-800">
+                        <td colspan="7" class="py-12 px-6 text-center">
+                            <div class="flex flex-col items-center justify-center">
+                                {{ include('_composants/_lucide_icon.html.twig', { name: 'message-circle', class: 'w-12 h-12 text-gray-400 dark:text-gray-500 mb-4' }) }}
+                                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Aucun contact trouvé</h3>
+                                <p class="text-gray-500 dark:text-gray-400 mb-4">Les nouveaux contacts apparaîtront ici.</p>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if pagination and pagination.getTotalItemCount > 0 %}
+        <div class="mt-6 w-full">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-2">
+                {{ knp_pagination_render(pagination, 'pagination/tailwind_pagination.html.twig') }}
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Hidden delete form -->
+    <form id="delete-form" method="post" action="" class="hidden">
+        <input type="hidden" name="_token" value="">
+    </form>
+
+    <script>
+        function confirmDelete(contactId, contactName) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer le contact "' + contactName + '" ? Cette action est irréversible.')) {
+                const form = document.getElementById('delete-form');
+                form.action = '{{ path('back_app_contact_delete', {'id': '__ID__'}) }}'.replace('__ID__', contactId);
+                form.querySelector('input[name="_token"]').value = '{{ csrf_token('delete__ID__') }}'.replace('__ID__', contactId);
+                form.submit();
+            }
+        }
+    </script>
 {% endblock %}

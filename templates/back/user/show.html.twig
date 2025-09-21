@@ -1,64 +1,133 @@
 {% extends 'admin.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}PlumbPay - Admin - Détails Utilisateur{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
-    {{ include('back/user/_nav.html.twig') }}
-    <div class="flex flex-col gap-12">
-        <section class="flex flex-col gap-4">
-            <div class="grid grid-cols-1 py-2">
-                <div>ID</div>
-                <div>{{ user.id }}</div>
+    {{ include('/back/user/_nav.html.twig') }}
+    
+    <!-- Header Section -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Détails de l'utilisateur</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">Informations complètes du compte utilisateur.</p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6">
+        <!-- Informations personnelles -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Nom -->
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nom</label>
+                <input type="text" value="{{ user.lastname|default('Non défini') }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
             </div>
-            <div class="grid grid-cols-1 py-2">
-                <div>Email</div>
-                <div>{{ user.email }}</div>
+
+            <!-- Prénom -->
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Prénom</label>
+                <input type="text" value="{{ user.firstname|default('Non défini') }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
             </div>
-            <div class="grid grid-cols-1 py-2">
-                <div>Roles</div>
-                <div>
-                    {% for role in user.roles %}
-                        <span class="badge-role">{{ role|replace({'ROLE_': ''}) }}</span>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="grid grid-cols-1 py-2">
-                <div>Password</div>
-                <div>*****</div>
-            </div>
-            <div class="grid grid-cols-1 py-2">
-                <div>Company</div>
-                <div>
-                    {% if user.company is not null %}
-                        {{ user.company.name }}
+        </div>
+
+        <!-- Email -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+            <input type="email" value="{{ user.email }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+        </div>
+
+        <!-- Statut et Rôle -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Statut -->
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Statut du compte</label>
+                <div class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl">
+                    {% if not user.enabled %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'x-circle', class: 'w-4 h-4 mr-2' }) }}
+                            Inactif
+                        </span>
+                    {% else %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'w-4 h-4 mr-2' }) }}
+                            Actif
+                        </span>
                     {% endif %}
                 </div>
             </div>
-        </section>
-        <section class="flex flex-col gap-4">
-            <div class="grid grid-cols-1 py-2">
-                <div>Lastname</div>
-                <div>{{ user.lastname }}</div>
+
+            <!-- Rôle -->
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Rôle</label>
+                <div class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl">
+                    {% set roleClass = user.roles[0] == 'ROLE_SUPER_ADMIN' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' : 
+                                     (user.roles[0] == 'ROLE_ADMIN' ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200' : 
+                                     'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200') %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ roleClass }}">
+                        {% if user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'crown', class: 'w-4 h-4 mr-2' }) }}
+                            Super Admin
+                        {% elseif user.roles[0] == 'ROLE_ADMIN' %}
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'shield', class: 'w-4 h-4 mr-2' }) }}
+                            Admin
+                        {% else %}
+                            {{ include('_composants/_lucide_icon.html.twig', { name: 'user', class: 'w-4 h-4 mr-2' }) }}
+                            Utilisateur
+                        {% endif %}
+                    </span>
+                </div>
             </div>
-            <div class="grid grid-cols-1 py-2">
-                <div>Firstname</div>
-                <div>{{ user.firstname }}</div>
+        </div>
+
+        <!-- Entreprise -->
+        <div class="grid grid-cols-1 gap-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Entreprise</label>
+            <div class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl">
+                {% if user.company %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                        {{ include('_composants/_lucide_icon.html.twig', { name: 'building', class: 'w-4 h-4 mr-2' }) }}
+                        {{ user.company.name }}
+                    </span>
+                {% else %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+                        {{ include('_composants/_lucide_icon.html.twig', { name: 'building-x', class: 'w-4 h-4 mr-2' }) }}
+                        Aucune entreprise assignée
+                    </span>
+                {% endif %}
             </div>
-        </section>
-        <section class="flex flex-col gap-4">
-            <div class="grid grid-cols-1 py-2">
-                <div>Created at</div>
-                <div>{{ user.createdAt ? user.createdAt|date('d F Y \à H:h') : '' }}</div>
+        </div>
+
+        <!-- Informations système -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- ID utilisateur -->
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">ID utilisateur</label>
+                <input type="text" value="{{ user.id }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed font-mono text-sm">
             </div>
-            <div class="grid grid-cols-1 py-2">
-                <div>Verified at</div>
-                <div>{{ user.verifiedAt ? user.verifiedAt|date('d F Y \à H:h') : '' }}</div>
+
+            <!-- Mot de passe -->
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Mot de passe</label>
+                <input type="password" value="••••••••" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
             </div>
-            <div class="grid grid-cols-1 py-2">
-                <div>Updated at</div>
-                <div>{{ user.updatedAt ? user.updatedAt|date('d F Y \à H:h') : '' }}</div>
+        </div>
+
+        <!-- Dates -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Date de création -->
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Créé le</label>
+                <input type="text" value="{{ user.createdAt ? user.createdAt|date('d F Y à H:i') : 'Non défini' }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
             </div>
-        </section>
+
+            <!-- Date de vérification -->
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Vérifié le</label>
+                <input type="text" value="{{ user.verifiedAt ? user.verifiedAt|date('d F Y à H:i') : 'Non vérifié' }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+            </div>
+
+            <!-- Date de mise à jour -->
+            <div class="grid grid-cols-1 gap-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Mis à jour le</label>
+                <input type="text" value="{{ user.updatedAt ? user.updatedAt|date('d F Y à H:i') : 'Non défini' }}" readonly class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 cursor-not-allowed">
+            </div>
+        </div>
     </div>
 {% endblock %}

@@ -1,7 +1,59 @@
-<div class="flex flex-row gap-4">
-    <a href="{{ path('back_app_user') }}" class="btn btn-all">Show All Users</a>
-
-    <a href="{{ path('back_app_user_edit', {'id': user.id}) }}" class="btn btn-edit">Edit</a>
-
-    {{ include('back/user/_delete_form.html.twig') }}
+<div class="flex flex-col sm:flex-row gap-4 mb-6">
+    {% if app.request and not (app.request.getRequestUri matches('/\\/(|index)$/')) %}
+        <a href="{{ path('back_app_user') }}" class="inline-flex items-center justify-center px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-gray-500/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { 
+                name: 'arrow-left', 
+                class: 'w-4 h-4 mr-2' 
+            }) }}
+            Retour à la liste
+        </a>
+    {% endif %}
+    {% if app.request and not (app.request.getRequestUri matches('/\\/new$/')) %}
+        <a href="{{ path('back_app_user_new') }}" class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-mainColor-400 to-mainColor-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-mainColor-400/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { 
+                name: 'plus', 
+                class: 'w-4 h-4 mr-2' 
+            }) }}
+            Nouvel utilisateur
+        </a>
+    {% endif %}
+    {% if app.request and not (app.request.getRequestUri matches('/(\\/new|\\/)$/')) and user is defined %}
+        <a href="{{ path('back_app_user_edit', {'id': user.id}) }}" class="inline-flex items-center justify-center px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { 
+                name: 'edit', 
+                class: 'w-4 h-4 mr-2' 
+            }) }}
+            Modifier
+        </a>
+    {% endif %}
+    {% if app.request and not (app.request.getRequestUri matches('/(\\/new|\\/)$/')) and user is defined %}
+        <a href="{{ path('back_app_user_show', {'id': user.id}) }}" class="inline-flex items-center justify-center px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { 
+                name: 'eye', 
+                class: 'w-4 h-4 mr-2' 
+            }) }}
+            Voir les détails
+        </a>
+    {% endif %}
+    {% if app.request and (app.request.getRequestUri matches('/\\/user\\/[0-9a-fA-F-]+(\\/edit|\\/show)?$/')) and user is defined %}
+        <div class="inline-flex">
+            <button onclick="confirmDelete()" class="inline-flex items-center justify-center px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500/50 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+                {{ include('_composants/_lucide_icon.html.twig', { 
+                    name: 'trash-2', 
+                    class: 'w-4 h-4 mr-2' 
+                }) }}
+                Supprimer
+            </button>
+            <form id="delete-form" method="post" action="{{ path('back_app_user_delete', {'id': user.id}) }}" class="hidden">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+            </form>
+        </div>
+        <script>
+            function confirmDelete() {
+                if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.')) {
+                    document.getElementById('delete-form').submit();
+                }
+            }
+        </script>
+    {% endif %}
 </div>

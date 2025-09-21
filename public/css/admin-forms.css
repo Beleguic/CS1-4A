@@ -1,0 +1,38 @@
+/* Styles pour les formulaires admin */
+
+/* Checkboxes des rôles - style simple */
+input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    accent-color: #3b82f6;
+}
+
+/* Labels des checkboxes */
+label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+}
+
+.dark label {
+    color: #d1d5db;
+}
+
+/* Container des checkboxes */
+div[data-form-type="choice"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Espacement pour les groupes de checkboxes */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}

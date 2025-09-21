@@ -19,13 +19,13 @@ class CompanyType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Plumbpay',
                 ],
-                'label' => 'Name',
+                'label' => 'Nom',
             ])
             ->add('email', EmailType::class, [
                 'attr' => [
                     'placeholder' => 'contact@plumbpay.fr',
                 ],
-                'label' => 'Email',
+                'label' => 'Email principal',
             ])
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Logo',
@@ -35,47 +35,47 @@ class CompanyType extends AbstractType
                 'attr' => [
                     'placeholder' => 'invoices@plumbpay.fr',
                 ],
-                'label' => 'Invoice Email',
+                'label' => 'Email de facturation',
                 'required' => false,
             ])
             ->add('address_number', TextType::class, [
-                'label' => 'Address number',
+                'label' => 'Numéro de voie',
                 'help' => '10, 20 Bis, 154 Ter etc...',
                 'required' => false,
             ])
             ->add('address_type', TextType::class, [
-                'label' => 'Address type',
+                'label' => 'Type de voie',
                 'help' => 'rue, boulevard, avenue etc...',
                 'required' => false,
             ])
             ->add('address_name', TextType::class, [
-                'label' => 'Road name',
+                'label' => 'Nom de voie',
                 'help' => 'victor hugo, de la mairie etc...',
                 'required' => false,
             ])
             ->add('address_zip_code', TextType::class, [
-                'label' => 'ZIP Code',
+                'label' => 'Code postal',
                 'required' => false,
             ])
             ->add('address_city', TextType::class, [
-                'label' => 'City',
+                'label' => 'Ville',
                 'required' => false,
             ])
             ->add('address_country', TextType::class, [
-                'label' => 'Country',
+                'label' => 'Pays',
                 'required' => false,
             ])
             ->add('company_number', TextType::class, [
-                'label' => 'Company Number',
+                'label' => 'Numéro d\'entreprise',
                 'help' => 'SIRET etc...',
                 'required' => false,
             ])
             ->add('iban', TextType::class, [
-                'label' => 'IBAN',
+                'label' => 'IBAN (International Bank Account Number)',
                 'required' => false,
             ])
             ->add('bic', TextType::class, [
-                'label' => 'BIC',
+                'label' => 'BIC (Bank Identifier Code)',
                 'required' => false,
             ])
         ;

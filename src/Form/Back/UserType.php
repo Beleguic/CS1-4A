@@ -13,6 +13,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UserType extends AbstractType
 {
@@ -25,17 +27,25 @@ class UserType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $roles = $this->roleService->getRoles();
-
         $builder
-            ->add('email')
+            ->add('email', EmailType::class, [
+                'label' => 'Email',
+            ])
             ->add('roles', ChoiceType::class, [
                 'multiple' => true,
-                'choices'  => $roles,
-                'expanded' => true,
+                'choices' => [
+                    'Utilisateur' => 'ROLE_USER',
+                    'Administrateur' => 'ROLE_ADMIN',
+                    'Super Administrateur' => 'ROLE_SUPER_ADMIN',
+                ],
+                'required' => true,
             ])
-            ->add('lastname')
-            ->add('firstname')
+            ->add('lastname', TextType::class, [
+                'label' => 'Nom',
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom',
+            ])
             ->add('company', EntityType::class, [
                 'class' => Company::class,
                 'query_builder' => function (EntityRepository $er): QueryBuilder {
@@ -47,7 +57,7 @@ class UserType extends AbstractType
                 },
                 'choice_value' => 'id',
                 'required' => false,
-                'placeholder' => 'Choose a company',
+                'placeholder' => 'Choisir une entreprise',
             ])
         ;
     }

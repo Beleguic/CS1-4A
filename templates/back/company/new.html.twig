@@ -1,12 +1,18 @@
 {% extends 'admin.html.twig' %}
 
-{% block title %}New - Company - Plumbpay{% endblock %}
+{% block title %}PlumbPay - Admin - Nouvelle Entreprise{% endblock %}
 
 {% block body %}
-    <h1>Create new Company</h1>
-    <div class="flex flex-row gap-4">
-        <a href="{{ path('back_app_company') }}" class="btn btn-all">All companies</a>
+    {{ include('/back/company/_nav.html.twig') }}
+    
+    <!-- Header Section -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Créer une nouvelle entreprise</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">Remplissez les informations ci-dessous pour créer une nouvelle entreprise.</p>
     </div>
-    {{ include('/back/company/_form.html.twig') }}
 
+    <!-- Form Container -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        {{ include('/back/company/_form.html.twig') }}
+    </div>
 {% endblock %}

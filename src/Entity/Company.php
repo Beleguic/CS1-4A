@@ -50,12 +50,18 @@ class Company
     private ?string $addressCountry = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Length(max: 20, maxMessage: 'Le numéro d\'entreprise ne peut pas dépasser {{ limit }} caractères.')]
+    #[Assert\Regex(pattern: '/^[0-9A-Za-z\s\-\.]*$/', message: 'Le numéro d\'entreprise ne peut contenir que des chiffres, lettres, espaces, tirets et points.')]
     private ?string $companyNumber = null;
 
     #[ORM\Column(length: 34, nullable: true)]
+    #[Assert\Length(max: 34, maxMessage: 'L\'IBAN ne peut pas dépasser {{ limit }} caractères.')]
+    #[Assert\Regex(pattern: '/^[A-Z]{2}[0-9]{2}[A-Z0-9\s]*$/', message: 'L\'IBAN doit commencer par 2 lettres suivies de 2 chiffres, puis des caractères alphanumériques.')]
     private ?string $iban = null;
 
     #[ORM\Column(length: 11, nullable: true)]
+    #[Assert\Length(max: 11, maxMessage: 'Le BIC ne peut pas dépasser {{ limit }} caractères.')]
+    #[Assert\Regex(pattern: '/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/', message: 'Le BIC doit avoir le format : 4 lettres + 2 lettres + 2 caractères + optionnellement 3 caractères.')]
     private ?string $bic = null;
 
     #[Vich\UploadableField(mapping: 'companyLogo', fileNameProperty: 'imageName', size: 'imageSize')]
