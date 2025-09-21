@@ -20,7 +20,12 @@
                 <td class="py-4 px-6 flex gap-2">
                     <a href="{{ path('front_app_devis_show', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Voir</a>
                     <a href="{{ path('front_app_devis_edit', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-700">Modifier</a>
-                    <a href="{{ path('front_app_devis_delete', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">Annuler le devis</a>
+                    <form method="post" action="{{ path('front_app_devis_delete', {'id': devi.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler ce devis ? Cette action est irréversible.');" style="display: inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ devi.id) }}">
+                        <button type="submit" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150">
+                            Annuler le devis
+                        </button>
+                    </form>
                     <a href="{{ path('front_app_devis_download_pdf', {'id': devi.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-400 hover:bg-blue-700">PDF</a>
                     <a href="{{ path('front_app_devis_send_email', {'id': devi.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-red-700 hover:bg-red-900">Email Client</a>
                     <a href="{{ path('front_app_devis_transform_devis', {'id': devi.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-900">Transformer en facture</a>
