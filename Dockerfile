@@ -78,7 +78,8 @@ COPY docker/php/conf.d/app.ini $PHP_INI_DIR/conf.d/
 COPY docker/php/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/
 
 COPY docker/php/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
-RUN mkdir -p /var/run/php
+RUN mkdir -p /var/run/php /tmp/sessions
+RUN chmod 777 /tmp/sessions
 
 COPY docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
 RUN chmod +x /usr/local/bin/docker-healthcheck

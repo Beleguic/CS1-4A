@@ -1,25 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Account Index - Plumbpay{% endblock %}
+{% block title %}PlumbPay - Mon Compte{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Mon Compte') %}
 
 {% block body %}
-<div class="max-w-4xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold underline text-center mb-8" style="color: #134F63;">Account Index - Plumbpay</h1>
-    
+<div class="max-w-4xl mx-auto px-4 py-8">    
     <!-- User Account Information -->
-    <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
+    <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg mb-8">
         <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Account Information</h3>
+            <h3 class="text-lg leading-6 font-medium">Informations du Compte</h3>
         </div>
-        <div class="border-t border-gray-200">
+        <div class="border-t border-gray-200 dark:border-slate-700">
             <dl>
-                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">Full name</dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ app.user.firstName }} {{ app.user.lastName }}</dd>
+                <div class="bg-gray-50 dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500 dark:text-slate-400">Nom Complet</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-slate-400 sm:mt-0 sm:col-span-2">{{ app.user.firstName }} {{ app.user.lastName }}</dd>
                 </div>
-                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">Email</dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ app.user.email }}</dd>
+                <div class="bg-white dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500 dark:text-slate-400">Email</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-slate-400 sm:mt-0 sm:col-span-2">{{ app.user.email }}</dd>
                 </div>
             </dl>
         </div>
@@ -27,7 +26,11 @@
     
     <!-- Edit Account Button -->
     <div class="text-center mt-4">
-        <a href="{{ path('front_app_account_edit') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white" style="background-color: #134F63; transition: background-color 0.2s ease-in-out;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">Edit Account</a>
+        <a 
+            href="{{ path('front_app_account_edit') }}"
+            class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-mainColor-400 hover:bg-mainColor-800 transition-all duration-300">
+            Modifier le Compte
+        </a>
     </div>
 </div>
 {% endblock %}

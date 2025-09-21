@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}My Company - {{ company.name }} - PLumbpay{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Mon Entreprise - ' ~ company.name) %}
+
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-    <h1>My Company - {{ company.name }} - Plumbpay</h1>
     {{ include('/front/company/_nav.html.twig') }}
     {{ include('/front/company/_info.html.twig') }}
 {% endblock %}

@@ -1,4 +1,167 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'grid grid-cols-1 gap-4', 'enctype': 'multipart/form-data'}}) }}
+
+    <!-- Nom de l'entreprise -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.name, 'Nom de l\'entreprise', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.name) }}
+    </div>
+
+    <!-- Email -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.email, 'Email', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.email, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.email) }}
+    </div>
+
+    <!-- Logo -->
+    <div class="grid grid-cols-1 gap-4">
+        {{ form_label(form.imageFile, 'Logo de l\'entreprise', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        
+        <!-- Logo actuel (si existe) -->
+        {% if form.vars.value.imageName is defined and form.vars.value.imageName is not empty and form.vars.value.imageName != '' %}
+            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">Logo actuel</h4>
+                <div class="flex items-center gap-4">
+                    <img src="{{ vich_uploader_asset(form.vars.value, 'imageFile') }}" class="w-16 h-16 object-cover rounded-lg border border-gray-300 dark:border-gray-600">
+                    <div class="flex flex-col gap-2 flex-1">
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Nom: {{ form.vars.value.imageName }}</p>
+                        <div class="flex gap-2">
+                            <a href="{{ vich_uploader_asset(form.vars.value, 'imageFile') }}" class="inline-flex items-center px-3 py-1 text-xs font-medium text-mainColor-600 dark:text-mainColor-400 hover:text-mainColor-800 dark:hover:text-mainColor-300 transition-colors duration-200" download="logo-{{ form.vars.value.name }}">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'download', 
+                                    class: 'w-3 h-3 mr-1' 
+                                }) }}
+                                Télécharger
+                            </a>
+                            <button type="button" onclick="removeCurrentLogo()" class="inline-flex items-center px-3 py-1 text-xs font-medium text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors duration-200">
+                                {{ include('_composants/_lucide_icon.html.twig', { 
+                                    name: 'trash-2', 
+                                    class: 'w-3 h-3 mr-1' 
+                                }) }}
+                                Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Zone d'upload -->
+        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-mainColor-400 dark:hover:border-mainColor-400 transition-colors duration-200">
+            
+            <!-- Input file visible -->
+            {{ form_widget(form.imageFile, {
+                'attr': {
+                    'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200',
+                    'accept': 'image/*'
+                }
+            }) }}
+            
+            <div class="mt-3">
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                    Formats acceptés : JPG, PNG, GIF (max 5MB)
+                </p>
+            </div>
+        </div>
+
+        {{ form_errors(form.imageFile) }}
+    </div>
+
+    <script>
+        function removeCurrentLogo() {
+            if (confirm('Êtes-vous sûr de vouloir supprimer le logo actuel ?')) {
+                // Créer un input caché pour indiquer la suppression
+                const form = document.querySelector('form');
+                if (form) {
+                    const removeInput = document.createElement('input');
+                    removeInput.type = 'hidden';
+                    removeInput.name = 'remove_logo';
+                    removeInput.value = '1';
+                    form.appendChild(removeInput);
+                }
+                
+                // Recharger la page pour mettre à jour l'affichage
+                location.reload();
+            }
+        }
+    </script>
+
+    <!-- Email de facturation -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.invoice_email, 'Email de facturation', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.invoice_email, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.invoice_email) }}
+    </div>
+
+    <!-- Adresse - Numéro -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.address_number, 'Numéro d\'adresse', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.address_number, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.address_number) }}
+    </div>
+
+    <!-- Adresse - Type -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.address_type, 'Type de voie', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.address_type, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.address_type) }}
+    </div>
+
+    <!-- Adresse - Nom -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.address_name, 'Nom de la voie', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.address_name, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.address_name) }}
+    </div>
+
+    <!-- Adresse - Code postal -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.address_zip_code, 'Code postal', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.address_zip_code, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.address_zip_code) }}
+    </div>
+
+    <!-- Adresse - Ville -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.address_city, 'Ville', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.address_city, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.address_city) }}
+    </div>
+
+    <!-- Adresse - Pays -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.address_country, 'Pays', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.address_country, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.address_country) }}
+    </div>
+
+    <!-- Numéro d'entreprise -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.company_number, 'Numéro d\'entreprise', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.company_number, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.company_number) }}
+    </div>
+
+    <!-- IBAN -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.iban, 'IBAN', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.iban, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.iban) }}
+    </div>
+
+    <!-- BIC -->
+    <div class="grid grid-cols-1 gap-2">
+        {{ form_label(form.bic, 'BIC', {'attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.bic, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.bic) }}
+    </div>
+
+    <!-- Bouton de soumission -->
+    <div class="flex flex-col gap-4">
+        <button type="submit" class="group w-full flex items-center justify-center px-6 py-3 bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-white/30 transform hover:scale-[1.02] focus:scale-[1.02] transition-all duration-200">
+            {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
+
 {{ form_end(form) }}

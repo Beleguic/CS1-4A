@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit My Company - {{ company.name }} - PLumbpay{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Mon Entreprise - Modifier') %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-    <h1>Edit Company</h1>
     {{ include('/front/company/_nav.html.twig') }}
-    {{ include('/front/company/_form.html.twig', {'button_label': 'Edit'}) }}
+    {{ include('/front/company/_form.html.twig', {'button_label': 'Modifier'}) }}
 {% endblock %}

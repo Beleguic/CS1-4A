@@ -25,7 +25,7 @@ class ContactController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($contact);
             $entityManager->flush();
-            $this->addFlash('success', 'Thank you to contact us! We will contact you soon');
+            $this->addFlash('success', 'Merci de nous avoir contactés ! Nous vous répondrons dans les plus brefs délais.');
 
             return $this->redirectToRoute('front_app_contact', [], Response::HTTP_SEE_OTHER);
         }

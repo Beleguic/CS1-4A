@@ -13,7 +13,7 @@
                 {% endif %}
             </h1>
         </div>
-        
+
         <!-- User Menu -->
         <div x-data="{ isOpen: false }" class="relative">
             <div class="flex items-center gap-3">
@@ -42,30 +42,37 @@
                  x-transition:leave="transition ease-in duration-150"
                  x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                  x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
-                 class="absolute right-0 mt-3 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-50 backdrop-blur-md">
+                 class="absolute right-0 mt-3 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 z-50 backdrop-blur-md"
+            >
                 
                 <!-- User Info Section -->
                 <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center gap-3">
-                        <img src="/cool-user.png" class="w-10 h-10 rounded-full" alt="User Avatar">
-                        <div>
-                            <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                {% if app.user %}{{ app.user.firstname ~ ' ' ~ app.user.lastname }}{% endif %}
-                            </p>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">
-                                {% if app.user %}{{ app.user.email }}{% endif %}
-                            </p>
-                            {% if type == 'admin' %}
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400 mt-1">
-                                    Admin
+                    <div class="grid grid-cols-4 gap-3">
+                        <div class="col-span-1">
+                            <img src="/cool-user.png" class="w-10 h-10 rounded-full" alt="User Avatar">
+                        </div>
+                        <div class="col-span-3">
+                            <div>
+                                <span class="text-sm font-medium text-gray-900 dark:text-white">
+                                    {% if app.user %}{{ app.user.firstname ~ ' ' ~ app.user.lastname }}{% endif %}
                                 </span>
-                            {% endif %}
+                                <span class="text-xs text-gray-500 dark:text-gray-400">
+                                    {% if app.user %}
+                                        <p class="overflow-hidden text-ellipsis">{{ app.user.email }}</p>
+                                    {% endif %}
+                                </span>
+                                {% if type == 'admin' %}
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400 mt-1">
+                                        Admin
+                                    </span>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Navigation Links -->
-                <div class="py-2">
+                <div>
                     <a href="{{ path('front_default_index') }}" 
                        class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:text-white transition-all duration-200 group">
                         {{ include('_composants/_lucide_icon.html.twig', { 
@@ -80,47 +87,30 @@
                             name: 'user', 
                             class: 'w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-mainColor-400 dark:group-hover:text-mainColor-800 transition-colors duration-200' 
                         }) }}
-                        <span>Account</span>
+                        <span>Mon Compte</span>
                     </a>
                 </div>
                 
-                {% if type == 'admin' %}
-                    <!-- Admin-specific links -->
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <div class="border-t border-gray-200 dark:border-gray-700 pt-2">
-                            <a href="{{ path('back_app_index') }}" 
-                                class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:text-white transition-all duration-200 group">
-                                {{ include('_composants/_lucide_icon.html.twig', { 
-                                    name: 'settings', 
-                                    class: 'w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-mainColor-400 dark:group-hover:text-mainColor-800 transition-colors duration-200' 
-                                }) }}
-                                <span>Admin</span>
-                            </a>
-                        </div>
-                    {% endif %}
-                {% else %}
-                    <!-- Base-specific links -->
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <div class="border-t border-gray-200 dark:border-gray-700 pt-2">
-                            <a href="{{ path('back_app_index') }}" 
-                                class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:text-white transition-all duration-200 group">
-                                {{ include('_composants/_lucide_icon.html.twig', { 
-                                    name: 'shield-check', 
-                                    class: 'w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-mainColor-400 dark:group-hover:text-mainColor-800 transition-colors duration-200' 
-                                }) }}
-                                <span>Admin Panel</span>
-                            </a>
-                        </div>
-                    {% endif %}
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <div class="border-t border-gray-200 dark:border-gray-700">
+                        <a href="{{ path('back_app_index') }}" 
+                            class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:text-white transition-all duration-200 group">
+                            {{ include('_composants/_lucide_icon.html.twig', { 
+                                name: 'shield-check', 
+                                class: 'w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-mainColor-400 dark:group-hover:text-mainColor-800 transition-colors duration-200' 
+                            }) }}
+                            <span>Admin Panel</span>
+                        </a>
+                    </div>
                 {% endif %}
 
                 <!-- Logout Section -->
-                <div class="border-t border-gray-200 dark:border-gray-700 pt-2">
+                <div class="border-t border-gray-200 dark:border-gray-700">
                     <a href="{{ path('app_logout') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 dark:hover:text-white transition-all duration-200 group">
+                       class="flex items-center gap-3 px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 dark:hover:text-white transition-all duration-200 group rounded-br-xl rounded-bl-xl">
                         {{ include('_composants/_lucide_icon.html.twig', { 
-                            name: 'log-out', 
-                            class: 'w-4 h-4' 
+                            name: 'log-out',
+                            class: 'w-4 h-4'
                         }) }}
                         <span class="font-medium">Déconnexion</span>
                     </a>
