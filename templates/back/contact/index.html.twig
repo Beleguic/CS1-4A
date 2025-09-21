@@ -10,7 +10,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Lastname</th>
                     <th>Firstname</th>
                     <th>Email</th>
@@ -25,7 +24,6 @@
             <tbody>
             {% for contact in pagination %}
                 <tr>
-                    <td title="{{ contact.id }}">{{ contact.id|slice(-5) }}</td>
                     <td>{{ contact.lastname }}</td>
                     <td>{{ contact.firstname }}</td>
                     <td>{{ contact.email }}</td>
@@ -42,7 +40,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="10">No records found</td>
+                    <td colspan="9">No records found</td>
                 </tr>
             {% endfor %}
             </tbody>

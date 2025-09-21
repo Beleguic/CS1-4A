@@ -13,7 +13,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Email</th>
                     <th>Lastname</th>
                     <th>Firstname</th>
@@ -24,7 +23,6 @@
             <tbody>
             {% for user in pagination %}
                 <tr>
-                    <td title="{{ user.id }}">{{ user.id|slice(-5) }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.lastname }}</td>
                     <td>{{ user.firstname }}</td>

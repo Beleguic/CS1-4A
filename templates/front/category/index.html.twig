@@ -8,7 +8,6 @@
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    <th scope="col" class="py-3 px-6">Id</th>
                     <th scope="col" class="py-3 px-6">Name</th>
                     <th scope="col" class="py-3 px-6">Description</th>
                     <th scope="col" class="py-3 px-6">Actions</th>
@@ -17,7 +16,6 @@
             <tbody>
             {% for category in categories %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td class="py-4 px-6">{{ category.id }}</td>
                     <td class="py-4 px-6">{{ category.name }}</td>
                     <td class="py-4 px-6">{{ category.description }}</td>
                     <td class="py-4 px-6 flex gap-2">
@@ -28,7 +26,7 @@
                 </tr>
             {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td colspan="4" class="py-4 px-6">No records found</td>
+                    <td colspan="3" class="py-4 px-6">No records found</td>
                 </tr>
             {% endfor %}
             </tbody>
