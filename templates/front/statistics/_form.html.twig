@@ -9,6 +9,34 @@
             </div>
         {% endif %}
     {% endfor %}
-    <button class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">{{ button_label|default('Save') }}</button>
+    <div class="mt-4 flex gap-4">
+        <button class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2" style="background-color: #134F63;" onmouseover="this.style.backgroundColor='#05C1FA'" onmouseout="this.style.backgroundColor='#134F63'">{{ button_label|default('Save') }}</button>
+        
+        {% if app.request.query.get('year') is not null and hasStats is defined and hasStats == true %}
+            <a href="{{ path('front_app_statistics_export_csv', {'year': app.request.query.get('year')}) }}" 
+               class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200" 
+               style="background-color: #16a34a;" 
+               onmouseover="this.style.backgroundColor='#15803d'" 
+               onmouseout="this.style.backgroundColor='#16a34a'"
+               title="Télécharger les statistiques en CSV">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Télécharger CSV
+            </a>
+            
+            <a href="{{ path('front_app_statistics_export_pdf', {'year': app.request.query.get('year')}) }}" 
+               class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200" 
+               style="background-color: #dc2626;" 
+               onmouseover="this.style.backgroundColor='#b91c1c'" 
+               onmouseout="this.style.backgroundColor='#dc2626'"
+               title="Télécharger les statistiques en PDF">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Télécharger PDF
+            </a>
+        {% endif %}
+    </div>
     {{ form_end(form) }}
 </section>

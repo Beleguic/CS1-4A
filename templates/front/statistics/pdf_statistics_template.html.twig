@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport Statistiques {{ selectedYear }} - {{ company.name }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-size: 12px;
+        }
+        header {
+            background-color: #134F63; 
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #134F63;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 10px;
+        }
+        .company-info {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+        .section h2 {
+            background-color: #f8f9fa;
+            color: #134F63;
+            padding: 10px 15px;
+            margin: 0 0 15px 0;
+            border-left: 4px solid #134F63;
+            font-size: 16px;
+        }
+        .summary-table, .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .summary-table th, .summary-table td,
+        .details-table th, .details-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .summary-table th, .details-table th {
+            background-color: #134F63;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        .summary-table tr:nth-child(even),
+        .details-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .price {
+            font-weight: bold;
+            color: #28a745;
+        }
+        .total-row {
+            background-color: #e9ecef !important;
+            font-weight: bold;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Rapport Statistiques {{ selectedYear }}</h1>
+        <p>{{ company.name }}</p>
+        <p>Généré le {{ "now"|date("d/m/Y à H:i") }}</p>
+    </header>
+
+    <div class="company-info">
+        <h3>{{ company.name }}</h3>
+        <p>Adresse: {{ company.address ?? 'Non renseignée' }}</p>
+        <p>Téléphone: {{ company.phone ?? 'Non renseigné' }}</p>
+        <p>Email: {{ company.email ?? 'Non renseigné' }}</p>
+    </div>
+
+    <!-- Résumé Annuel -->
+    <div class="section">
+        <h2>📊 Résumé Annuel {{ selectedYear }}</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>Catégorie</th>
+                    <th>Total</th>
+                    <th>Prix Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>👥 Clients</td>
+                    <td class="text-center">{{ summary.customer.total }}</td>
+                    <td class="text-center">-</td>
+                </tr>
+                <tr>
+                    <td>📂 Catégories</td>
+                    <td class="text-center">{{ summary.category.total }}</td>
+                    <td class="text-center">-</td>
+                </tr>
+                <tr>
+                    <td>📦 Produits</td>
+                    <td class="text-center">{{ summary.product.total }}</td>
+                    <td class="text-center">-</td>
+                </tr>
+                <tr>
+                    <td>📋 Devis</td>
+                    <td class="text-center">{{ summary.quotations.total }}</td>
+                    <td class="text-center price">{{ summary.quotations.total_price }} €</td>
+                </tr>
+                <tr class="total-row">
+                    <td>💰 Factures</td>
+                    <td class="text-center">{{ summary.invoices.total }}</td>
+                    <td class="text-center price">{{ summary.invoices.total_price }} €</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {% if summary.quotations.total > 0 or summary.invoices.total > 0 %}
+    <div class="highlight">
+        <p><strong>📈 Chiffre d'affaires {{ selectedYear }}:</strong> {{ summary.invoices.total_price }} € ({{ summary.invoices.total }} factures)</p>
+        <p><strong>💼 Devis en cours:</strong> {{ summary.quotations.total_price }} € ({{ summary.quotations.total }} devis)</p>
+    </div>
+    {% endif %}
+
+    <!-- Détail Mensuel -->
+    <div class="section page-break">
+        <h2>📅 Détail Mensuel {{ selectedYear }}</h2>
+        <table class="details-table">
+            <thead>
+                <tr>
+                    <th rowspan="2">Mois</th>
+                    <th colspan="2">Clients</th>
+                    <th colspan="2">Catégories</th>
+                    <th colspan="2">Produits</th>
+                    <th colspan="3">Devis</th>
+                    <th colspan="3">Factures</th>
+                </tr>
+                <tr>
+                    <th>Total</th>
+                    <th>%</th>
+                    <th>Total</th>
+                    <th>%</th>
+                    <th>Total</th>
+                    <th>%</th>
+                    <th>Total</th>
+                    <th>Prix</th>
+                    <th>%</th>
+                    <th>Total</th>
+                    <th>Prix</th>
+                    <th>%</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for month, data in stats %}
+                <tr>
+                    <td><strong>{{ data.month }}</strong></td>
+                    <td class="text-center">{{ data.customer.total }}</td>
+                    <td class="text-center">{{ data.customer.percent }}%</td>
+                    <td class="text-center">{{ data.category.total }}</td>
+                    <td class="text-center">{{ data.category.percent }}%</td>
+                    <td class="text-center">{{ data.product.total }}</td>
+                    <td class="text-center">{{ data.product.percent }}%</td>
+                    <td class="text-center">{{ data.quotations.total }}</td>
+                    <td class="text-right price">{{ data.quotations.total_price }} €</td>
+                    <td class="text-center">{{ data.quotations.percent }}%</td>
+                    <td class="text-center">{{ data.invoices.total }}</td>
+                    <td class="text-right price">{{ data.invoices.total_price }} €</td>
+                    <td class="text-center">{{ data.invoices.percent }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>{{ company.name }} - Rapport généré avec PlumbPay le {{ "now"|date("d/m/Y à H:i") }}</p>
+    </footer>
+</body>
+</html>
