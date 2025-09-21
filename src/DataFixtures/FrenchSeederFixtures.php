@@ -131,9 +131,24 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
                     ->setFirstname($firstName)
                     ->setLastname($lastName)
                     ->setRoles($roleConfig['role'])
-                    ->setVerifiedAt(new DateTimeImmutable())
-                    ->setEnabled(true)
                     ->setCompany($company);
+
+                // Amélioration : Gestion des statuts d'activation réalistes
+                $isEnabled = $faker->boolean(85); // 85% des utilisateurs activés
+                $user->setEnabled($isEnabled);
+                
+                if ($isEnabled) {
+                    // Utilisateur activé : vérifié récemment
+                    $user->setVerifiedAt($faker->dateTimeBetween('-6 months', 'now'));
+                } else {
+                    // Utilisateur non activé : token d'activation
+                    $user->setActivationToken($faker->sha256());
+                }
+                
+                // Amélioration : Tokens de réinitialisation pour certains utilisateurs
+                if ($faker->boolean(15)) { // 15% des utilisateurs ont demandé une réinitialisation
+                    $user->setResetPasswordToken($faker->sha256());
+                }
 
                 $hashedPassword = $this->passwordHasher->hashPassword($user, $genericPassword);
                 $user->setPassword($hashedPassword);
@@ -206,16 +221,25 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
             $productData = $faker->randomElement($plumbingProducts);
             $category = $faker->randomElement($categories);
             
+            // Amélioration : Prix de base plus réaliste
+            $basePrice = $faker->randomElement($productData[2]) * 100; // Prix en centimes
+            $quantity = $faker->numberBetween(1, 100);
+            
+            // Amélioration : TVA variable selon le type de produit
+            $tvaRate = $faker->randomElement([5.5, 10, 20]); // TVA réduite, intermédiaire, normale
+            
             $product = new Product();
             $product->setName($productData[0])
                 ->setDescription($productData[1])
-                ->setPrice($faker->randomElement($productData[2]) * 100) // Prix en centimes
-                ->setTva($productData[3])
+                ->setPrice($basePrice)
+                ->setTva($tvaRate)
                 ->setCategory($category)
-                ->setQuantite($faker->numberBetween(1, 100))
+                ->setQuantite($quantity)
                 ->setCompanyId($company->getId());
                 
-            $product->setPrixTotale($product->getPrice() * $product->getQuantite());
+            // Amélioration : Calcul cohérent du prix total avec TVA
+            $prixTotale = $basePrice * $quantity * (1 + $tvaRate / 100);
+            $product->setPrixTotale($prixTotale);
 
             $manager->persist($product);
             $this->products[(string)$company->getId()][] = $product;
@@ -224,18 +248,37 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
 
     private function createClientsForCompany(ObjectManager $manager, $faker, Company $company): void
     {
+        // Amélioration : Codes postaux français réalistes par région
+        $frenchPostalCodes = [
+            'Paris' => ['75001', '75002', '75003', '75004', '75005', '75006', '75007', '75008', '75009', '75010', '75011', '75012', '75013', '75014', '75015', '75016', '75017', '75018', '75019', '75020'],
+            'Lyon' => ['69001', '69002', '69003', '69004', '69005', '69006', '69007', '69008', '69009'],
+            'Marseille' => ['13001', '13002', '13003', '13004', '13005', '13006', '13007', '13008', '13009', '13010', '13011', '13012', '13013', '13014', '13015', '13016']
+        ];
+        
+        $companyCity = $company->getAddressCity();
+        $availablePostalCodes = $frenchPostalCodes[$companyCity] ?? ['75001', '69001', '13001'];
+        
         for ($i = 0; $i < 25; $i++) {
             $client = new Client();
-            $client->setNom($faker->lastName)
-                ->setPrenom($faker->firstName)
-                ->setEmail($faker->email)
-                ->setNumeroTelephone($faker->phoneNumber)
+            $lastName = $faker->lastName;
+            $firstName = $faker->firstName;
+            
+            // Amélioration : Email cohérent avec le nom
+            $email = strtolower($firstName . '.' . $lastName . '@' . $faker->randomElement(['gmail.com', 'yahoo.fr', 'hotmail.fr', 'orange.fr', 'free.fr']));
+            
+            $client->setNom($lastName)
+                ->setPrenom($firstName)
+                ->setEmail($email)
+                // Amélioration : Numéro de téléphone français réaliste
+                ->setNumeroTelephone($faker->numerify('0# ## ## ## ##'))
                 ->setAddressNumber($faker->buildingNumber)
-                ->setAddressType($faker->randomElement(['rue', 'avenue', 'boulevard', 'place']))
+                ->setAddressType($faker->randomElement(['rue', 'avenue', 'boulevard', 'place', 'impasse', 'chemin']))
                 ->setAddressName($faker->streetName)
-                ->setAddressZipCode($faker->postcode)
-                ->setAddressCity($faker->city)
-                ->setAddressCountry('France')
+                // Amélioration : Code postal cohérent avec la ville de l'entreprise
+                ->setAddressZipCode($faker->randomElement($availablePostalCodes))
+                ->setAddressCity($faker->randomElement([$companyCity, $faker->city])) // Principalement dans la même ville
+                // Amélioration : Pays toujours défini
+                ->setAddressCountry($faker->randomElement(['France', 'Belgique', 'Suisse']))
                 ->setCompanyId($company->getId());
 
             $manager->persist($client);
@@ -276,10 +319,26 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
                 ];
             }
             
+            // Amélioration : Numérotation séquentielle réaliste par entreprise
+            $companyPrefix = strtoupper(substr(str_replace([' ', 'É', 'è', '&'], ['', 'E', 'E', 'ET'], $company->getName()), 0, 3));
+            $devisNumber = 'DEV-' . $companyPrefix . '-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT);
+            
+            // Amélioration : Messages de devis plus réalistes
+            $devisMessages = [
+                'Devis pour installation complète selon vos spécifications.',
+                'Estimation des travaux de plomberie avec matériaux de qualité.',
+                'Proposition commerciale valable 30 jours à compter de la date d\'émission.',
+                'Devis établi suite à votre demande, n\'hésitez pas à nous contacter pour toute question.',
+                'Estimation détaillée des travaux avec garantie de prix ferme.',
+                'Proposition technique et commerciale pour vos travaux de plomberie.',
+                'Devis personnalisé selon vos besoins et contraintes techniques.',
+                'Estimation des coûts avec options de matériaux et finitions.'
+            ];
+            
             $devis = new Devis();
             $devis->setClient($client)
-                ->setNumDevis('DEV-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT))
-                ->setMessage($faker->sentence(12))
+                ->setNumDevis($devisNumber)
+                ->setMessage($faker->randomElement($devisMessages))
                 ->setTotalPrice($totalPrice * 100) // Conversion en centimes
                 ->setProduits($productsData)
                 ->setCompanyId($company->getId());
@@ -321,8 +380,18 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
                 ];
             }
             
+            // Amélioration : Logique de paiement plus sophistiquée
             $isPaid = $faker->boolean(70); // 70% des factures sont payées
-            $paidAmount = $isPaid ? $totalPrice : $faker->randomFloat(2, 0, $totalPrice);
+            $reduction = $faker->numberBetween(0, 15); // Réduction jusqu'à 15%
+            $totalWithReduction = $totalPrice * (1 - $reduction / 100);
+            
+            if ($isPaid) {
+                // Facture payée : montant complet ou partiel récent
+                $paidAmount = $faker->boolean(90) ? $totalWithReduction : $faker->randomFloat(2, $totalWithReduction * 0.8, $totalWithReduction);
+            } else {
+                // Facture impayée : paiement partiel ou aucun
+                $paidAmount = $faker->boolean(30) ? $faker->randomFloat(2, 0, $totalWithReduction * 0.5) : 0;
+            }
             
             $clientData = [
                 'id' => (string) $client->getId(),
@@ -336,18 +405,41 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
                 'pays' => $client->getAddressCountry()
             ];
             
+            // Amélioration : Numérotation des factures cohérente
+            $companyPrefix = strtoupper(substr(str_replace([' ', 'É', 'è', '&'], ['', 'E', 'E', 'ET'], $company->getName()), 0, 3));
+            $factureNumber = 'FAC-' . $companyPrefix . '-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT);
+            
+            // Amélioration : Dates d'échéance réalistes
+            $dateFacture = $faker->dateTimeBetween('-6 months', 'now');
+            $dateEcheance = clone $dateFacture;
+            $dateEcheance->modify('+' . $faker->randomElement([15, 30, 45]) . ' days');
+            
+            // Amélioration : Messages de facturation personnalisés
+            $factureMessages = [
+                'Merci pour votre confiance. Paiement à réception.',
+                'Facture établie suite à la réalisation des travaux.',
+                'Paiement dans les délais convenus. Merci.',
+                'Facture avec réduction pour fidélité client.',
+                'Travaux réalisés selon devis accepté.',
+                'Paiement par virement bancaire recommandé.',
+                'Facture avec TVA en vigueur au moment de la prestation.',
+                'Merci de régler dans les délais pour éviter les frais de relance.'
+            ];
+            
             $facture = new Facture();
-            $facture->setNumFacture('FAC-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT))
-                ->setNumDevis('DEV-' . date('Y') . '-' . str_pad($faker->numberBetween(1, 15), 4, '0', STR_PAD_LEFT))
+            $facture->setNumFacture($factureNumber)
+                ->setNumDevis('DEV-' . $companyPrefix . '-' . date('Y') . '-' . str_pad($faker->numberBetween(1, 15), 4, '0', STR_PAD_LEFT))
                 ->setPaid($isPaid)
-                ->setDateFacture(new \DateTime($faker->dateTimeBetween('-6 months', 'now')->format('Y-m-d')))
+                ->setDateFacture($dateFacture)
+                ->setDateEcheance($dateEcheance)
                 ->setCompany($company->getId())
                 ->setCompanyId($company->getId())
-                ->setPrixTotal($totalPrice)
+                ->setPrixTotal($totalWithReduction)
                 ->setPrixPaye($paidAmount)
-                ->setReduction($faker->numberBetween(0, 10))
+                ->setReduction($reduction)
                 ->setProduits($productsData)
-                ->setClient($clientData);
+                ->setClient($clientData)
+                ->setMessages($faker->randomElement($factureMessages));
 
             $manager->persist($facture);
         }
