@@ -89,10 +89,24 @@
     <div class="container mx-auto">
         <div class="text-right">
             <h1 class="text-2xl font-bold underline" style="color: #000000;">Entreprise</h1>
-            {# <p>{{ devis.entreprise.getNom() }}</p>
-                <p>{{ devis.entreprise.getFullAddress() }}</p>
-                <p>{{ devis.entreprise.getEmail() }} </p>
-                <p>{{ devis.entreprise.getNumeroTelephone() }}</p>  #}
+            {% if company %}
+                <p><strong>{{ company.name }}</strong></p>
+                <p>
+                    {% if company.addressNumber or company.addressType or company.addressName or company.addressCity %}
+                        {{ company.addressNumber ?? '' }} 
+                        {{ company.addressType ?? '' }} 
+                        {{ company.addressName ?? '' }}<br>
+                        {{ company.addressZipCode ?? '' }} {{ company.addressCity ?? '' }}
+                        {% if company.addressCountry %}, {{ company.addressCountry }}{% endif %}
+                    {% else %}
+                        Adresse non renseignée
+                    {% endif %}
+                </p>
+                <p>{{ company.email ?? 'Email non renseigné' }}</p>
+                {% if company.companyNumber %}<p>SIRET: {{ company.companyNumber }}</p>{% endif %}
+            {% else %}
+                <p>Informations entreprise non disponibles</p>
+            {% endif %}
         </div>
         <div class="text-left">
             <h1 class="text-2xl font-bold underline" style="color: #000000;">Client</h1>

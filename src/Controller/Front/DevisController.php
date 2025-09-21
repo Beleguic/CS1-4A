@@ -242,7 +242,7 @@ class DevisController extends AbstractController
     }
 
     #[Route('/{id}/download-pdf', name: 'app_devis_download_pdf', methods: ['GET'])]
-    public function downloadPdf(Devis $devis): Response
+    public function downloadPdf(Devis $devis, CompanyRepository $companyRepository): Response
     {
         $categoriProduits = [];
         $tauxTVA = [];
@@ -269,6 +269,12 @@ class DevisController extends AbstractController
 
         $total['ttc'] = $devis->getTotalPrice();
 
+        // Récupérer l'entreprise
+        $company = null;
+        if ($devis->getCompanyId()) {
+            $company = $companyRepository->find($devis->getCompanyId());
+        }
+
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
         
@@ -276,6 +282,7 @@ class DevisController extends AbstractController
 
         $html = $this->renderView('front/devis/pdf_devis_template.html.twig', [
             'devis' => $devis,
+            'company' => $company,
             'categoriProduits' => $categoriProduits,
             'tauxTVA' => $tauxTVA,
             'total' => $total,
@@ -299,7 +306,7 @@ class DevisController extends AbstractController
     }
 
     #[Route('/{id}/send-devis-email', name: 'app_devis_send_email', methods: ['GET'])]
-    public function sendDevisEmail(Devis $devis, BrevoEmailService $emailService, UrlGeneratorInterface $urlGenerator): Response
+    public function sendDevisEmail(Devis $devis, BrevoEmailService $emailService, UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager): Response
     {
 
         $categoriProduits = [];
@@ -341,8 +348,15 @@ class DevisController extends AbstractController
 
         // Générer le contenu HTML du devis
 
+        // Récupérer l'entreprise pour l'email
+        $company = null;
+        if ($devis->getCompanyId()) {
+            $company = $entityManager->getRepository(\App\Entity\Company::class)->find($devis->getCompanyId());
+        }
+
         $htmlContent = $this->renderView('front/devis/pdf_devis_template.html.twig', [
             'devis' => $devis,
+            'company' => $company,
             'categoriProduits' => $categoriProduits,
             'tauxTVA' => $tauxTVA,
             'total' => $total,

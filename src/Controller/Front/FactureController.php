@@ -129,7 +129,7 @@ class FactureController extends AbstractController
     }
 
     #[Route('/{id}/download-pdf', name: 'app_facture_download_pdf', methods: ['GET'])]
-    public function downloadPdf(Facture $facture): Response
+    public function downloadPdf(Facture $facture, EntityManagerInterface $entityManager): Response
     {
         $categoriProduits = [];
         $tauxTVA = [];
@@ -166,8 +166,19 @@ class FactureController extends AbstractController
 
         $dompdf = new Dompdf($pdfOptions);
 
+        // Récupérer l'entreprise
+        $company = null;
+        if ($facture->getCompanyId()) {
+            $company = $entityManager->getRepository(\App\Entity\Company::class)->find($facture->getCompanyId());
+            // Clear the File object to avoid serialization issues
+            if ($company) {
+                $company->clearImageFile();
+            }
+        }
+
         $html = $this->renderView('front/facture/pdf_facture_template.html.twig', [
             'facture' => $facture,
+            'company' => $company,
             'categoriProduits' => $categoriProduits,
             'tauxTVA' => $tauxTVA,
             'total' => $total,
@@ -192,7 +203,7 @@ class FactureController extends AbstractController
     }
 
     #[Route('/{id}/send-facture-email', name: 'app_facture_send_email', methods: ['GET'])]
-    public function sendFactureEmail(Facture $facture, BrevoEmailService $emailService, UrlGeneratorInterface $urlGenerator): Response
+    public function sendFactureEmail(Facture $facture, BrevoEmailService $emailService, UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager): Response
     {
 
         $categoriProduits = [];
@@ -234,8 +245,19 @@ class FactureController extends AbstractController
 
         // Générer le contenu HTML du devis
 
+        // Récupérer l'entreprise pour l'email
+        $company = null;
+        if ($facture->getCompanyId()) {
+            $company = $entityManager->getRepository(\App\Entity\Company::class)->find($facture->getCompanyId());
+            // Clear the File object to avoid serialization issues
+            if ($company) {
+                $company->clearImageFile();
+            }
+        }
+
         $htmlContent = $this->renderView('front/facture/pdf_facture_template.html.twig', [
             'facture' => $facture,
+            'company' => $company,
             'categoriProduits' => $categoriProduits,
             'tauxTVA' => $tauxTVA,
             'total' => $total,
