@@ -58,7 +58,7 @@
                                     <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ (produit.price / 100) | number_format(2, ',', ' ') }} €</td>
                                     <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.tva | number_format(1, ',', ' ') }} %</td>
                                     <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ produit.quantite }}</td>
-                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ (produit.prixTotale / 100) | number_format(2, ',', ' ') }} €</td>
+                                    <td class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 px-4 py-2">{{ (produit.prix_totale / 100) | number_format(2, ',', ' ') }} €</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
