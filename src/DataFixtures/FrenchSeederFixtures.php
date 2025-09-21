@@ -139,7 +139,7 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
                 
                 if ($isEnabled) {
                     // Utilisateur activé : vérifié récemment
-                    $user->setVerifiedAt($faker->dateTimeBetween('-6 months', 'now'));
+                    $user->setVerifiedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-6 months', 'now')));
                 } else {
                     // Utilisateur non activé : token d'activation
                     $user->setActivationToken($faker->sha256());
