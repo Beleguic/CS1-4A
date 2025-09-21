@@ -37,8 +37,8 @@ class Devis
     #[ORM\Column]
     private ?float $total_price = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?array $produits = null;
+    #[ORM\OneToMany(mappedBy: 'devis', targetEntity: Product::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $produits;
 
     #[ORM\Column(type: 'uuid')]
     private ?Uuid $company_id = null;
@@ -47,7 +47,7 @@ class Devis
 
     public function __construct()
     {
-        // $this->produits = new ArrayCollection();
+        $this->produits = new ArrayCollection();
     }
 
     public function getId(): Uuid
@@ -106,14 +106,32 @@ class Devis
         return $this;
     }
 
-    public function getProduits(): ?array
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProduits(): Collection
     {
         return $this->produits;
     }
 
-    public function setProduits(?array $produits): static
+    public function addProduit(Product $produit): static
     {
-        $this->produits = $produits;
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->setDevis($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Product $produit): static
+    {
+        if ($this->produits->removeElement($produit)) {
+            // set the owning side to null (unless already changed)
+            if ($produit->getDevis() === $this) {
+                $produit->setDevis(null);
+            }
+        }
 
         return $this;
     }

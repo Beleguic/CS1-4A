@@ -9,7 +9,6 @@
 
     <script>
         var products = {{ product|raw }};
-        var productsDevis = {{ devisProduit|raw }};
-        console.log(productsDevis);
+        console.log('Products loaded:', products);
     </script>
 {% endblock %}

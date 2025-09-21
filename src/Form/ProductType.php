@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
 
 class ProductType extends AbstractType
 {
@@ -25,6 +26,35 @@ class ProductType extends AbstractType
     {
 
         $builder
+            ->add('existingProduct', EntityType::class, [
+                'class' => Product::class,
+                'label' => 'Produit existant',
+                'choice_label' => function (Product $product) {
+                    return $product->getName() . ' - ' . $product->getCategory()->getName() . ' (' . $product->getPrice() . '€)';
+                },
+                'query_builder' => function (ProductRepository $er) use ($options) {
+                    $company_id = null;
+                    
+                    if (isset($options['company_id'])) {
+                        $company_id = $options['company_id'];
+                    } elseif (isset($options['data']) && is_object($options['data']) && method_exists($options['data'], 'getCompanyId')) {
+                        $company_id = $options['data']->getCompanyId();
+                    }
+                    
+                    if ($company_id === null) {
+                        return $er->createQueryBuilder('p')
+                            ->orderBy('p.name', 'ASC');
+                    }
+
+                    return $er->createQueryBuilder('p')
+                        ->where('p.company_id = :company_id')
+                        ->setParameter('company_id', $company_id)
+                        ->orderBy('p.name', 'ASC');
+                },
+                'placeholder' => '-- Sélectionner un produit existant --',
+                'required' => false,
+                'mapped' => false, // Ce champ n'est pas mappé à l'entité
+            ])
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
@@ -33,12 +63,18 @@ class ProductType extends AbstractType
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'label' => 'Categorie',
+                'label' => 'Catégorie',
                 'choice_label' => 'name',
                 'query_builder' => function (CategoryRepository $er) use ($options) {
-                    // Vérifier si data existe et a une méthode getCompanyId
+                    // Récupérer le company_id depuis les options du formulaire parent
                     $company_id = null;
-                    if (isset($options['data']) && is_object($options['data']) && method_exists($options['data'], 'getCompanyId')) {
+                    
+                    // Vérifier si le company_id est passé depuis le formulaire parent
+                    if (isset($options['company_id'])) {
+                        $company_id = $options['company_id'];
+                    }
+                    // Sinon, vérifier si data existe et a une méthode getCompanyId
+                    elseif (isset($options['data']) && is_object($options['data']) && method_exists($options['data'], 'getCompanyId')) {
                         $company_id = $options['data']->getCompanyId();
                     }
                     
@@ -56,16 +92,13 @@ class ProductType extends AbstractType
             ])
 
             ->add('price', NumberType::class, [
-                'label' => 'Prix',
+                'label' => 'Prix (€)',
             ])
             ->add('tva', NumberType::class, [
-                'label' => 'TVA',
+                'label' => 'TVA (%)',
             ])
-            ->add('quantite', HiddenType::class, [
-                'label' => false
-            ])
-            ->add('prix_totale', HiddenType::class, [
-                'label' => false
+            ->add('quantite', NumberType::class, [
+                'label' => 'Quantité',
             ])
         ;
     }
@@ -74,6 +107,7 @@ class ProductType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Product::class,
+            'company_id' => null,
         ]);
     }
 }
