@@ -38,22 +38,32 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $hasChanges = false;
             $oldPassword = $form->get('oldPassword')->getData();
             $newPassword = $form->get('newPassword')->getData();
 
+            // Vérifier si le mot de passe doit être changé
             if(($oldPassword != null && $newPassword != null) || ($oldPassword != "" && $newPassword != "")){
                 if ($passwordHasher->isPasswordValid($user, $form->get('oldPassword')->getData())) {
                     $newEncodedPassword = $passwordHasher->hashPassword($user, $form->get('newPassword')->getData());
                     $user->setPassword($newEncodedPassword);
+                    $hasChanges = true;
                     $this->addFlash('success', 'Mot de passe mis à jour avec succès');
                 } else {
                     $this->addFlash('error', 'Ancien mot de passe incorrect.');
+                    return $this->render('front/user/edit.html.twig', [
+                        'form' => $form->createView(),
+                    ]);
                 }
+            } else {
+                $hasChanges = true;
             }
 
-            $manager->flush();
-            $this->addFlash('notice', 'Votre compte a été mis-à-jour !');
-
+            if ($hasChanges) {
+                $manager->flush();
+                $this->addFlash('notice', 'Votre compte a été mis-à-jour !');
+                return $this->redirectToRoute('front_app_account');
+            }
         }
 
         return $this->render('front/user/edit.html.twig', [

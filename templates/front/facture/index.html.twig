@@ -4,8 +4,8 @@
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
+    {{ include('/front/facture/_nav.html.twig') }}
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-        {{ include('/front/facture/_nav.html.twig') }}
 
         <table class="min-w-full w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -33,9 +33,9 @@
                             {{ facture.client.nom ~ ' ' ~ facture.client.prenom }}
                         {% endif %}
                     </td>
-                    <td class="py-4 px-6">{{ (facture.prixTotal)|number_format(2, ',', ' ') }} €</td>
+                    <td class="py-4 px-6 text-right">{{ (facture.prixTotal)|number_format(2, ',', ' ') }} €</td>
                     <td class="py-4 px-6">{{ facture.paid ? 'oui' : 'non' }}</td>
-                    <td class="py-4 px-6">{{ (facture.prixPaye)|number_format(2, ',', ' ') }} €</td>
+                    <td class="py-4 px-6 text-right">{{ (facture.prixPaye)|number_format(2, ',', ' ') }} €</td>
                     <td class="py-4 px-6">{{ facture.dateFacture|date("d/m/Y") }}</td>
                     <td class="py-4 px-6">{{ facture.dateEcheance|date("d/m/Y") }}</td>
                     <td class="py-4 px-6">
