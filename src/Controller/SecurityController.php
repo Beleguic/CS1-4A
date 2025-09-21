@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Company;
 use App\Entity\RequestNewCompanyUser;
 use App\Entity\User;
+use App\Entity\Role;
 use App\Form\Front\RegisterUserFromCompanyType;
 use App\Form\RegistrationFormType;
 use App\Form\ResetPasswordFormType;
@@ -55,8 +56,35 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Créer une nouvelle entreprise
+            $company = new Company();
+            $company->setName($form->get('companyName')->getData());
+            $company->setEmail($form->get('companyEmail')->getData());
+            $company->setAddressName($form->get('companyAddress')->getData());
+            $company->setAddressCity($form->get('companyCity')->getData());
+            $company->setAddressZipCode($form->get('companyZipCode')->getData());
+            $company->setAddressCountry('France');
+            $company->setInvoiceEmail($form->get('companyEmail')->getData());
+            
+            // Persister l'entreprise d'abord
+            $entityManager->persist($company);
+            $entityManager->flush();
+
+            // Récupérer le rôle admin
+            $roleRepository = $entityManager->getRepository(Role::class);
+            $adminRole = $roleRepository->findOneBy(['value' => 'ROLE_ADMIN']);
+            
             // Compte désactivé par défaut
             $user->setEnabled(false);
+            $user->setCompanyId($company->getId());
+            $user->setCompany($company);
+            
+            // Assigner le rôle admin
+            if ($adminRole) {
+                $user->setRoles(['ROLE_ADMIN']);
+            } else {
+                $user->setRoles(['ROLE_USER']); // Fallback si le rôle admin n'existe pas
+            }
 
             // Générer un token d'activation
             $token = bin2hex(random_bytes(32));
@@ -127,7 +155,10 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $companyId = $newCompanyUser->getCompanyId();
             $company = $entityManager->getRepository(Company::class)->findOneBy(['id'=>$companyId]);
+            
+            // Configurer l'utilisateur AVANT l'envoi d'email
             $user->setCompanyId($company->getId());
+            $user->setCompany($company); // Assigner aussi la relation
             $user->setEmail($newCompanyUser->getEmail());
             $user->setRoles([$newCompanyUser->getRole()]);
 
@@ -143,7 +174,9 @@ class SecurityController extends AbstractController
             $subject = 'Confirmation d\'inscription';
             $htmlContent = '<html><head></head><body><p>Bienvenue sur notre site !</p><p>Veuillez cliquer sur le lien suivant pour activer votre compte : <a href="' . $activationLink . '">Activer votre compte</a></p></body></html>';
             $response = $emailService->sendEmail($senderName, $senderEmail, $recipientName, $recipientEmail, $subject, $htmlContent);
+            
             if ($response['success']) {
+                // Hasher le mot de passe et sauvegarder
                 $user->setPassword(
                     $userPasswordHasher->hashPassword(
                         $user,
@@ -151,10 +184,11 @@ class SecurityController extends AbstractController
                     )
                 );
                 $entityManager->persist($user);
+                
+                // Supprimer la demande d'invitation après création réussie
+                $entityManager->remove($newCompanyUser);
                 $entityManager->flush();
-
-                $user->setCompanyId($companyId);
-                $entityManager->flush();
+                
                 return $this->redirectToRoute('app_login');
             } else {
                 return $this->redirectToRoute('register_account', ['id'=>$id]);
@@ -163,6 +197,55 @@ class SecurityController extends AbstractController
         return $this->render('security/registrationFromCompany/index.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('/activate-employee-company/{id}', name: 'activate_employee_company')]
+    public function activateEmployeeCompany($id, EntityManagerInterface $entityManager): Response
+    {
+        $newCompanyUser = $entityManager->getRepository(RequestNewCompanyUser::class)->findOneBy(['id' => $id]);
+        
+        if (!$newCompanyUser) {
+            $this->addFlash('error', 'Invitation invalide ou expirée.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Vérifier si l'utilisateur existe déjà
+        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $newCompanyUser->getEmail()]);
+        
+        if (!$user) {
+            $this->addFlash('error', 'Utilisateur non trouvé.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Vérifier si l'utilisateur n'est pas déjà dans cette entreprise
+        if ($user->getCompanyId() && $user->getCompanyId() == $newCompanyUser->getCompanyId()) {
+            $this->addFlash('info', 'Vous êtes déjà membre de cette entreprise.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Ajouter l'utilisateur à l'entreprise
+        $user->setCompanyId($newCompanyUser->getCompanyId());
+        
+        // Récupérer l'entreprise pour la liaison
+        $company = $entityManager->getRepository(Company::class)->find($newCompanyUser->getCompanyId());
+        if ($company) {
+            $user->setCompany($company);
+        }
+
+        // Ajouter le nouveau rôle (en plus des rôles existants)
+        $currentRoles = $user->getRoles();
+        $newRole = $newCompanyUser->getRole();
+        if (!in_array($newRole, $currentRoles)) {
+            $currentRoles[] = $newRole;
+            $user->setRoles($currentRoles);
+        }
+
+        // Supprimer la demande d'invitation
+        $entityManager->remove($newCompanyUser);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Vous avez été ajouté avec succès à l\'entreprise !');
+        return $this->redirectToRoute('app_login');
     }
 
     #[Route('/activate-user-company/{id}', name: 'activate_user_company')]
