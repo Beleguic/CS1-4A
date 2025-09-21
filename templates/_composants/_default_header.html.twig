@@ -2,7 +2,7 @@
     <header class="w-full top-0 sticky bg-white/80 dark:bg-black/80 border-b border-b-gray-100 dark:border-b-gray-800 backdrop-blur z-50" x-data="{ mobileMenuOpen: false }">
         <nav class="w-full mx-auto max-w-7xl flex items-center justify-between gap-4">
             <div class="hidden lg:flex items-center justify-between w-full p-4">
-                <div class="flex items-center space-x-8">
+                <div class="flex items-center gap-8">
                     <a href="{{ path('front_default_index') }}" class="group flex items-center gap-3 transition-all duration-300 hover:scale-105">
                         <div class="relative">
                             <img src="{{ asset('plumbpaylogo-removebg-preview.png') }}" alt="PlumbPay Logo" class="w-12 h-12 transition-transform duration-300 group-hover:rotate-12">
@@ -14,7 +14,7 @@
                         </div>
                     </a>
                     {% if app.user %}
-                        <nav class="hidden lg:flex items-center space-x-1">
+                        <nav class="hidden lg:flex items-center gap-1">
                             <a href="{{ path('front_app_devis_index') }}" class="nav-link">
                                 {{ include('_composants/_lucide_icon.html.twig', { name: 'file-text', class: 'w-4 h-4' }) }}
                                 Devis
@@ -34,13 +34,13 @@
                         </nav>
                     {% endif %}
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center gap-4">
                     <a href="{{ path('front_app_contact') }}" class="nav-link">
                         {{ include('_composants/_lucide_icon.html.twig', { name: 'mail', class: 'w-4 h-4' }) }}
                         Contact
                     </a>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center gap-4">
                     {% if not app.user %}
                         <div class="flex items-center gap-3">
                             <a href="{{ path('app_login') }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-md bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-mainColor-400 focus:ring-offset-2">
@@ -82,7 +82,9 @@
                                         <img src="\cool-user.png" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-gray-200 dark:border-gray-600">
                                         <div>
                                             <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ app.user.firstname ?? 'User' }} {{ app.user.lastname ?? '' }}</div>
-                                            <div class="text-xs text-gray-500 dark:text-gray-400">{{ app.user.email }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">
+                                                <span class="truncate w-40">{{ app.user.email }}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -96,6 +98,12 @@
                                         {{ include('_composants/_lucide_icon.html.twig', { name: 'building', class: 'w-4 h-4' }) }}
                                         Profil d'Entreprise
                                     </a>
+                                    {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
+                                        <a href="{{ path('back_app_index') }}" class="dropdown-item text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20">
+                                            {{ include('_composants/_lucide_icon.html.twig', { name: 'shield', class: 'w-4 h-4' }) }}
+                                            Administration
+                                        </a>
+                                    {% endif %}
                                     <hr class="my-2 border-gray-200 dark:border-gray-700">
                                     <a href="{{ path('app_logout') }}" class="dropdown-item text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20">
                                         {{ include('_composants/_lucide_icon.html.twig', { name: 'log-out', class: 'w-4 h-4' }) }}
@@ -161,21 +169,23 @@
                         class="absolute right-0 top-0 h-full w-3/4 max-w-full bg-white dark:bg-gray-900 shadow-xl flex flex-col justify-between"
                     >
                     <div class="flex flex-col items-center justify-between flex-1 border-b border-gray-200 dark:border-gray-700">
-                        <div class="w-full flex items-center space-x-4 py-6 px-4 border-b border-gray-200 dark:border-gray-700">
+                        <div class="w-full flex items-center gap-4 py-6 px-4 border-b border-gray-200 dark:border-gray-700">
                             <img src="{{ asset('plumbpaylogo-removebg-preview.png') }}" alt="PlumbPay Logo" class="w-8 h-8">
                             <span class="text-lg font-semibold text-gray-900 dark:text-white">PlumbPay</span>
                             {% include '_composants/_theme_toggle.html.twig' %}
                         </div>
-                        <nav class="w-full flex-1 space-y-2 p-4">
+                        <nav class="w-full flex-1 flex flex-col gap-2 p-4">
                             {% if app.user %}
                                 <div class="flex items-center gap-3 p-3 mb-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                                     <img src="\cool-user.png" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-gray-300">
                                     <div>
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ app.user.firstname ?? 'User' }} {{ app.user.lastname ?? '' }}</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ app.user.email }}</p>
+                                        <span class="text-sm font-medium text-gray-900 dark:text-white">{{ app.user.firstname ?? 'User' }} {{ app.user.lastname ?? '' }}</span>
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                                            <span class="truncate w-40">{{ app.user.email }}</span>
+                                        </span>
                                     </div>
                                 </div>
-                                <div class="space-y-1">
+                                <div class="flex flex-col gap-1">
                                     <h3 class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Services</h3>
                                     <a href="{{ path('front_app_devis_index') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
                                         {{ include('_composants/_lucide_icon.html.twig', { name: 'file-text', class: 'w-5 h-5' }) }}
@@ -198,7 +208,7 @@
                                         Analytics
                                     </a>
                                 </div>
-                                <div class="space-y-1 pt-4">
+                                <div class="flex flex-col gap-1 pt-4">
                                     <h3 class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Account</h3>
                                     <a href="{{ path('front_app_account') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
                                         {{ include('_composants/_lucide_icon.html.twig', { name: 'user', class: 'w-5 h-5' }) }}
@@ -208,16 +218,22 @@
                                         {{ include('_composants/_lucide_icon.html.twig', { name: 'building', class: 'w-5 h-5' }) }}
                                         Company
                                     </a>
+                                    {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
+                                        <a href="{{ path('back_app_index') }}" @click="mobileMenuOpen = false" class="mobile-nav-link text-blue-600 dark:text-blue-400">
+                                            {{ include('_composants/_lucide_icon.html.twig', { name: 'shield', class: 'w-5 h-5' }) }}
+                                            Administration
+                                        </a>
+                                    {% endif %}
                                 </div>
                             {% else %}
-                                <div class="space-y-1">
+                                <div class="flex flex-col gap-1">
                                     <a href="{{ path('front_default_index') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
                                         {{ include('_composants/_lucide_icon.html.twig', { name: 'home', class: 'w-5 h-5' }) }}
                                         Home
                                     </a>
                                 </div>
                             {% endif %}
-                            <div class="space-y-1">
+                            <div class="flex flex-col gap-1">
                                 <a href="{{ path('front_app_contact') }}" @click="mobileMenuOpen = false" class="mobile-nav-link">
                                     {{ include('_composants/_lucide_icon.html.twig', { name: 'mail', class: 'w-5 h-5' }) }}
                                     Contact Us
@@ -227,7 +243,7 @@
                     </div>
                     <div class="border-t border-gray-200 dark:border-gray-700 p-4">
                         {% if not app.user %}
-                            <div class="space-y-3">
+                            <div class="flex flex-col gap-3">
                                 <a href="{{ path('app_login') }}" @click="mobileMenuOpen = false" class="text-center text-TextColor-800 block px-4 py-2 rounded-full bg-secondaryColor-400 hover:bg-mainColor-400 focus:bg-mainColor-400">
                                     Login
                                 </a>

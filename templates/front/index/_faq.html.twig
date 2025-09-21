@@ -50,7 +50,7 @@
         </div>
 
         <!-- FAQ Accordion -->
-        <div x-data="faqAccordion()" class="space-y-4">
+        <div x-data="faqAccordion()" class="flex flex-col gap-4">
             {% for faq in faqs %}
                 <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20">
                     <!-- Question Header -->
@@ -59,7 +59,7 @@
                         class="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-white/50 rounded-2xl transition-all duration-300"
                         :class="{ 'bg-white/90 dark:bg-gray-700/90': activeId === {{ faq.id }} }"
                     >
-                        <div class="flex items-center space-x-4">
+                        <div class="flex items-center gap-4">
                             <!-- Question Number -->
                             <div class="shrink-0 w-8 h-8 bg-linear-to-r from-mainColor-400 to-secondaryColor-400 rounded-full flex items-center justify-center text-white text-sm font-bold">
                                 {{ faq.id }}

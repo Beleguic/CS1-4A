@@ -19,7 +19,7 @@
                 <td class="py-4 px-6">{{ devi.numDevis }}</td>
                 <td class="py-4 px-6">{{ devi.getClient().getNom() ~ " " ~ devi.getClient().getPrenom() }}</td>
                 <td class="py-4 px-6">{{ devi.getTotalPrice() }}</td>
-                <td class="py-4 px-6 flex space-x-2">
+                <td class="py-4 px-6 flex gap-2">
                     <a href="{{ path('front_app_devis_show', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Show</a>
                     <a href="{{ path('front_app_devis_edit', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-700">Edit</a>
                     <a href="{{ path('front_app_devis_delete', {'id': devi.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">Annulé la facture</a>

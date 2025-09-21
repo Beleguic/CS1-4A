@@ -68,18 +68,40 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
 
     private function createSuperAdmin(ObjectManager $manager, $faker, string $superAdminEmail, string $genericPassword): void
     {
+        // Créer d'abord la société Plumbpay
+        $plumbpayCompany = new Company();
+        $plumbpayCompany->setName('Plumbpay')
+            ->setEmail('contact@plumbpay.fr')
+            ->setInvoiceEmail('facturation@plumbpay.fr')
+            ->setAddressNumber('242')
+            ->setAddressType('rue')
+            ->setAddressName('du Faubourg Saint-Antoine')
+            ->setAddressZipCode('75012')
+            ->setAddressCity('Paris')
+            ->setAddressCountry('France')
+            ->setCompanyNumber($faker->numerify('##########'))
+            ->setIban($faker->iban('FR'))
+            ->setBic($faker->swiftBicNumber);
+
+        $manager->persist($plumbpayCompany);
+
+        // Créer le super admin et l'associer à Plumbpay
         $superAdmin = new User();
         $superAdmin->setEmail($superAdminEmail)
             ->setFirstname($faker->firstName)
             ->setLastname($faker->lastName)
             ->setRoles(['ROLE_SUPER_ADMIN'])
             ->setVerifiedAt(new DateTimeImmutable())
-            ->setEnabled(true);
+            ->setEnabled(true)
+            ->setCompany($plumbpayCompany);
 
         $hashedPassword = $this->passwordHasher->hashPassword($superAdmin, $genericPassword);
         $superAdmin->setPassword($hashedPassword);
 
         $manager->persist($superAdmin);
+        
+        // Ajouter Plumbpay aux entreprises pour pouvoir créer ses données
+        $this->companies[] = $plumbpayCompany;
     }
 
     private function createCompanies(ObjectManager $manager, $faker): void
@@ -296,22 +318,37 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
             $selectedProducts = $faker->randomElements($products, $faker->numberBetween(1, 5));
             
             $productsData = [];
-            $totalPrice = 0;
+            $totalHT = 0;
+            $totalTTC = 0;
+            $tauxTVA = [];
             
             foreach ($selectedProducts as $product) {
                 $quantity = $faker->numberBetween(1, 3);
-                $unitPrice = $product->getPrice() / 100; // Conversion centimes en euros
-                $productTotal = $quantity * $unitPrice;
-                $totalPrice += $productTotal;
+                $unitPriceHT = $product->getPrice() / 100; // Conversion centimes en euros
+                $productTotalHT = $quantity * $unitPriceHT;
+                $tvaRate = $product->getTva() / 100; // Conversion pourcentage en décimal
+                $productTotalTVA = $productTotalHT * $tvaRate;
+                $productTotalTTC = $productTotalHT + $productTotalTVA;
+                
+                $totalHT += $productTotalHT;
+                $totalTTC += $productTotalTTC;
+                
+                // Calculer la TVA par taux (comme dans le contrôleur)
+                if (!isset($tauxTVA[$product->getTva()])) {
+                    $tauxTVA[$product->getTva()] = 0;
+                }
+                $tauxTVA[$product->getTva()] += $productTotalTVA;
                 
                 $productsData[] = [
                     'id' => (string) $product->getId(),
                     'name' => $product->getName(),
                     'description' => $product->getDescription(),
-                    'price' => $product->getPrice(),
+                    'price' => $product->getPrice(), // Prix HT en centimes
                     'tva' => $product->getTva(),
                     'quantite' => $quantity,
-                    'prix_totale' => $productTotal * 100, // Conversion en centimes
+                    'prix_totale' => $productTotalTTC * 100, // Prix TTC en centimes
+                    'prix_ht' => $productTotalHT * 100, // Prix HT en centimes
+                    'montant_tva' => $productTotalTVA * 100, // Montant TVA en centimes
                     'category' => [
                         'id' => (string) $product->getCategory()->getId(),
                         'name' => $product->getCategory()->getName()
@@ -357,22 +394,37 @@ class FrenchSeederFixtures extends Fixture implements FixtureGroupInterface
             $selectedProducts = $faker->randomElements($products, $faker->numberBetween(1, 4));
             
             $productsData = [];
-            $totalPrice = 0;
+            $totalHT = 0;
+            $totalTTC = 0;
+            $tauxTVA = [];
             
             foreach ($selectedProducts as $product) {
                 $quantity = $faker->numberBetween(1, 2);
-                $unitPrice = $product->getPrice() / 100; // Conversion centimes en euros
-                $productTotal = $quantity * $unitPrice;
-                $totalPrice += $productTotal;
+                $unitPriceHT = $product->getPrice() / 100; // Conversion centimes en euros
+                $productTotalHT = $quantity * $unitPriceHT;
+                $tvaRate = $product->getTva() / 100; // Conversion pourcentage en décimal
+                $productTotalTVA = $productTotalHT * $tvaRate;
+                $productTotalTTC = $productTotalHT + $productTotalTVA;
+                
+                $totalHT += $productTotalHT;
+                $totalTTC += $productTotalTTC;
+                
+                // Calculer la TVA par taux (comme dans le contrôleur)
+                if (!isset($tauxTVA[$product->getTva()])) {
+                    $tauxTVA[$product->getTva()] = 0;
+                }
+                $tauxTVA[$product->getTva()] += $productTotalTVA;
                 
                 $productsData[] = [
                     'id' => (string) $product->getId(),
                     'name' => $product->getName(),
                     'description' => $product->getDescription(),
-                    'price' => $product->getPrice(),
+                    'price' => $product->getPrice(), // Prix HT en centimes
                     'tva' => $product->getTva(),
                     'quantite' => $quantity,
-                    'prix_totale' => $productTotal * 100, // Conversion en centimes
+                    'prix_totale' => $productTotalTTC * 100, // Prix TTC en centimes
+                    'prix_ht' => $productTotalHT * 100, // Prix HT en centimes
+                    'montant_tva' => $productTotalTVA * 100, // Montant TVA en centimes
                     'category' => [
                         'id' => (string) $product->getCategory()->getId(),
                         'name' => $product->getCategory()->getName()

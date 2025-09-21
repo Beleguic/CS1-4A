@@ -38,6 +38,10 @@ class CompanyController extends AbstractController
         if (!$company) {
             throw $this->createNotFoundException('This page does not exist');
         }
+        
+        // Clear the File object to avoid serialization issues
+        $company->clearImageFile();
+        
         return $this->render('front/company/index.html.twig', [
             'company' => $company,
             'user' => $user
@@ -47,7 +51,6 @@ class CompanyController extends AbstractController
     #[Route('/edit', name: 'app_company_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, EntityManagerInterface $entityManager, CompanyRepository $companyRepository): Response
     {
-
         $user = $this->getUser();
         if (!$user) {
             throw $this->createNotFoundException('This page does not exist');
@@ -64,14 +67,36 @@ class CompanyController extends AbstractController
             throw new NotFoundHttpException('This page does not exist.');
         }
 
+        // Sauvegarder l'ancien nom d'image avant de traiter le formulaire
+        $oldImageName = $company->getImageName();
+
         $form = $this->createForm(CompanyType::class, $company);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            // Gérer la suppression du logo si demandée
+            if ($request->request->has('remove_logo') && $request->request->get('remove_logo') === '1') {
+                $company->clearImageFile();
+                $company->setImageName(null);
+                $company->setImageSize(null);
+            }
+
+            try {
+                $entityManager->flush();
+                
+                // Clear the File object after successful save to avoid serialization issues
+                $company->clearImageFile();
+                
+                $this->addFlash('success', 'Les informations de l\'entreprise ont été mises à jour avec succès !');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Une erreur est survenue lors de la mise à jour : ' . $e->getMessage());
+            }
 
             return $this->redirectToRoute('front_app_company', [], Response::HTTP_SEE_OTHER);
         }
+
+        // Clear the File object to avoid serialization issues
+        $company->clearImageFile();
 
         return $this->render('front/company/edit.html.twig', [
             'company' => $company,

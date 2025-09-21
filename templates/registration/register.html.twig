@@ -1,23 +1,42 @@
-{% extends 'base.html.twig' %}
+{% extends 'security.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}PlumbPay - Créer un compte{% endblock %}
 
 {% block body %}
+    <!-- Page Header -->
+    <div class="text-center flex flex-col gap-2 mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Rejoignez PlumbPay</h2>
+        <p class="text-gray-600 dark:text-gray-300 text-lg">Commencez à gérer votre entreprise de plomberie de manière professionnelle</p>
+    </div>
+
+    <!-- Error Messages -->
     {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        <div class="mb-6 p-4 bg-red-500/20 dark:bg-red-500/10 backdrop-blur-sm border border-red-400/30 dark:border-red-400/20 text-red-100 dark:text-red-200 rounded-xl" role="alert">
+            <div class="flex items-start gap-3">
+                {{ include('_composants/_lucide_icon.html.twig', { name: 'alert-circle', class: 'w-5 h-5 text-red-300 dark:text-red-400 mt-0.5 flex-shrink-0' }) }}
+                <div>
+                    <h4 class="font-semibold">Erreur d'inscription</h4>
+                    <p class="text-sm text-red-200 dark:text-red-300 mt-1">{{ flash_error }}</p>
+                </div>
+            </div>
+        </div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <!-- Divider -->
+    <div class="relative my-8">
+        <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-200 dark:border-gray-600"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+            <span class="px-4 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">Vous avez déjà un compte ?</span>
+        </div>
+    </div>
 
-    {{ form_errors(registrationForm) }}
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+    <!-- Login Link -->
+    <div class="text-center">
+        <a href="{{ path('app_login') }}" class="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-medium bg-gray-100 dark:bg-gray-700 backdrop-blur-sm text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-600 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 focus:bg-gray-200 dark:focus:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-mainColor-400 dark:focus:ring-mainColor-400 transition-all duration-200">
+            {{ include('_composants/_lucide_icon.html.twig', { name: 'log-in', class: 'w-4 h-4 mr-2' }) }}
+            Se connecter plutôt
+        </a>
+    </div>
 {% endblock %}

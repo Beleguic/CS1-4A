@@ -30,7 +30,9 @@ class IndexController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        if (!$this->getUser()) {
+        $user = $this->getUser();
+
+        if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 

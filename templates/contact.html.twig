@@ -17,8 +17,8 @@
         <main class="min-h-screen flex items-start justify-center p-4 sm:p-6 lg:p-8 py-8">
             <div class="w-full max-w-7xl mx-auto">
                 <div class="flex flex-col gap-8 lg:gap-12 lg:flex-row items-start lg:items-center">
-                    <div class="hidden lg:flex flex-col justify-center space-y-8 text-gray-900 lg:max-w-lg dark:text-gray-100">
-                        <div class="space-y-6">
+                    <div class="hidden lg:flex flex-col justify-center gap-8 text-gray-900 lg:max-w-lg dark:text-gray-100">
+                        <div class="">
                             <a href="{{ path('front_default_index') }}" class="inline-flex items-center group">
                                 <div class="relative mr-4">
                                     <img src="{{ asset('img/logo-plumbpay-transparent.png') }}" alt="PlumbPay Logo" class="w-16 h-16 transition-transform duration-300 group-hover:scale-110 dark:hidden">
@@ -31,8 +31,8 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="space-y-6">
-                            <div class="space-y-4">
+                        <div class="flex flex-col gap-6">
+                            <div class="flex flex-col gap-4">
                                 <h2 class="text-3xl font-bold leading-tight">
                                     Nous Sommes 
                                     <span class="bg-gradient-to-r from-mainColor-400 to-secondaryColor-400 bg-clip-text text-transparent">
@@ -43,16 +43,16 @@
                                     Notre équipe d'experts est disponible pour répondre à toutes vos questions et vous accompagner dans votre réussite.
                                 </p>
                             </div>
-                            <div class="space-y-3">
-                                <div class="flex items-center space-x-3 text-gray-700 dark:text-gray-200">
+                            <div class="flex flex-col gap-3">
+                                <div class="flex items-center gap-3 text-gray-700 dark:text-gray-200">
                                     {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'w-5 h-5 text-green-500 dark:text-green-400' }) }}
                                     <span>Support technique personnalisé</span>
                                 </div>
-                                <div class="flex items-center space-x-3 text-gray-700 dark:text-gray-200">
+                                <div class="flex items-center gap-3 text-gray-700 dark:text-gray-200">
                                     {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'w-5 h-5 text-green-500 dark:text-green-400' }) }}
                                     <span>Réponse sous 24h garantie</span>
                                 </div>
-                                <div class="flex items-center space-x-3 text-gray-700 dark:text-gray-200">
+                                <div class="flex items-center gap-3 text-gray-700 dark:text-gray-200">
                                     {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'w-5 h-5 text-green-500 dark:text-green-400' }) }}
                                     <span>Équipe francophone dédiée</span>
                                 </div>
@@ -71,7 +71,33 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="space-y-6">
+                            <div class="flex flex-col gap-6">
+                                <!-- Flash Messages -->
+                                {% for type, flashMessages in app.flashes %}
+                                    {% for message in flashMessages %}
+                                        <div class="p-4 rounded-xl backdrop-blur-sm border-l-4 mb-4
+                                            {% if type == 'success' %}bg-green-50/90 dark:bg-green-900/20 border-l-green-500 text-green-800 dark:text-green-400
+                                            {% elseif type == 'error' %}bg-red-50/90 dark:bg-red-900/20 border-l-red-500 text-red-800 dark:text-red-400
+                                            {% elseif type == 'warning' %}bg-yellow-50/90 dark:bg-yellow-900/20 border-l-yellow-500 text-yellow-800 dark:text-yellow-400
+                                            {% else %}bg-blue-50/90 dark:bg-blue-900/20 border-l-blue-500 text-blue-800 dark:text-blue-400{% endif %}">
+                                            <div class="flex items-center">
+                                                {% if type == 'success' %}
+                                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'check-circle', class: 'w-5 h-5 mr-3 flex-shrink-0' }) }}
+                                                {% elseif type == 'error' %}
+                                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'x-circle', class: 'w-5 h-5 mr-3 flex-shrink-0' }) }}
+                                                {% elseif type == 'warning' %}
+                                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'alert-triangle', class: 'w-5 h-5 mr-3 flex-shrink-0' }) }}
+                                                {% else %}
+                                                    {{ include('_composants/_lucide_icon.html.twig', { name: 'info', class: 'w-5 h-5 mr-3 flex-shrink-0' }) }}
+                                                {% endif %}
+                                                <div>
+                                                    <p class="font-medium">{{ message }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                
                                 {% block body %}{% endblock %}
                             </div>
                         </div>

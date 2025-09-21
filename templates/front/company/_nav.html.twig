@@ -1,8 +1,7 @@
-<div class="flex flex-row gap-4">
-    <a href="{{ path('front_app_company') }}" class="btn btn-all">My Company - {{ company.name }}</a>
-    {% if 'ROLE_SUPER_ADMIN' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
-        <a href="{{ path('front_app_company_edit') }}" class="btn btn-edit">Edit</a>
-        <a href="{{ path('front_app_company_add_employee') }}" class="btn btn-add">Add Employee</a>
-        <a href="{{ path('front_app_company_list_employee') }}" class="btn btn-add">List Employee</a>
+<div class="flex flex-row gap-4 py-4">
+    {% if app.user and is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+        <a href="{{ path('front_app_company_edit') }}" class="btn btn-edit">Modifier</a>
+        <a href="{{ path('front_app_company_add_employee') }}" class="btn btn-add">Ajouter un employé</a>
+        <a href="{{ path('front_app_company_list_employee') }}" class="btn btn-add">Liste des employés</a>
     {% endif %}
 </div>

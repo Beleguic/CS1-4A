@@ -60,14 +60,10 @@ class Company
 
     #[Vich\UploadableField(mapping: 'companyLogo', fileNameProperty: 'imageName', size: 'imageSize')]
     #[Assert\Image(
-        maxSize: '1000k',
-        mimeTypes: ['image/jpeg', 'image/png'],
-        maxRatio: '1',
-        minRatio: '1',
-        maxSizeMessage: 'The file must not be larger than {{ limit }}Mo, but it is {{ size }}',
-        mimeTypesMessage: 'The file must be in JPG or PNG format',
-        maxRatioMessage: 'The file ratio is too big {{ ratio }}. Ratio must be 1 (square)',
-        minRatioMessage : 'The file ratio is too small {{ ratio }}. Ratio must be 1 (square)',
+        maxSize: '5M',
+        mimeTypes: ['image/jpeg', 'image/png', 'image/gif'],
+        maxSizeMessage: 'Le fichier ne doit pas dépasser {{ limit }}, mais fait {{ size }}',
+        mimeTypesMessage: 'Le fichier doit être au format JPG, PNG ou GIF',
     )]
     private ?File $imageFile = null;
 
@@ -238,6 +234,11 @@ class Company
         if (null !== $imageFile) {
             $this->updatedAt = new \DateTime();
         }
+    }
+
+    public function clearImageFile(): void
+    {
+        $this->imageFile = null;
     }
 
     public function getImageFile(): ?File

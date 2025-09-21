@@ -4,7 +4,7 @@
 
 {% block body %}
     <!-- Page Header -->
-    <div class="text-center space-y-2 mb-8">
+    <div class="text-center flex flex-col gap-2 mb-8">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Rejoignez PlumbPay</h2>
         <p class="text-gray-600 dark:text-gray-300 text-lg">Commencez à gérer votre entreprise de plomberie de manière professionnelle</p>
     </div>
@@ -31,18 +31,18 @@
     </div>
 
     <!-- Benefits Preview -->
-    <div class="mt-8 space-y-3">
+    <div class="mt-8 flex flex-col gap-3">
         <h4 class="text-gray-700 dark:text-gray-200 font-medium text-center mb-4">Ce que vous obtiendrez avec PlumbPay :</h4>
-        <div class="space-y-2">
-            <div class="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300">
+        <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
                 {{ include('_composants/_lucide_icon.html.twig', { name: 'check', class: 'w-4 h-4 text-green-500 dark:text-green-400 flex-shrink-0' }) }}
                 <span>Factures et devis professionnels</span>
             </div>
-            <div class="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300">
+            <div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
                 {{ include('_composants/_lucide_icon.html.twig', { name: 'check', class: 'w-4 h-4 text-green-500 dark:text-green-400 flex-shrink-0' }) }}
                 <span>Suivi des clients et paiements</span>
             </div>
-            <div class="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300">
+            <div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
                 {{ include('_composants/_lucide_icon.html.twig', { name: 'check', class: 'w-4 h-4 text-green-500 dark:text-green-400 flex-shrink-0' }) }}
                 <span>Analytiques et insights métier</span>
             </div>
@@ -50,7 +50,7 @@
     </div>
 
     <!-- Security Badge -->
-    <div class="mt-8 flex items-center justify-center space-x-2 text-gray-600 dark:text-gray-300 text-xs">
+    <div class="mt-8 flex items-center justify-center gap-2 text-gray-600 dark:text-gray-300 text-xs">
         {{ include('_composants/_lucide_icon.html.twig', { name: 'shield-check', class: 'w-4 h-4' }) }}
         <span>Essai gratuit de 30 jours • Aucune carte bancaire requise</span>
     </div>

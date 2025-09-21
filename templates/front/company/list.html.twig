@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}My Company - {{ company.name }} - PLumbpay - Liste des employées{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Mon Entreprise - Liste des employées') %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
     {{ include('/front/company/_nav.html.twig') }}
-    <h1 class="text-3xl font-bold underline text-center my-8">List Employee</h1>
-
-    <div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-auto" style="max-width: 90%;">
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -22,17 +21,43 @@
                     <td class="py-4 px-6">{{ user.getFirstname() }}</td>
                     <td class="py-4 px-6">{{ user.getLastname() }}</td>
                     <td class="py-4 px-6">{{ user.getEmail() }}</td>
-                    <td class="py-4 px-6 flex space-x-2">
-                        <a href="{{ path('front_app_company_edit_employee', {'id': user.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Edit</a>
-                        <form method="post" action="{{ path('front_app_company_delete_employee', {'id': user.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');" class="inline">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~user.id) }}">
-                            <button type="submit" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">Delete</button>
-                        </form>
+                    <td class="py-4 px-6 flex gap-2">
+                        {% set can_edit = false %}
+                        {% set can_delete = false %}
+
+                        {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
+                            {# super_admin peut tout faire sauf sur les autres super_admin #}
+                            {% if 'ROLE_SUPER_ADMIN' not in user.roles %}
+                                {% set can_edit = true %}
+                                {% set can_delete = true %}
+                            {% endif %}
+                        {% elseif 'ROLE_ADMIN' in app.user.roles %}
+                            {# admin peut tout faire sauf sur les autres admin et super_admin #}
+                            {% if 'ROLE_ADMIN' not in user.roles and 'ROLE_SUPER_ADMIN' not in user.roles %}
+                                {% set can_edit = true %}
+                                {% set can_delete = true %}
+                            {% endif %}
+                        {% endif %}
+
+                        {% if can_edit %}
+                            <a href="{{ path('front_app_company_edit_employee', {'id': user.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Modifier</a>
+                        {% else %}
+                            <span class="px-4 py-1 text-sm font-medium rounded-md text-gray-400 border border-gray-400 dark:border-gray-700 cursor-not-allowed">Modifier</span>
+                        {% endif %}
+
+                        {% if can_delete %}
+                            <form method="post" action="{{ path('front_app_company_delete_employee', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');" class="inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete'~user.id) }}">
+                                <button type="submit" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700 cursor-pointer">Supprimer</button>
+                            </form>
+                        {% else %}
+                            <span class="px-4 py-1 text-sm font-medium rounded-md text-gray-400 border border-gray-400 dark:border-gray-700 cursor-not-allowed">Supprimer</span>
+                        {% endif %}
                     </td>
                 </tr>
             {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td colspan="6" class="py-4 px-6">No records found</td>
+                    <td colspan="6" class="py-4 px-6">Aucun enregistrement trouvé</td>
                 </tr>
             {% endfor %}
             </tbody>

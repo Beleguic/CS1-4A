@@ -8,9 +8,12 @@ framework:
     # Remove or comment this section to explicitly disable session support.
     session:
         handler_id: null
-        cookie_secure: auto
+        cookie_secure: false  # HTTP en développement Docker
         cookie_samesite: lax
+        cookie_lifetime: 86400  # 24 heures
+        gc_maxlifetime: 86400   # 24 heures
         storage_factory_id: session.storage.factory.native
+        save_path: /tmp/sessions
 
     #esi: true
     #fragments: true
@@ -22,3 +25,11 @@ when@test:
         test: true
         session:
             storage_factory_id: session.storage.factory.mock_file
+
+when@prod:
+    framework:
+        session:
+            cookie_secure: true
+            cookie_httponly: true
+            cookie_lifetime: 86400  # 24 heures en production
+            gc_maxlifetime: 86400   # 24 heures en production

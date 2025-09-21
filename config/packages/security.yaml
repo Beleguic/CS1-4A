@@ -24,6 +24,12 @@ security:
             logout:
                 path: app_logout
                 target : app_login
+            remember_me:
+                secret: '%env(APP_SECRET)%'
+                lifetime: 604800  # 1 semaine
+                path: /
+                always_remember_me: false
+                remember_me_parameter: '_remember_me'
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

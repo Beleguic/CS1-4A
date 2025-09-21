@@ -1,9 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit My Company - {{ company.name }} - Add Employee - PLumbpay{% endblock %}
+{% set page_title = page_title|default('PlumbPay - Mon Entreprise - Ajouter - Employé') %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-    <h1>My Company - Add Employee</h1>
-    {{ include('/front/company/_nav.html.twig') }}
-    {{ include('/front/company/_form.html.twig', {'button_label': 'Add Employee'}) }}
+
+<div class="max-w-2xl mx-auto mb-6">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="p-3 mb-2 rounded text-white 
+                {% if label == 'success' %} bg-green-600 
+                {% elseif label == 'error' %} bg-red-600 
+                {% elseif label == 'notice' %} bg-blue-600 
+                {% else %} bg-gray-600 {% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+<section class="max-w-4xl mx-auto px-4 py-8 bg-white dark:bg-gray-800 shadow-md rounded-lg">
+    {{ form_start(form, {
+        'attr': {'class': 'grid grid-cols-1 gap-4'},
+        'action': path('front_app_company_add_employee'),
+        'method': 'POST'
+    }) }}
+
+    <div class="flex flex-col gap-2">
+        {{ form_label(form.email, 'Email de l\'employé', {'attr' : {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.email, {'attr': {'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'}}) }}
+        {{ form_errors(form.email) }}
+    </div>
+
+    <div class="flex flex-col gap-2">
+        {{ form_label(form.role, 'Rôle', {'attr' : {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-200'}}) }}
+        {{ form_widget(form.role, {
+            'attr': {
+                'class': 'w-full px-4 py-3 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-mainColor-400 dark:focus:border-mainColor-400 focus:outline-none focus:ring-2 focus:ring-mainColor-400/25 dark:focus:ring-mainColor-400/20 transition-all duration-200'
+            },
+            'placeholder': 'Sélectionner un rôle'
+        }) }}
+        {{ form_errors(form.role) }}
+    </div>
+
+    <div class="text-center mt-4">
+        <button
+            type="submit"
+            class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-mainColor-400 hover:bg-mainColor-800 transition-all duration-300">
+            Envoyer l'invitation
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+</section>
+
 {% endblock %}

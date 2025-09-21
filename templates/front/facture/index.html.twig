@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <table class="min-w-full w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="py-3 px-6">N° Facture</th>
@@ -29,17 +29,18 @@
                     <td class="py-4 px-6">{{ facture.prixPaye }}</td>
                     <td class="py-4 px-6">{{ facture.dateFacture|date("Y-m-d") }}</td>
                     <td class="py-4 px-6">{{ facture.dateEcheance|date("Y-m-d") }}</td>
-                    <td class="py-4 px-6 flex space-x-2">
-                        <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700">Show</a>
-                        <a href="{{ path('front_app_facture_send_email', {'id': facture.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-700">Envoyé au client par mail</a>
-                        <a href="{{ path('front_app_facture_download_pdf', {'id': facture.id}) }}" class="px-4 py-1 text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700">PDF</a>
-                        <a href="{{ path('front_app_facture_paid', {'id': facture.id}) }}" class="px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-400 hover:bg-blue-700">Paid with Stripe</a>
-
+                    <td class="py-4 px-6">
+                        <div class="flex gap-2 items-center justify-center">
+                            <a href="{{ path('front_app_facture_show', {'id': facture.id}) }}" class="px-2 py-1 text-xs font-medium rounded text-white bg-blue-500 hover:bg-blue-700 whitespace-nowrap">Voir</a>
+                            <a href="{{ path('front_app_facture_send_email', {'id': facture.id}) }}" class="px-2 py-1 text-xs font-medium rounded text-white bg-yellow-500 hover:bg-yellow-700 whitespace-nowrap">Email</a>
+                            <a href="{{ path('front_app_facture_download_pdf', {'id': facture.id}) }}" class="px-2 py-1 text-xs font-medium rounded text-white bg-red-500 hover:bg-red-700 whitespace-nowrap">PDF</a>
+                            <a href="{{ path('front_app_facture_paid', {'id': facture.id}) }}" class="px-2 py-1 text-xs font-medium rounded text-white bg-blue-400 hover:bg-blue-700 whitespace-nowrap">Stripe</a>
+                        </div>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6">No records found</td>
+                    <td colspan="9">No records found</td>
                 </tr>
             {% endfor %}
             </tbody>

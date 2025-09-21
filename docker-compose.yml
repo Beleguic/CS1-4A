@@ -11,6 +11,7 @@ services:
     restart: unless-stopped
     volumes:
       - php_socket:/var/run/php
+      - sessions:/tmp/sessions
     healthcheck:
       interval: 10s
       timeout: 3s
@@ -50,3 +51,4 @@ services:
 volumes:
   php_socket:
   db_data:
+  sessions:
