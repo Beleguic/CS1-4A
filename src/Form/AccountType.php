@@ -12,6 +12,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class AccountType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -20,6 +22,7 @@ class AccountType extends AbstractType
             ->add('email')
             ->add('oldPassword', PasswordType::class, [
                 'mapped' => false,
+                'required' => false,
                 'constraints' => [
                 ],
                 'label' => 'Mot de passe actuel',
@@ -28,6 +31,7 @@ class AccountType extends AbstractType
                 'type' => PasswordType::class,
                 'label' => 'Nouveau mot de passe',
                 'mapped' => false,
+                'required' => false,
                 'first_options' => [
                     'constraints' => [
                         new Length([
@@ -87,6 +91,22 @@ class AccountType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'constraints' => [
+                new Callback([$this, 'validatePasswordFields'])
+            ]
         ]);
+    }
+
+    public function validatePasswordFields($data, ExecutionContextInterface $context): void
+    {
+        $form = $context->getRoot();
+        $oldPassword = $form->get('oldPassword')->getData();
+        $newPassword = $form->get('newPassword')->getData();
+
+        // Si l'un des champs de mot de passe est rempli, l'autre doit l'être aussi
+        if ((!empty($oldPassword) && empty($newPassword)) || (empty($oldPassword) && !empty($newPassword))) {
+            $context->buildViolation('Si vous souhaitez changer votre mot de passe, veuillez remplir les deux champs.')
+                ->addViolation();
+        }
     }
 }
